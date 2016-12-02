@@ -14,18 +14,27 @@ public class MainFrame extends JFrame {
 
     private JPanel mainPane = new JPanel(new BorderLayout());
 
-    public MainFrame(){
+    public MainFrame() {
         setFrameUp();
         initComponents();
-        pack();
-        setSize(Style.WIDTH, Style.HEIGHT);
     }
 
     private void setFrameUp() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setResizable(false);
+        setResizable(true);
         getContentPane().add(mainPane);
+        setSize(Style.WIDTH, Style.HEIGHT);
+        setCenter();
+    }
+
+    private void setCenter() {
+        int windowWidth = getWidth();
+        int windowHeight = getHeight();
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+        setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
     }
 
     private void initComponents() {
