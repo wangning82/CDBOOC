@@ -12,21 +12,27 @@ import java.awt.*;
 @Component
 public class MainFrame extends JFrame {
 
-    private JPanel mainPane = new JPanel(new BorderLayout());
+    private TitleBarPanel titleBarPanel = new TitleBarPanel();
 
     public MainFrame() {
-        setFrameUp();
         initComponents();
     }
 
-    private void setFrameUp() {
+    private void initComponents() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(true);
+
+        JPanel mainPane = new JPanel(new BorderLayout());
+        mainPane.add(titleBarPanel, BorderLayout.NORTH);
         getContentPane().add(mainPane);
+
         setSize(Style.WIDTH, Style.HEIGHT);
         setCenter();
     }
 
+    /**
+     * 居中显示
+     */
     private void setCenter() {
         int windowWidth = getWidth();
         int windowHeight = getHeight();
@@ -37,7 +43,11 @@ public class MainFrame extends JFrame {
         setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
     }
 
-    private void initComponents() {
+    public TitleBarPanel getTitleBarPanel() {
+        return titleBarPanel;
+    }
 
+    public void setTitleBarPanel(TitleBarPanel titleBarPanel) {
+        this.titleBarPanel = titleBarPanel;
     }
 }
