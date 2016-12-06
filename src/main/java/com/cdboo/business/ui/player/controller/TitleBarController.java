@@ -6,21 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 /**
- * Created by houyi on 2016/11/30.
+ * Created by houyi on 2016/12/6.
  */
 @Controller
-public class MainController extends AbstractFrameController {
-
+public class TitleBarController extends AbstractFrameController {
     @Autowired
     private MainFrame mainFrame;
 
-    @Autowired
-    private TitleBarController titleBarController;
-
     @Override
     public void prepareAndOpenFrame() {
-        titleBarController.prepareAndOpenFrame();
-        mainFrame.setVisible(true);
+        registerAction(mainFrame.getTitleBarPanel().getCloseButton(), (e) -> closeClientsWindow());
     }
 
+    private void closeClientsWindow(){
+        System.exit(0);
+    }
 }

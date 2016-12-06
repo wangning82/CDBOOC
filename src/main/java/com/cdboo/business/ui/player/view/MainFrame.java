@@ -1,6 +1,8 @@
 package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.util.Style;
+import com.sun.awt.AWTUtilities;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -22,8 +24,13 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(true);
 
+        setUndecorated(true);
+        AWTUtilities.setWindowOpaque(this, false);
+        getRootPane().setWindowDecorationStyle(JRootPane.NONE);
+
         JPanel mainPane = new JPanel(new BorderLayout());
         mainPane.add(titleBarPanel, BorderLayout.NORTH);
+        mainPane.setBackground(Style.COLOR_RED);
         getContentPane().add(mainPane);
 
         setSize(Style.WIDTH, Style.HEIGHT);
