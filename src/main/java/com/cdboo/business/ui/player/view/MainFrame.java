@@ -2,7 +2,6 @@ package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.util.Style;
 import com.sun.awt.AWTUtilities;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;

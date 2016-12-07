@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.view;
 
+import com.cdboo.business.ui.shared.view.AbstractJPanel;
 import com.cdboo.business.util.Style;
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
@@ -9,7 +10,7 @@ import java.awt.*;
 /**
  * Created by houyi on 2016/12/2.
  */
-public class TitleBarPanel extends JPanel {
+public class TitleBarPanel extends AbstractJPanel {
     private JButton logoButton;
     private JButton profileButton;
     private JButton minButton;
@@ -22,11 +23,10 @@ public class TitleBarPanel extends JPanel {
 
     public TitleBarPanel() {
         super(new BorderLayout());
-        setFrameUp();
-        initComponents();
     }
 
-    private void setFrameUp() {
+    @Override
+    protected void setFrameUp() {
         logoButton = new JButton("悦我音乐");
         logoButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
         logoButton.setForeground(Color.white);
@@ -60,7 +60,8 @@ public class TitleBarPanel extends JPanel {
         this.setBackground(Style.COLOR_RED);
     }
 
-    private void initComponents() {
+    @Override
+    protected void initComponents() {
         logoPane.add(logoButton);
         this.add(logoPane, BorderLayout.WEST);
 
@@ -70,17 +71,6 @@ public class TitleBarPanel extends JPanel {
         btnPane.add(maxButton);
         btnPane.add(closeButton);
         this.add(btnPane, BorderLayout.EAST);
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(new TitleBarPanel());
-        frame.setPreferredSize(new Dimension(800, 100));
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 
     public JButton getLogoButton() {
@@ -121,5 +111,15 @@ public class TitleBarPanel extends JPanel {
 
     public void setCloseButton(JButton closeButton) {
         this.closeButton = closeButton;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(new TitleBarPanel());
+        frame.setPreferredSize(new Dimension(800, 100));
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
