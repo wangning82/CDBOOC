@@ -28,6 +28,7 @@ public class MainController extends AbstractFrameController {
     @Override
     public void prepareAndOpenFrame() {
         titleBarController.prepareAndOpenFrame();
+        mainFrame.pack();
         mainFrame.setVisible(true);
 
         TitleBarPanel titleBarPanel = mainFrame.getTitleBarPanel();

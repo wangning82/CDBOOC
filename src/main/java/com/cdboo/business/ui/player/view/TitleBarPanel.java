@@ -28,6 +28,7 @@ public class TitleBarPanel extends AbstractJPanel {
     @Override
     protected void setFrameUp() {
         logoButton = new JButton("悦我音乐");
+        logoButton.setBorderPainted(false);
         logoButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
         logoButton.setForeground(Color.white);
 
