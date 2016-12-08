@@ -8,6 +8,10 @@ import java.awt.*;
  */
 public abstract class AbstractJPanel extends JPanel{
 
+    public AbstractJPanel(){
+        super();
+    }
+
     public AbstractJPanel(LayoutManager layout) {
         super(layout);
         setFrameUp();

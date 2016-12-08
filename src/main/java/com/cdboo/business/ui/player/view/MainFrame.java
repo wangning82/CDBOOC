@@ -1,6 +1,7 @@
 package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.util.Style;
+import com.cdboo.business.util.Utils;
 import com.sun.awt.AWTUtilities;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private TitleBarPanel titleBarPanel = new TitleBarPanel();
+    private BrowserPanel browserPanel = new BrowserPanel();
 
     public MainFrame() {
         initComponents();
@@ -29,24 +31,13 @@ public class MainFrame extends JFrame {
 
         JPanel mainPane = new JPanel(new BorderLayout());
         mainPane.add(titleBarPanel, BorderLayout.NORTH);
-        mainPane.setBackground(Style.COLOR_RED);
+        mainPane.add(browserPanel, BorderLayout.CENTER);
+        mainPane.setBackground(Style.COLOR_DEFAULT);
         getContentPane().add(mainPane);
 
         setSize(Style.WIDTH, Style.HEIGHT);
-        setCenter();
-    }
+        Utils.setCenter(this);
 
-    /**
-     * 居中显示
-     */
-    private void setCenter() {
-        int windowWidth = getWidth();
-        int windowHeight = getHeight();
-        Toolkit kit = Toolkit.getDefaultToolkit();
-        Dimension screenSize = kit.getScreenSize();
-        int screenWidth = screenSize.width;
-        int screenHeight = screenSize.height;
-        setLocation(screenWidth / 2 - windowWidth / 2, screenHeight / 2 - windowHeight / 2);
     }
 
     public TitleBarPanel getTitleBarPanel() {
@@ -56,4 +47,5 @@ public class MainFrame extends JFrame {
     public void setTitleBarPanel(TitleBarPanel titleBarPanel) {
         this.titleBarPanel = titleBarPanel;
     }
+
 }

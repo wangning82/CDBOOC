@@ -2,23 +2,34 @@ package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.ui.shared.view.AbstractJPanel;
 import com.cdboo.business.util.Style;
-import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
+import com.cdboo.business.util.Utils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by houyi on 2016/12/2.
  */
 public class TitleBarPanel extends AbstractJPanel {
-    private JButton logoButton;
-    private JButton profileButton;
+    private JLabel blankLabel;
+    private JButton headButton;
+    private JLabel nickNameLabel;
+    private JButton loginButton;
+
+    private JButton timeButton;
+    private JLabel timeLabel;
+    private JButton settingsButton;
+
     private JButton minButton;
     private JButton maxButton;
     private JButton closeButton;
-    private JSeparator separator;
 
-    private JPanel logoPane;
+    private JSeparator separator1;
+    private JSeparator separator2;
+
+    private JPanel headPane;
     private JPanel btnPane;
 
     public TitleBarPanel() {
@@ -27,67 +38,93 @@ public class TitleBarPanel extends AbstractJPanel {
 
     @Override
     protected void setFrameUp() {
-        logoButton = new JButton("悦我音乐");
-        logoButton.setBorderPainted(false);
-        logoButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
-        logoButton.setForeground(Color.white);
+        blankLabel = Utils.createLabel("  ");
+        headButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/head.jpg")), Style.SIZE_30_30);
+        nickNameLabel = Utils.createLabel("匿名用户");
+        loginButton = Utils.createButton("登录");
 
-        profileButton = new JButton("个人资料");
-        profileButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
-        profileButton.setForeground(Color.white);
+        timeButton = Utils.createButton("晨醒", new ImageIcon(getClass().getResource("/images/down.png")));
+        timeButton.setHorizontalTextPosition(JButton.LEADING);
+        timeButton.setIconTextGap(2);
 
-        separator = new JSeparator(JSeparator.VERTICAL);
-        separator.setBackground(Color.GRAY);
-        separator.setPreferredSize(new Dimension(5, 20));
+        SimpleDateFormat sdf = new SimpleDateFormat("E yyyy/MM/dd");
+        timeLabel = Utils.createLabel(sdf.format(new Date()));
 
-        minButton = new JButton("最小化");
-        minButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
-        minButton.setForeground(Color.white);
+        settingsButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/settings.png")), Style.SIZE_30_30);
+        minButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/min.png")), Style.SIZE_25_25);
+        maxButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/max.png")), Style.SIZE_25_25);
+        closeButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/shutdown.png")), Style.SIZE_25_25);
 
-        maxButton = new JButton("最大化");
-        maxButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
-        maxButton.setForeground(Color.white);
+        separator1 = Utils.createSeparator(JSeparator.VERTICAL);
+        separator2 = Utils.createSeparator(JSeparator.VERTICAL);
 
-        closeButton = new JButton("关闭");
-        closeButton.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.red));
-        closeButton.setForeground(Color.white);
-
-        logoPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        logoPane.setBackground(Style.COLOR_RED);
+        headPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
+        headPane.setBackground(Style.COLOR_DEFAULT);
 
         btnPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        btnPane.setBackground(Style.COLOR_RED);
+        btnPane.setBackground(Style.COLOR_DEFAULT);
 
-        this.setBackground(Style.COLOR_RED);
+        this.setBackground(Style.COLOR_DEFAULT);
     }
 
     @Override
     protected void initComponents() {
-        logoPane.add(logoButton);
-        this.add(logoPane, BorderLayout.WEST);
+        headPane.add(blankLabel);
+        headPane.add(headButton);
+        headPane.add(nickNameLabel);
+        headPane.add(separator1);
+        headPane.add(loginButton);
+        this.add(headPane, BorderLayout.WEST);
 
-        btnPane.add(profileButton);
-        btnPane.add(separator);
+        btnPane.add(timeButton);
+        btnPane.add(timeLabel);
+        btnPane.add(settingsButton);
+
+        btnPane.add(separator2);
         btnPane.add(minButton);
         btnPane.add(maxButton);
         btnPane.add(closeButton);
         this.add(btnPane, BorderLayout.EAST);
     }
 
-    public JButton getLogoButton() {
-        return logoButton;
+    public JButton getHeadButton() {
+        return headButton;
     }
 
-    public void setLogoButton(JButton logoButton) {
-        this.logoButton = logoButton;
+    public void setHeadButton(JButton headButton) {
+        this.headButton = headButton;
     }
 
-    public JButton getProfileButton() {
-        return profileButton;
+    public JLabel getNickNameLabel() {
+        return nickNameLabel;
     }
 
-    public void setProfileButton(JButton profileButton) {
-        this.profileButton = profileButton;
+    public void setNickNameLabel(JLabel nickNameLabel) {
+        this.nickNameLabel = nickNameLabel;
+    }
+
+    public JButton getTimeButton() {
+        return timeButton;
+    }
+
+    public void setTimeButton(JButton timeButton) {
+        this.timeButton = timeButton;
+    }
+
+    public JLabel getTimeLabel() {
+        return timeLabel;
+    }
+
+    public void setTimeLabel(JLabel timeLabel) {
+        this.timeLabel = timeLabel;
+    }
+
+    public JButton getSettingsButton() {
+        return settingsButton;
+    }
+
+    public void setSettingsButton(JButton settingsButton) {
+        this.settingsButton = settingsButton;
     }
 
     public JButton getMinButton() {
@@ -112,6 +149,22 @@ public class TitleBarPanel extends AbstractJPanel {
 
     public void setCloseButton(JButton closeButton) {
         this.closeButton = closeButton;
+    }
+
+    public JPanel getHeadPane() {
+        return headPane;
+    }
+
+    public void setHeadPane(JPanel headPane) {
+        this.headPane = headPane;
+    }
+
+    public JPanel getBtnPane() {
+        return btnPane;
+    }
+
+    public void setBtnPane(JPanel btnPane) {
+        this.btnPane = btnPane;
     }
 
     public static void main(String[] args) {

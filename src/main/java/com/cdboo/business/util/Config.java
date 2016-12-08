@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
  */
 public class Config implements Serializable{
 
-    private static ResourceBundle rb = ResourceBundle.getBundle("UIInfo");
+    private static ResourceBundle rb = ResourceBundle.getBundle("cdboo");
 
     private static Config config = new Config();
 
@@ -19,4 +19,7 @@ public class Config implements Serializable{
     public static String getResource(String key) {
         return rb.getString(key);
     }
+
+
+
 }
