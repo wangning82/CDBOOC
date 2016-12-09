@@ -11,6 +11,8 @@ public class Style {
 
     public static final Color COLOR_DEFAULT = new Color(129, 75, 145);
     public static final Font FONT_DEFAULT = new Font("微软雅黑", 1, 14);
+    public static final Font FONT_12 = new Font("微软雅黑", 1, 12);
+
 
     public static final Dimension SIZE_25_25 = new Dimension(25, 25);
     public static final Dimension SIZE_30_30 = new Dimension(30, 30);

@@ -32,6 +32,7 @@ public class MainFrame extends JFrame {
         JPanel mainPane = new JPanel(new BorderLayout());
         mainPane.add(titleBarPanel, BorderLayout.NORTH);
         mainPane.add(browserPanel, BorderLayout.CENTER);
+
         mainPane.setBackground(Style.COLOR_DEFAULT);
         getContentPane().add(mainPane);
 

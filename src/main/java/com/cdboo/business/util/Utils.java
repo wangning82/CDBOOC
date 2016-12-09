@@ -117,11 +117,24 @@ public class Utils {
      * @return
      */
     public static JSeparator createSeparator(int direction){
-        JSeparator separator = new JSeparator(JSeparator.VERTICAL);
+        JSeparator separator = new JSeparator(direction);
         separator.setBackground(Color.white);
         separator.setPreferredSize(new Dimension(5, 20));
         separator.setAlignmentX(JSeparator.CENTER);
         return separator;
+    }
+
+    /**
+     * 创建单选框
+     * @return
+     */
+    public static JComboBox createComboBox(){
+        JComboBox comboBox = new JComboBox();
+        comboBox.setPreferredSize(new Dimension(100, 28));
+        comboBox.setFont(Style.FONT_12);
+        comboBox.setForeground(Color.white);
+        comboBox.setAlignmentX(JComboBox.LEFT_ALIGNMENT);
+        return comboBox;
     }
 
 }

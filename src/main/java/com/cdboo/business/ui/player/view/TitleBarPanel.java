@@ -18,7 +18,7 @@ public class TitleBarPanel extends AbstractJPanel {
     private JLabel nickNameLabel;
     private JButton loginButton;
 
-    private JButton timeButton;
+    private JComboBox timeCB;
     private JLabel timeLabel;
     private JButton settingsButton;
 
@@ -43,10 +43,7 @@ public class TitleBarPanel extends AbstractJPanel {
         nickNameLabel = Utils.createLabel("匿名用户");
         loginButton = Utils.createButton("登录");
 
-        timeButton = Utils.createButton("晨醒", new ImageIcon(getClass().getResource("/images/down.png")));
-        timeButton.setHorizontalTextPosition(JButton.LEADING);
-        timeButton.setIconTextGap(2);
-
+        timeCB = Utils.createComboBox();
         SimpleDateFormat sdf = new SimpleDateFormat("E yyyy/MM/dd");
         timeLabel = Utils.createLabel(sdf.format(new Date()));
 
@@ -76,7 +73,7 @@ public class TitleBarPanel extends AbstractJPanel {
         headPane.add(loginButton);
         this.add(headPane, BorderLayout.WEST);
 
-        btnPane.add(timeButton);
+        btnPane.add(timeCB);
         btnPane.add(timeLabel);
         btnPane.add(settingsButton);
 
@@ -101,14 +98,6 @@ public class TitleBarPanel extends AbstractJPanel {
 
     public void setNickNameLabel(JLabel nickNameLabel) {
         this.nickNameLabel = nickNameLabel;
-    }
-
-    public JButton getTimeButton() {
-        return timeButton;
-    }
-
-    public void setTimeButton(JButton timeButton) {
-        this.timeButton = timeButton;
     }
 
     public JLabel getTimeLabel() {
@@ -165,6 +154,14 @@ public class TitleBarPanel extends AbstractJPanel {
 
     public void setBtnPane(JPanel btnPane) {
         this.btnPane = btnPane;
+    }
+
+    public JComboBox getTimeCB() {
+        return timeCB;
+    }
+
+    public void setTimeCB(JComboBox timeCB) {
+        this.timeCB = timeCB;
     }
 
     public static void main(String[] args) {

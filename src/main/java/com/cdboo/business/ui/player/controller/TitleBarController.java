@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.controller;
 
+import com.cdboo.business.service.PlayPlanService;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import com.cdboo.business.util.Style;
@@ -22,11 +23,21 @@ public class TitleBarController extends AbstractFrameController {
     @Autowired
     private MainFrame mainFrame;
 
+    @Autowired
+    private PlayPlanService playPlanService;
+
     @Override
     public void prepareAndOpenFrame() {
         registerAction(mainFrame.getTitleBarPanel().getCloseButton(), (e) -> closeClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getMinButton(), (e) -> minClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getMaxButton(), (e) -> maxClientsWindow());
+
+        String[] defaultTime = new String[]{};
+        for(int i = 0 ; i < playPlanService.findAll().size(); i ++){
+            defaultTime[i] = playPlanService.findAll().get(i).getName();
+        }
+        mainFrame.getTitleBarPanel().getTimeCB().setModel(new DefaultComboBoxModel<String>(defaultTime));
+        //mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
     }
 
     /**
