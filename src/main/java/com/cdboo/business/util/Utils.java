@@ -119,7 +119,7 @@ public class Utils {
     public static JSeparator createSeparator(int direction){
         JSeparator separator = new JSeparator(direction);
         separator.setBackground(Color.white);
-        separator.setPreferredSize(new Dimension(5, 20));
+        separator.setPreferredSize(new Dimension(5, 25));
         separator.setAlignmentX(JSeparator.CENTER);
         return separator;
     }
@@ -134,6 +134,7 @@ public class Utils {
         comboBox.setFont(Style.FONT_12);
         comboBox.setForeground(Color.white);
         comboBox.setAlignmentX(JComboBox.LEFT_ALIGNMENT);
+        comboBox.setMaximumRowCount(6); // 超过6个选项显示滚动条，默认是8
         return comboBox;
     }
 

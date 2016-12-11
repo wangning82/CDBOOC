@@ -6,11 +6,9 @@ import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 
 /**
@@ -47,9 +45,6 @@ public class MainController extends AbstractFrameController {
                 mainFrame.setLocation(current.x + e.getX() - origin.x, current.y + e.getY() - origin.y);
             }
         });
-
-
-
     }
 
 }
