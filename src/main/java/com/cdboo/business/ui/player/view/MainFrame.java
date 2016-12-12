@@ -27,18 +27,16 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         initComponents();
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                Group root = new Group();
-                Scene scene = new Scene(root);
-                webBrowser.setScene(scene);
-                view = new WebView();
-                view.setPrefSize(new Integer(Style.WIDTH).doubleValue(), new Integer(Style.HEIGHT - 30).doubleValue());
-                view.getEngine().load("http://www.baidu.com");
-                root.getChildren().add(view);
-            }
+        Platform.runLater(() -> {
+            Group root = new Group();
+            Scene scene = new Scene(root);
+            webBrowser.setScene(scene);
+            view = new WebView();
+            view.setPrefSize(new Integer(Style.WIDTH).doubleValue(), new Integer(Style.HEIGHT - 30).doubleValue());
+            view.getEngine().load("http://www.baidu.com");
+            root.getChildren().add(view);
         });
+
     }
 
     private void initComponents() {
