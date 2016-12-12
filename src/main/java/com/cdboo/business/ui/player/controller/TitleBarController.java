@@ -2,6 +2,7 @@ package com.cdboo.business.ui.player.controller;
 
 import com.cdboo.business.service.PlayPlanService;
 import com.cdboo.business.ui.player.view.MainFrame;
+import com.cdboo.business.ui.player.view.SettingsDialog;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import com.cdboo.business.util.Style;
 import com.cdboo.business.util.Utils;
@@ -31,6 +32,7 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getCloseButton(), (e) -> closeClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getMinButton(), (e) -> minClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getMaxButton(), (e) -> maxClientsWindow());
+        registerAction(mainFrame.getTitleBarPanel().getSettingsButton(), (e) -> showSettings());
 
         String[] defaultTime = new String[]{};
         for(int i = 0 ; i < playPlanService.findAll().size(); i ++){
@@ -38,6 +40,14 @@ public class TitleBarController extends AbstractFrameController {
         }
         mainFrame.getTitleBarPanel().getTimeCB().setModel(new DefaultComboBoxModel<String>(defaultTime));
         //mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
+    }
+
+    /**
+     * 显示配置窗口
+     */
+    private void showSettings(){
+        Point p = mainFrame.getTitleBarPanel().getSettingsButton().getLocationOnScreen();
+        SettingsDialog.show(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
     }
 
     /**

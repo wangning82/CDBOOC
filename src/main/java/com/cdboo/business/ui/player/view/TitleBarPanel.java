@@ -58,7 +58,7 @@ public class TitleBarPanel extends AbstractJPanel {
         headPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
         headPane.setBackground(Style.COLOR_DEFAULT);
 
-        btnPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        btnPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
         btnPane.setBackground(Style.COLOR_DEFAULT);
 
         this.setBackground(Style.COLOR_DEFAULT);
