@@ -3,6 +3,11 @@ package com.cdboo.business.ui.player.view;
 import com.cdboo.business.util.Style;
 import com.cdboo.business.util.Utils;
 import com.sun.awt.AWTUtilities;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -15,10 +20,25 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 
     private TitleBarPanel titleBarPanel = new TitleBarPanel();
-    private BrowserPanel browserPanel = new BrowserPanel();
+    private JFXPanel webBrowser = new JFXPanel();
+    private WebView view;
+
 
     public MainFrame() {
         initComponents();
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Group root = new Group();
+                Scene scene = new Scene(root);
+                webBrowser.setScene(scene);
+                view = new WebView();
+                view.setPrefSize(new Integer(Style.WIDTH).doubleValue(), new Integer(Style.HEIGHT - 30).doubleValue());
+                view.getEngine().load("http://www.baidu.com");
+                root.getChildren().add(view);
+            }
+        });
     }
 
     private void initComponents() {
@@ -31,7 +51,7 @@ public class MainFrame extends JFrame {
 
         JPanel mainPane = new JPanel(new BorderLayout());
         mainPane.add(titleBarPanel, BorderLayout.NORTH);
-        mainPane.add(browserPanel, BorderLayout.CENTER);
+        mainPane.add(webBrowser, BorderLayout.CENTER);
 
         mainPane.setBackground(Style.COLOR_DEFAULT);
         getContentPane().add(mainPane);
@@ -49,4 +69,19 @@ public class MainFrame extends JFrame {
         this.titleBarPanel = titleBarPanel;
     }
 
+    public JFXPanel getWebBrowser() {
+        return webBrowser;
+    }
+
+    public void setWebBrowser(JFXPanel webBrowser) {
+        this.webBrowser = webBrowser;
+    }
+
+    public WebView getView() {
+        return view;
+    }
+
+    public void setView(WebView view) {
+        this.view = view;
+    }
 }
