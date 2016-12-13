@@ -13,7 +13,6 @@ import java.util.Date;
  * Created by houyi on 2016/12/2.
  */
 public class TitleBarPanel extends AbstractJPanel {
-    private JLabel blankLabel;
     private JButton headButton;
     private JLabel nickNameLabel;
     private JButton loginButton;
@@ -38,7 +37,6 @@ public class TitleBarPanel extends AbstractJPanel {
 
     @Override
     protected void setFrameUp() {
-        blankLabel = Utils.createLabel("  ");
         headButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/head.jpg")), Style.SIZE_30_30);
         nickNameLabel = Utils.createLabel("匿名用户");
         loginButton = Utils.createButton("登录");
@@ -54,21 +52,23 @@ public class TitleBarPanel extends AbstractJPanel {
 
         separator1 = Utils.createSeparator(JSeparator.VERTICAL);
         separator2 = Utils.createSeparator(JSeparator.VERTICAL);
-
-        headPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
-        headPane.setBackground(Style.COLOR_DEFAULT);
-
-        btnPane = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 5));
-        btnPane.setBackground(Style.COLOR_DEFAULT);
-
-        this.setBackground(Style.COLOR_DEFAULT);
     }
 
     @Override
     protected void initComponents() {
-        headPane.add(blankLabel);
+        headPane = new JPanel();
+        headPane.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 5));
+        headPane.setBackground(Style.COLOR_DEFAULT);
+
+        btnPane = new JPanel();
+        btnPane.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 5));
+        btnPane.setBackground(Style.COLOR_DEFAULT);
+
+        this.setBackground(Style.COLOR_DEFAULT);
+
         headPane.add(headButton);
         headPane.add(nickNameLabel);
+        headPane.add(Box.createRigidArea(new Dimension(8, 1)));
         headPane.add(separator1);
         headPane.add(loginButton);
         this.add(headPane, BorderLayout.WEST);
@@ -82,6 +82,7 @@ public class TitleBarPanel extends AbstractJPanel {
         btnPane.add(maxButton);
         btnPane.add(closeButton);
         this.add(btnPane, BorderLayout.EAST);
+        this.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 8));
     }
 
     public JButton getHeadButton() {
@@ -162,6 +163,14 @@ public class TitleBarPanel extends AbstractJPanel {
 
     public void setTimeCB(JComboBox timeCB) {
         this.timeCB = timeCB;
+    }
+
+    public JButton getLoginButton() {
+        return loginButton;
+    }
+
+    public void setLoginButton(JButton loginButton) {
+        this.loginButton = loginButton;
     }
 
     public static void main(String[] args) {

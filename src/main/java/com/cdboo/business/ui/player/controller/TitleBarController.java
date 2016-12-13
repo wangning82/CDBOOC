@@ -1,6 +1,7 @@
 package com.cdboo.business.ui.player.controller;
 
 import com.cdboo.business.service.PlayPlanService;
+import com.cdboo.business.ui.player.view.LoginDialog;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.player.view.SettingsDialog;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
@@ -33,6 +34,7 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getMinButton(), (e) -> minClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getMaxButton(), (e) -> maxClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getSettingsButton(), (e) -> showSettings());
+        registerAction(mainFrame.getTitleBarPanel().getLoginButton(), (e) -> showLoginWindow());
 
         String[] defaultTime = new String[]{};
         for(int i = 0 ; i < playPlanService.findAll().size(); i ++){
@@ -46,8 +48,11 @@ public class TitleBarController extends AbstractFrameController {
      * 显示配置窗口
      */
     private void showSettings(){
+        mainFrame.shutdownAll();
         Point p = mainFrame.getTitleBarPanel().getSettingsButton().getLocationOnScreen();
-        SettingsDialog.show(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
+        SettingsDialog settingsDialog = new SettingsDialog(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
+        mainFrame.setSettingsDialog(settingsDialog);
+        settingsDialog.showItNow();
     }
 
     /**
@@ -61,6 +66,7 @@ public class TitleBarController extends AbstractFrameController {
      * 最小化
      */
     private void minClientsWindow(){
+        mainFrame.shutdownAll();
         mainFrame.setVisible(false);
 
         if(SystemTray.isSupported()){
@@ -116,6 +122,7 @@ public class TitleBarController extends AbstractFrameController {
     }
 
     private void maxClientsWindow(){
+        mainFrame.shutdownAll();
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
         if(mainFrame.getWidth() == screenSize.width && mainFrame.getHeight() == screenSize.height){
@@ -127,5 +134,12 @@ public class TitleBarController extends AbstractFrameController {
             mainFrame.setLocation(0, 0);
             mainFrame.getTitleBarPanel().getMaxButton().setToolTipText("恢复");
         }
+    }
+
+    private void showLoginWindow(){
+        mainFrame.shutdownAll();
+        LoginDialog loginDialog = new LoginDialog();
+
+
     }
 }

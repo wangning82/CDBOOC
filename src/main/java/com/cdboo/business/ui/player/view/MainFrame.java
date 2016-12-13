@@ -22,7 +22,7 @@ public class MainFrame extends JFrame {
     private TitleBarPanel titleBarPanel = new TitleBarPanel();
     private JFXPanel webBrowser = new JFXPanel();
     private WebView view;
-
+    private SettingsDialog settingsDialog;
 
     public MainFrame() {
         initComponents();
@@ -45,6 +45,7 @@ public class MainFrame extends JFrame {
 
         setUndecorated(true);
         AWTUtilities.setWindowOpaque(this, false);
+        ((JComponent) (getContentPane())).setOpaque(false);
         getRootPane().setWindowDecorationStyle(JRootPane.NONE);
 
         JPanel mainPane = new JPanel(new BorderLayout());
@@ -52,11 +53,22 @@ public class MainFrame extends JFrame {
         mainPane.add(webBrowser, BorderLayout.CENTER);
 
         mainPane.setBackground(Style.COLOR_DEFAULT);
+        mainPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
         getContentPane().add(mainPane);
 
         setSize(Style.WIDTH, Style.HEIGHT);
         Utils.setCenter(this);
 
+    }
+
+    /**
+     * 所有关闭操作
+     */
+    public void shutdownAll(){
+        if(settingsDialog != null){
+            settingsDialog.dispose();
+        }
     }
 
     public TitleBarPanel getTitleBarPanel() {
@@ -81,5 +93,13 @@ public class MainFrame extends JFrame {
 
     public void setView(WebView view) {
         this.view = view;
+    }
+
+    public SettingsDialog getSettingsDialog() {
+        return settingsDialog;
+    }
+
+    public void setSettingsDialog(SettingsDialog settingsDialog) {
+        this.settingsDialog = settingsDialog;
     }
 }

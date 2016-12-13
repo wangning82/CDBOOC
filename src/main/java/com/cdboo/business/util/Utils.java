@@ -125,7 +125,7 @@ public class Utils {
     }
 
     /**
-     * 创建单选框
+     * 创建下拉框
      * @return
      */
     public static JComboBox createComboBox(){
@@ -136,6 +136,21 @@ public class Utils {
         comboBox.setAlignmentX(JComboBox.LEFT_ALIGNMENT);
         comboBox.setMaximumRowCount(6); // 超过6个选项显示滚动条，默认是8
         return comboBox;
+    }
+
+    /**
+     * 创建复选框
+     * @param text
+     * @param color
+     * @param textPosition
+     * @return
+     */
+    public static JCheckBox createCheckBox(String text, Color color, int textPosition){
+        JCheckBox checkBox = new JCheckBox(text);
+        checkBox.setFont(Style.FONT_DEFAULT);
+        checkBox.setForeground(color);
+        checkBox.setHorizontalTextPosition(textPosition);
+        return checkBox;
     }
 
 }

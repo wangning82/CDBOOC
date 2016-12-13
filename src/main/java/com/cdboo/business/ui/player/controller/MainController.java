@@ -36,6 +36,7 @@ public class MainController extends AbstractFrameController {
             public void mousePressed(MouseEvent e) {
                 origin.x = e.getX();
                 origin.y = e.getY();
+                mainFrame.shutdownAll();
             }
         });
         titleBarPanel.addMouseMotionListener(new MouseMotionAdapter() {
@@ -43,6 +44,13 @@ public class MainController extends AbstractFrameController {
             public void mouseDragged(MouseEvent e) {
                 Point current = mainFrame.getLocation();
                 mainFrame.setLocation(current.x + e.getX() - origin.x, current.y + e.getY() - origin.y);
+            }
+        });
+
+        mainFrame.getWebBrowser().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                mainFrame.shutdownAll();
             }
         });
     }
