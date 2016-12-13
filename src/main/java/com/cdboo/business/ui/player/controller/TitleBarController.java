@@ -56,6 +56,18 @@ public class TitleBarController extends AbstractFrameController {
     }
 
     /**
+     * 显示登录窗口
+     */
+    private void showLoginWindow(){
+        mainFrame.shutdownAll();
+        Point p = mainFrame.getLocationOnScreen();
+        // TODO 计算窗口位置
+        LoginDialog loginDialog = new LoginDialog(new Point(new Double(p.getX()).intValue(), new Double(p.getY()).intValue()));
+        mainFrame.setLoginDialog(loginDialog);
+        loginDialog.showItNow();
+    }
+
+    /**
      * 关闭窗口
      */
     private void closeClientsWindow(){
@@ -136,10 +148,4 @@ public class TitleBarController extends AbstractFrameController {
         }
     }
 
-    private void showLoginWindow(){
-        mainFrame.shutdownAll();
-        LoginDialog loginDialog = new LoginDialog();
-
-
-    }
 }

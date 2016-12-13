@@ -68,7 +68,7 @@ public class TitleBarPanel extends AbstractJPanel {
 
         headPane.add(headButton);
         headPane.add(nickNameLabel);
-        headPane.add(Box.createRigidArea(new Dimension(8, 1)));
+        headPane.add(Box.createRigidArea(new Dimension(4, 1)));
         headPane.add(separator1);
         headPane.add(loginButton);
         this.add(headPane, BorderLayout.WEST);

@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
     private JFXPanel webBrowser = new JFXPanel();
     private WebView view;
     private SettingsDialog settingsDialog;
+    private LoginDialog loginDialog;
 
     public MainFrame() {
         initComponents();
@@ -69,6 +70,9 @@ public class MainFrame extends JFrame {
         if(settingsDialog != null){
             settingsDialog.dispose();
         }
+        if(loginDialog != null){
+            settingsDialog.dispose();
+        }
     }
 
     public TitleBarPanel getTitleBarPanel() {
@@ -101,5 +105,13 @@ public class MainFrame extends JFrame {
 
     public void setSettingsDialog(SettingsDialog settingsDialog) {
         this.settingsDialog = settingsDialog;
+    }
+
+    public LoginDialog getLoginDialog() {
+        return loginDialog;
+    }
+
+    public void setLoginDialog(LoginDialog loginDialog) {
+        this.loginDialog = loginDialog;
     }
 }
