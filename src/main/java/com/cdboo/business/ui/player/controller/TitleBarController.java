@@ -61,8 +61,9 @@ public class TitleBarController extends AbstractFrameController {
     private void showLoginWindow(){
         mainFrame.shutdownAll();
         Point p = mainFrame.getLocationOnScreen();
-        // TODO 计算窗口位置
-        LoginDialog loginDialog = new LoginDialog(new Point(new Double(p.getX()).intValue(), new Double(p.getY()).intValue()));
+        double x = p.getX() + mainFrame.getWidth() / 2 - Style.LOGIN_WIDTH / 2;
+        double y = p.getY() + mainFrame.getHeight() / 2 - Style.LOGIN_HEIGHT / 2;
+        LoginDialog loginDialog = new LoginDialog(new Point(new Double(x).intValue(), new Double(y).intValue()));
         mainFrame.setLoginDialog(loginDialog);
         loginDialog.showItNow();
     }
@@ -138,7 +139,7 @@ public class TitleBarController extends AbstractFrameController {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
         if(mainFrame.getWidth() == screenSize.width && mainFrame.getHeight() == screenSize.height){
-            mainFrame.setSize(Style.WIDTH, Style.HEIGHT);
+            mainFrame.setSize(Style.MAIN_WIDTH, Style.MAIN_HEIGHT);
             Utils.setCenter(mainFrame);
             mainFrame.getTitleBarPanel().getMaxButton().setToolTipText("最大化");
         }else{

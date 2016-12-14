@@ -33,7 +33,7 @@ public class MainFrame extends JFrame {
             Scene scene = new Scene(root);
             webBrowser.setScene(scene);
             view = new WebView();
-            view.setPrefSize(new Integer(Style.WIDTH).doubleValue(), new Integer(Style.HEIGHT - 30).doubleValue());
+            view.setPrefSize(new Integer(Style.MAIN_WIDTH).doubleValue(), new Integer(Style.MAIN_HEIGHT - 30).doubleValue());
             view.getEngine().load("http://www.baidu.com");
             root.getChildren().add(view);
         });
@@ -58,7 +58,7 @@ public class MainFrame extends JFrame {
 
         getContentPane().add(mainPane);
 
-        setSize(Style.WIDTH, Style.HEIGHT);
+        setSize(Style.MAIN_WIDTH, Style.MAIN_HEIGHT);
         Utils.setCenter(this);
 
     }

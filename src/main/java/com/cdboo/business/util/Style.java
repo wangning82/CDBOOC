@@ -4,10 +4,10 @@ import java.awt.*;
 
 public class Style {
 
-    public static final int WIDTH = 1010;
-    public static final int HEIGHT = 680;
-    public static final int TOP_HEIGHT = 48;
-    public static final int BOTTOM_HEIGHT = 48;
+    public static final int MAIN_WIDTH = 1010;
+    public static final int MAIN_HEIGHT = 680;
+    public static final int LOGIN_WIDTH = 420;
+    public static final int LOGIN_HEIGHT = 298;
 
     public static final Color COLOR_DEFAULT = new Color(129, 75, 145);
     public static final Color COLOR_FONT_GRAY = new Color(51, 51, 51);
@@ -15,6 +15,7 @@ public class Style {
 
     public static final Font FONT_DEFAULT = new Font("微软雅黑", 1, 14);
     public static final Font FONT_12 = new Font("微软雅黑", 1, 12);
+    public static final Font FONT_16 = new Font("微软雅黑", 1, 16);
     public static final Font FONT_18 = new Font("微软雅黑", 1, 18);
 
 

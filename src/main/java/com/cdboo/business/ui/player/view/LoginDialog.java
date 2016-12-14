@@ -22,7 +22,6 @@ public class LoginDialog extends JDialog {
     }
 
     protected void initGUI() {
-        this.setSize(420, 298);
         this.setAlwaysOnTop(true);
         this.setUndecorated(true);
         AWTUtilities.setWindowOpaque(this, false);
@@ -34,16 +33,7 @@ public class LoginDialog extends JDialog {
     }
 
     private JPanel createLoginPanel() {
-        loginPanel = new JPanel(new BorderLayout()) {
-            @Override
-            protected void paintChildren(Graphics g) {
-                if (npBackground == null)
-                    npBackground = NPIconFactory.getInstance().getTipBackground("shadow_bg_popup.9.png");
-                if (npBackground != null)
-                    npBackground.draw((Graphics2D) g, 0, 0, this.getWidth(), this.getHeight());
-                super.paintChildren(g);
-            }
-        };
+        loginPanel = new JPanel(new BorderLayout());
         JPanel logoPanel = new JPanel();
         logoPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         logoPanel.setBackground(Style.COLOR_BG_GRAY);
