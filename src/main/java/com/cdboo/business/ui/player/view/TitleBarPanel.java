@@ -39,7 +39,7 @@ public class TitleBarPanel extends AbstractJPanel {
     protected void setFrameUp() {
         headButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/head.jpg")), Style.SIZE_30_30);
         nickNameLabel = Utils.createLabel("匿名用户");
-        loginButton = Utils.createButton("登录");
+        loginButton = Utils.createButton("登录", new Dimension(50, 30));
 
         timeCB = Utils.createComboBox();
         SimpleDateFormat sdf = new SimpleDateFormat("E yyyy/MM/dd");

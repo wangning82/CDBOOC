@@ -71,7 +71,7 @@ public class MainFrame extends JFrame {
             settingsDialog.dispose();
         }
         if(loginDialog != null){
-            settingsDialog.dispose();
+            loginDialog.dispose();
         }
     }
 

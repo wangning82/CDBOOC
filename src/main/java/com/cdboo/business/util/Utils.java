@@ -1,5 +1,7 @@
 package com.cdboo.business.util;
 
+import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -29,25 +31,14 @@ public class Utils {
      * @param dimension
      * @return
      */
-    public static JButton createButton(String text, ImageIcon imageIcon, Dimension dimension){
+    public static JButton createButton(String text, Font font, ImageIcon imageIcon, Color fontColor, Dimension dimension){
         JButton button = new JButton(text, imageIcon);
-        button.setFont(Style.FONT_DEFAULT);
-        button.setForeground(Color.white);
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
+        button.setFont(font);
+        button.setForeground(fontColor);
+        button.setContentAreaFilled(false); //设置按钮透明
         button.setRolloverEnabled(true);
         button.setPreferredSize(dimension);
         return button;
-    }
-
-    /**
-     * 新建按钮(带文字和图片)
-     * @param text
-     * @param imageIcon
-     * @return
-     */
-    public static JButton createButton(String text, ImageIcon imageIcon){
-        return createButton(text, imageIcon, null);
     }
 
     /**
@@ -57,7 +48,7 @@ public class Utils {
      * @return
      */
     public static JButton createButton(ImageIcon imageIcon, Dimension dimension){
-        return createButton(null, imageIcon, dimension);
+        return createButton(null, null, imageIcon, Color.white, dimension);
     }
 
     /**
@@ -67,25 +58,21 @@ public class Utils {
      * @return
      */
     public static JButton createButton(String text, Dimension dimension){
-        return createButton(text, null, dimension);
+        return createButton(text, Style.FONT_DEFAULT, null, Color.white, dimension);
     }
 
     /**
-     * 新建按钮（只图片）
-     * @param imageIcon
-     * @return
-     */
-    public static JButton createButton(ImageIcon imageIcon){
-        return createButton(null, imageIcon, null);
-    }
-
-    /**
-     * 新建按钮（只文字）
+     * 新建按钮
      * @param text
+     * @param font
+     * @param dimension
      * @return
      */
-    public static JButton createButton(String text){
-        return createButton(text, null, null);
+    public static JButton createButton(String text, Font font, Dimension dimension){
+        JButton button = createButton(text, font, null, Color.white, dimension);
+        button.setUI(new BEButtonUI().setNormalColor(BEButtonUI.NormalColor.grey));
+        button.setContentAreaFilled(true); //设置按钮不透明
+        return button;
     }
 
     /**
@@ -95,10 +82,11 @@ public class Utils {
      * @param color
      * @return
      */
-    public static JLabel createLabel(String text, Font font, Color color){
+    public static JLabel createLabel(String text, Font font, Color color, Dimension dimension){
         JLabel label = new JLabel(text);
         label.setFont(font);
         label.setForeground(color);
+        label.setPreferredSize(dimension);
         return label;
     }
 
@@ -108,7 +96,7 @@ public class Utils {
      * @return
      */
     public static JLabel createLabel(String text){
-        return createLabel(text, Style.FONT_DEFAULT, Color.white);
+        return createLabel(text, Style.FONT_DEFAULT, Color.white, null);
     }
 
     /**
@@ -146,8 +134,20 @@ public class Utils {
      * @return
      */
     public static JCheckBox createCheckBox(String text, Color color, int textPosition){
+        return createCheckBox(text, Style.FONT_DEFAULT, color, textPosition);
+    }
+
+    /**
+     * 创建复选框
+     * @param text
+     * @param font
+     * @param color
+     * @param textPosition
+     * @return
+     */
+    public static JCheckBox createCheckBox(String text, Font font, Color color, int textPosition){
         JCheckBox checkBox = new JCheckBox(text);
-        checkBox.setFont(Style.FONT_DEFAULT);
+        checkBox.setFont(font);
         checkBox.setForeground(color);
         checkBox.setHorizontalTextPosition(textPosition);
         return checkBox;

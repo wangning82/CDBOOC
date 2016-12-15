@@ -55,10 +55,10 @@ public class SettingsDialog extends JDialog {
         alwaysTop = Utils.createCheckBox("窗口总在最前", Style.COLOR_FONT_GRAY, JCheckBox.LEADING);
         autoPlay = Utils.createCheckBox("开机启动播放", Style.COLOR_FONT_GRAY, JCheckBox.LEADING);
 
-        restore = Utils.createLabel(" 恢复频道", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY);
-        checkUpdate = Utils.createLabel(" 检查更新", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY);
-        logout = Utils.createLabel(" 退出登录", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY);
-        exit = Utils.createLabel(" 退出软件", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY);
+        restore = Utils.createLabel(" 恢复频道", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
+        checkUpdate = Utils.createLabel(" 检查更新", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
+        logout = Utils.createLabel(" 退出登录", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
+        exit = Utils.createLabel(" 退出软件", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
 
         settingsPanel.setOpaque(false);
         settingsPanel.add(alwaysTop);
