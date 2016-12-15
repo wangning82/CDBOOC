@@ -23,11 +23,19 @@ public class MainController extends AbstractFrameController {
     @Autowired
     private TitleBarController titleBarController;
 
+    @Autowired
+    private LoginController loginController;
+
+    @Autowired
+    private SettingsController settingsController;
+
     private Point origin = new Point(); // 初始位置
 
     @Override
     public void prepareAndOpenFrame() {
         titleBarController.prepareAndOpenFrame();
+        loginController.prepareAndOpenFrame();
+        settingsController.prepareAndOpenFrame();
         mainFrame.setVisible(true);
 
         TitleBarPanel titleBarPanel = mainFrame.getTitleBarPanel();

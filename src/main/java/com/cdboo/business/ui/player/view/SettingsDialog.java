@@ -24,9 +24,8 @@ public class SettingsDialog extends JDialog {
     private JLabel logout;
     private JLabel exit;
 
-    public SettingsDialog(Point p) {
+    public SettingsDialog() {
         initGUI();
-        this.showPossition = p;
     }
 
     protected void initGUI() {
@@ -83,6 +82,14 @@ public class SettingsDialog extends JDialog {
             this.setLocation(new Point(showPossition.x < 0 ? 0 : showPossition.x, showPossition.y < 0 ? 0 : showPossition.y));
         this.setVisible(true);
         return this;
+    }
+
+    public Point getShowPossition() {
+        return showPossition;
+    }
+
+    public void setShowPossition(Point showPossition) {
+        this.showPossition = showPossition;
     }
 
     public JCheckBox getAlwaysTop() {

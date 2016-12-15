@@ -22,8 +22,8 @@ public class MainFrame extends JFrame {
     private TitleBarPanel titleBarPanel = new TitleBarPanel();
     private JFXPanel webBrowser = new JFXPanel();
     private WebView view;
-    private SettingsDialog settingsDialog;
-    private LoginDialog loginDialog;
+    private SettingsDialog settingsDialog = new SettingsDialog();
+    private LoginDialog loginDialog = new LoginDialog();
 
     public MainFrame() {
         initComponents();
@@ -67,12 +67,8 @@ public class MainFrame extends JFrame {
      * 所有关闭操作
      */
     public void shutdownAll(){
-        if(settingsDialog != null){
-            settingsDialog.dispose();
-        }
-        if(loginDialog != null){
-            loginDialog.dispose();
-        }
+        settingsDialog.dispose();
+        loginDialog.dispose();
     }
 
     public TitleBarPanel getTitleBarPanel() {

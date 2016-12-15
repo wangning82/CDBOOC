@@ -50,9 +50,8 @@ public class TitleBarController extends AbstractFrameController {
     private void showSettings(){
         mainFrame.shutdownAll();
         Point p = mainFrame.getTitleBarPanel().getSettingsButton().getLocationOnScreen();
-        SettingsDialog settingsDialog = new SettingsDialog(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
-        mainFrame.setSettingsDialog(settingsDialog);
-        settingsDialog.showItNow();
+        mainFrame.getSettingsDialog().setShowPossition(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
+        mainFrame.getSettingsDialog().showItNow();
     }
 
     /**
@@ -63,9 +62,8 @@ public class TitleBarController extends AbstractFrameController {
         Point p = mainFrame.getLocationOnScreen();
         double x = p.getX() + mainFrame.getWidth() / 2 - Style.LOGIN_WIDTH / 2;
         double y = p.getY() + mainFrame.getHeight() / 2 - Style.LOGIN_HEIGHT / 2;
-        LoginDialog loginDialog = new LoginDialog(new Point(new Double(x).intValue(), new Double(y).intValue()));
-        mainFrame.setLoginDialog(loginDialog);
-        loginDialog.showItNow();
+        mainFrame.getLoginDialog().setShowPossition(new Point(new Double(x).intValue(), new Double(y).intValue()));
+        mainFrame.getLoginDialog().showItNow();
     }
 
     /**
