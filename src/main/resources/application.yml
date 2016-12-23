@@ -20,6 +20,12 @@ spring:
   h2:
     console:
       enabled: true
+  thymeleaf:
+    #开发时关闭缓存,不然没法看到实时页面
+    cache: false
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
 logging:
   level:
     org:

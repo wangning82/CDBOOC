@@ -16,7 +16,7 @@ public class WebMainController {
 
     @RequestMapping(value = "")
     public String index(Model model){
-        return "list";
+        return "index";
     }
 
 }
