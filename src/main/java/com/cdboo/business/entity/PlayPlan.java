@@ -18,10 +18,10 @@ public class PlayPlan {
     private String name;
 
     @Column(name = "starttime")
-    private Date startTime;
+    private String startTime;
 
     @Column(name = "endtime")
-    private Date endTime;
+    private String endTime;
 
     public long getId() {
         return id;
@@ -39,20 +39,19 @@ public class PlayPlan {
         this.name = name;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
-
 }

@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     platform: h2
-    url: jdbc:h2:~/cdboo;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:~/cdboo
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -17,10 +17,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-
+  h2:
+    console:
+      enabled: true
 logging:
   level:
     org:
       springframework:
         web: DEBUG
+      hibernate:
+        SQL: DEBUG
   file: logs/cdboo.log

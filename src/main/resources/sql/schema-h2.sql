@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS playplan CASCADE;
 CREATE TABLE playplan
 (
   id   INT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  name TEXT NOT NULL,
-  starttime DATE NOT NULL,
-  endtime   DATE NOT NULL
+  name VARCHAR,
+  starttime VARCHAR,
+  endtime   VARCHAR
 );
