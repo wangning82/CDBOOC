@@ -23,9 +23,10 @@ spring:
   thymeleaf:
     #开发时关闭缓存,不然没法看到实时页面
     cache: false
-    mode: HTML5
-    encoding: UTF-8
-    content-type: text/html
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static/
 logging:
   level:
     org:
@@ -34,3 +35,9 @@ logging:
       hibernate:
         SQL: DEBUG
   file: logs/cdboo.log
+
+#系统配置
+web:
+  cdboo:
+    url:
+      index: http://127.0.0.1:9000
