@@ -2,13 +2,13 @@ package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.util.Style;
 import com.cdboo.business.util.Utils;
+import com.cdboo.business.util.YamlUtils;
 import com.sun.awt.AWTUtilities;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -26,9 +26,6 @@ public class MainFrame extends JFrame {
     private SettingsDialog settingsDialog = new SettingsDialog();
     private LoginDialog loginDialog = new LoginDialog();
 
-    @Value("${web.cdboo.url.index}")
-    private String URL_INDEX;
-
     public MainFrame() {
         initComponents();
 
@@ -38,7 +35,7 @@ public class MainFrame extends JFrame {
             webBrowser.setScene(scene);
             view = new WebView();
             view.setPrefSize(new Integer(Style.MAIN_WIDTH).doubleValue(), new Integer(Style.MAIN_HEIGHT - 30).doubleValue());
-            view.getEngine().load(URL_INDEX);
+            view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
             root.getChildren().add(view);
         });
 

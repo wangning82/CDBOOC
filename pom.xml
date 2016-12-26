@@ -86,6 +86,24 @@
             <artifactId>httpclient</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.beautyeye</groupId>
+            <artifactId>beautyeye</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.Draw9Patch4j</groupId>
+            <artifactId>Draw9Patch4j</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ninepatch4j</groupId>
+            <artifactId>ninepatch4j</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

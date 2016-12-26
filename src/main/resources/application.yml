@@ -37,7 +37,11 @@ logging:
   file: logs/cdboo.log
 
 #系统配置
-web:
+url:
   cdboo:
-    url:
-      index: http://127.0.0.1:9000
+    server:
+      ip: http://127.0.0.1:8080
+      checkUser: /service/cdboo-service/check-guser
+    client:
+      ip: http://127.0.0.1:9000
+      index:
