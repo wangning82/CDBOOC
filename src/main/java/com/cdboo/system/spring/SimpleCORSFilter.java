@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 允许跨域访问
  * Created by houyi on 2016/12/26.
  */
 @Component

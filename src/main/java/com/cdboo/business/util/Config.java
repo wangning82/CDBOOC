@@ -1,7 +1,5 @@
 package com.cdboo.business.util;
 
-import com.cdboo.business.model.UserData;
-
 import java.io.*;
 import java.util.ResourceBundle;
 
@@ -13,7 +11,6 @@ public class Config implements Serializable {
     public static final File USER_DATA_PATH = new File(System.getProperty("user.home") + File.separator + ".CDBOOPlayer");
     private static ResourceBundle rb = ResourceBundle.getBundle("cdboo");
 
-    private UserData userData;
     private static Config config = new Config();
 
     public synchronized static Config getConfig() {
@@ -60,11 +57,4 @@ public class Config implements Serializable {
         }
     }
 
-    public UserData getUserData() {
-        return userData;
-    }
-
-    public void setUserData(UserData userData) {
-        this.userData = userData;
-    }
 }
