@@ -1,5 +1,7 @@
 package com.cdboo.business.model;
 
+import com.cdboo.business.entity.PlanModel;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

@@ -1,8 +1,8 @@
 package com.cdboo.business.ui.player.view;
 
-import com.cdboo.business.util.Style;
-import com.cdboo.business.util.Utils;
-import com.cdboo.business.util.YamlUtils;
+import com.cdboo.business.common.JComponentStyle;
+import com.cdboo.business.common.JComponentUtils;
+import com.cdboo.business.common.YamlUtils;
 import com.sun.awt.AWTUtilities;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -24,7 +24,7 @@ public class MainFrame extends JFrame {
     private JFXPanel webBrowser = new JFXPanel();
     private WebView view;
     private SettingsDialog settingsDialog = new SettingsDialog();
-    private LoginDialog loginDialog = new LoginDialog();
+    private LoginDialog loginDialog = new LoginDialog(this, true);
 
     public MainFrame() {
         initComponents();
@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
             Scene scene = new Scene(root);
             webBrowser.setScene(scene);
             view = new WebView();
-            view.setPrefSize(new Integer(Style.MAIN_WIDTH).doubleValue(), new Integer(Style.MAIN_HEIGHT - 30).doubleValue());
+            view.setPrefSize(new Integer(JComponentStyle.MAIN_WIDTH).doubleValue(), new Integer(JComponentStyle.MAIN_HEIGHT - 30).doubleValue());
             view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
             root.getChildren().add(view);
         });
@@ -54,13 +54,13 @@ public class MainFrame extends JFrame {
         mainPane.add(titleBarPanel, BorderLayout.NORTH);
         mainPane.add(webBrowser, BorderLayout.CENTER);
 
-        mainPane.setBackground(Style.COLOR_DEFAULT);
+        mainPane.setBackground(JComponentStyle.COLOR_DEFAULT);
         mainPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         getContentPane().add(mainPane);
 
-        setSize(Style.MAIN_WIDTH, Style.MAIN_HEIGHT);
-        Utils.setCenter(this);
+        setSize(JComponentStyle.MAIN_WIDTH, JComponentStyle.MAIN_HEIGHT);
+        JComponentUtils.setCenter(this);
 
     }
 

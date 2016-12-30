@@ -1,21 +1,44 @@
-package com.cdboo.business.model;
+package com.cdboo.business.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * 用户音乐信息
  */
+@Entity
+@Table(name = "cdboo_music")
 public class RestMusic implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "music_NO")
     private String musicNo;        // 音乐编号
+
+    @Column(name = "music_owner")
     private String musicOwner;        // 音乐拥有者类型
+
+    @Column(name = "music_name")
     private String musicName;        // 音乐名称
+
+    @Column(name = "actor")
     private String actor;        // 艺人
+
+    @Column(name = "special")
     private String special;        // 专辑
+
+    @Column(name = "volume")
     private String volume;        // 音量
+
+    @Column(name = "status")
     private String status;        // 状态（暂时没用）
+
+    @Column(name = "path")
     private String path;        // 音乐路径
 
     public String getMusicNo() {

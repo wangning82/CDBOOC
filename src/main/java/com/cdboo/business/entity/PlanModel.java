@@ -1,23 +1,47 @@
-package com.cdboo.business.model;
+package com.cdboo.business.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 播放计划
  */
+@Entity
+@Table(name = "cdboo_plan")
 public class PlanModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "plan_NO")
     private String planNo;        // 计划编号
+
+    @Column(name = "plan_name")
     private String playName;        // 计划名称
+
+    @Column(name = "style")
     private String musicStyle;        // 风格（1插播,2节日,3主题,4风格）
+
+    @Column(name = "week")
     private String week;        // 星期（数字）
+
+    @Column(name = "startDate")
     private Date startDate;        // 开始日期（节日才有用）
+
+    @Column(name = "endDate")
     private Date endDate;        // 结束日期（节日才有用）
+
+    @Column(name = "status")
     private String status;        // 状态位显示（暂时没用）
+
+    @Column(name = "cycleTimes")
     private int cycleTimes;     //循环次数，只有插播才有效
+
     private RestTimeStep timestep; //
     private RestChannel channel; // 频道
 

@@ -1,32 +1,69 @@
-package com.cdboo.business.model;
+package com.cdboo.business.entity;
 
 
 import com.google.common.collect.Lists;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * 用户频道信息
  */
+@Entity
+@Table(name = "cdboo_channel")
 public class RestChannel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "channel_NO")
     private String channelNo; // 频道编号
+
+    @Column(name = "channel_name")
     private String channelName; // 频道名称
+
+    @Column(name = "photoPath")
     private String photoPath; // 频道图片
+
+    @Column(name = "themeType")
     private String themeType; // 风格类型
+
+    @Column(name = "themeConcreteType")
     private String themeConcreteType; // 风格类型明细
+
+    @Column(name = "channelVersion")
     private String channelVersion; // 频道版本
+
+    @Column(name = "musicStyle")
     private String musicStyle; // 音乐风格
+
+    @Column(name = "site")
     private String site; // 场所
+
+    @Column(name = "speed")
     private String speed; // 速度
+
+    @Column(name = "voice")
     private String voice; // 人声
+
+    @Column(name = "element")
     private String element; // 元素
+
+    @Column(name = "emotion")
     private String emotion; // 情绪
+
+    @Column(name = "instrument")
     private String instrument; // 乐器
+
+    @Column(name = "status")
     private String status; // 状态（暂时没用）
+
+    @Column(name = "channelType")
     private String channelType; // 频道类型(0子频道,1组合频道,2插播频道)
 
     //如果是子频道，该集合有对应music的信息

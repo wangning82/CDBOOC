@@ -1,12 +1,10 @@
 package com.cdboo.business.ui.player.controller;
 
-import com.cdboo.business.service.PlayPlanService;
-import com.cdboo.business.ui.player.view.LoginDialog;
+import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.ui.player.view.MainFrame;
-import com.cdboo.business.ui.player.view.SettingsDialog;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
-import com.cdboo.business.util.Style;
-import com.cdboo.business.util.Utils;
+import com.cdboo.business.common.JComponentStyle;
+import com.cdboo.business.common.JComponentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -26,7 +24,7 @@ public class TitleBarController extends AbstractFrameController {
     private MainFrame mainFrame;
 
     @Autowired
-    private PlayPlanService playPlanService;
+    private ChannelService channelService;
 
     @Override
     public void prepareAndOpenFrame() {
@@ -37,8 +35,8 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getLoginButton(), (e) -> showLoginWindow());
 
         String[] defaultTime = new String[]{};
-        for(int i = 0 ; i < playPlanService.findAll().size(); i ++){
-            defaultTime[i] = playPlanService.findAll().get(i).getName();
+        for(int i = 0; i < channelService.findAll().size(); i ++){
+            defaultTime[i] = channelService.findAll().get(i).getChannelName();
         }
         mainFrame.getTitleBarPanel().getTimeCB().setModel(new DefaultComboBoxModel<String>(defaultTime));
         //mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
@@ -60,8 +58,8 @@ public class TitleBarController extends AbstractFrameController {
     private void showLoginWindow(){
         mainFrame.shutdownAll();
         Point p = mainFrame.getLocationOnScreen();
-        double x = p.getX() + mainFrame.getWidth() / 2 - Style.LOGIN_WIDTH / 2;
-        double y = p.getY() + mainFrame.getHeight() / 2 - Style.LOGIN_HEIGHT / 2;
+        double x = p.getX() + mainFrame.getWidth() / 2 - JComponentStyle.LOGIN_WIDTH / 2;
+        double y = p.getY() + mainFrame.getHeight() / 2 - JComponentStyle.LOGIN_HEIGHT / 2;
         mainFrame.getLoginDialog().setShowPossition(new Point(new Double(x).intValue(), new Double(y).intValue()));
         mainFrame.getLoginDialog().showItNow();
     }
@@ -137,8 +135,8 @@ public class TitleBarController extends AbstractFrameController {
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
         if(mainFrame.getWidth() == screenSize.width && mainFrame.getHeight() == screenSize.height){
-            mainFrame.setSize(Style.MAIN_WIDTH, Style.MAIN_HEIGHT);
-            Utils.setCenter(mainFrame);
+            mainFrame.setSize(JComponentStyle.MAIN_WIDTH, JComponentStyle.MAIN_HEIGHT);
+            JComponentUtils.setCenter(mainFrame);
             mainFrame.getTitleBarPanel().getMaxButton().setToolTipText("最大化");
         }else{
             mainFrame.setSize(screenSize.width, screenSize.height);

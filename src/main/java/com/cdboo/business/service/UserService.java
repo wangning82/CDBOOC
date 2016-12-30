@@ -1,6 +1,7 @@
 package com.cdboo.business.service;
 
-import com.cdboo.business.util.YamlUtils;
+import com.cdboo.business.common.YamlUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,17 +14,17 @@ import java.util.Map;
 @Service
 public class UserService {
 
-    public boolean checkUser(){
-
-        RestTemplate restTemplate = new RestTemplate();
-
+    public String checkUser(String username, String password) {
+        RestTemplate template = new RestTemplate();
         Map<String, String> params = new HashMap<String, String>();
-        params.put("userName", "thinkgem");
-        params.put("password", "12345");
+        params.put("userName", username);
+        params.put("password", password);
+        String url = YamlUtils.getValue("url.cdboo.server.ip") + YamlUtils.getValue("url.cdboo.server.checkUser");
+        ResponseEntity<String> entity = template.postForEntity(url, params, String.class);
+        return entity.getBody();
+    }
 
-        String result = restTemplate.postForObject(
-                YamlUtils.getValue("url.cdboo.server.ip") + YamlUtils.getValue("url.cdboo.server.checkUser"), params, String.class);
+    public static void main(String[] args) {
 
-        return true;
     }
 }

@@ -1,4 +1,4 @@
-package com.cdboo.business.util;
+package com.cdboo.business.common;
 
 import org.jb2011.lnf.beautyeye.ch3_button.BEButtonUI;
 
@@ -8,7 +8,7 @@ import java.awt.*;
 /**
  * Created by houyi on 2016/12/8.
  */
-public class Utils {
+public class JComponentUtils {
 
     /**
      * 居中显示
@@ -58,7 +58,7 @@ public class Utils {
      * @return
      */
     public static JButton createButton(String text, Dimension dimension){
-        return createButton(text, Style.FONT_DEFAULT, null, Color.white, dimension);
+        return createButton(text, JComponentStyle.FONT_DEFAULT, null, Color.white, dimension);
     }
 
     /**
@@ -96,7 +96,7 @@ public class Utils {
      * @return
      */
     public static JLabel createLabel(String text){
-        return createLabel(text, Style.FONT_DEFAULT, Color.white, null);
+        return createLabel(text, JComponentStyle.FONT_DEFAULT, Color.white, null);
     }
 
     /**
@@ -119,7 +119,7 @@ public class Utils {
     public static JComboBox createComboBox(){
         JComboBox comboBox = new JComboBox();
         comboBox.setPreferredSize(new Dimension(100, 28));
-        comboBox.setFont(Style.FONT_12);
+        comboBox.setFont(JComponentStyle.FONT_12);
         comboBox.setForeground(Color.white);
         comboBox.setAlignmentX(JComboBox.LEFT_ALIGNMENT);
         comboBox.setMaximumRowCount(6); // 超过6个选项显示滚动条，默认是8
@@ -134,7 +134,7 @@ public class Utils {
      * @return
      */
     public static JCheckBox createCheckBox(String text, Color color, int textPosition){
-        return createCheckBox(text, Style.FONT_DEFAULT, color, textPosition);
+        return createCheckBox(text, JComponentStyle.FONT_DEFAULT, color, textPosition);
     }
 
     /**

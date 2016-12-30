@@ -1,7 +1,7 @@
-package com.cdboo.business.util;
+package com.cdboo.business.common;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.YamlMapFactoryBean;
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.io.ClassPathResource;
@@ -13,7 +13,7 @@ import java.util.Properties;
  * Created by houyi on 2016/12/26.
  */
 public class YamlUtils {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static Logger logger = LogManager.getLogger(YamlUtils.class);
 
     public static Map<String, Object> yaml2Map(String yamlSource) {
         try {
@@ -21,7 +21,7 @@ public class YamlUtils {
             yaml.setResources(new ClassPathResource(yamlSource));
             return yaml.getObject();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
@@ -36,7 +36,7 @@ public class YamlUtils {
             yaml.setResources(new ClassPathResource(yamlSource));
             return yaml.getObject();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             return null;
         }
     }

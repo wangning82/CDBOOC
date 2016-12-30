@@ -1,7 +1,7 @@
 package com.cdboo.business.ui.player.view;
 
-import com.cdboo.business.util.Style;
-import com.cdboo.business.util.Utils;
+import com.cdboo.business.common.JComponentStyle;
+import com.cdboo.business.common.JComponentUtils;
 import com.sun.awt.AWTUtilities;
 import org.springframework.stereotype.Component;
 
@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * 登录窗口
  * Created by houyi on 2016/12/13.
  */
 @Component
@@ -22,8 +23,13 @@ public class LoginDialog extends JDialog {
     private JPasswordField passwordField;
     private JCheckBox autoLoginCheckbox;
     private JLabel modPasswordLabel;
+    private JLabel message;
 
-    public LoginDialog(){
+    public LoginDialog() {
+    }
+
+    public LoginDialog(Frame parent, boolean modal){
+        super(parent, modal); // 模态窗口
         initGUI();
     }
 
@@ -48,81 +54,94 @@ public class LoginDialog extends JDialog {
                 g.drawImage(img, 0, 0, icon.getIconWidth(), icon.getIconHeight(), icon.getImageObserver());
             }
         };
-        logoPanel.setPreferredSize(new Dimension(Style.LOGIN_WIDTH, 78));
+        logoPanel.setPreferredSize(new Dimension(JComponentStyle.LOGIN_WIDTH, 78));
 
-        closeButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/shutdown.png")), Style.SIZE_25_25);
+        closeButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/shutdown.png")), JComponentStyle.SIZE_25_25);
         logoPanel.add(closeButton);
         loginPanel.add(logoPanel, BorderLayout.NORTH);
 
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        loginButton = Utils.createButton("登 录", Style.FONT_16, new Dimension(132, 38));
+        loginButton = JComponentUtils.createButton("登 录", JComponentStyle.FONT_16, new Dimension(132, 38));
         southPanel.add(loginButton);
-        southPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 16, 0));
+        southPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 14, 0));
         loginPanel.add(southPanel, BorderLayout.SOUTH);
 
         loginPanel.add(getInputPanel(), BorderLayout.CENTER);
 
-        loginPanel.setBackground(Style.COLOR_BG_GRAY);
+        loginPanel.setBackground(JComponentStyle.COLOR_BG_GRAY);
         loginPanel.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         return loginPanel;
     }
 
     private JPanel getInputPanel() {
         JPanel inputPanel = new JPanel(new GridBagLayout());
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(14, 60, 0, 60));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 60, 0, 60));
         GridBagConstraints c = new GridBagConstraints();
 
-        JLabel label = Utils.createLabel("账 号", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, new Dimension(40, 35));
+        JLabel label = JComponentUtils.createLabel("账 号", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, new Dimension(40, 35));
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 20.0;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 1;
-        c.insets = new Insets(0, 0, 12, 0);
+        c.insets = new Insets(0, 0, 4, 0);
         inputPanel.add(label, c);
 
         usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(100, 30));
-        usernameField.setFont(Style.FONT_12);
+        usernameField.setFont(JComponentStyle.FONT_12);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 80.0;
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 2;
+        c.insets = new Insets(0, 0, 4, 0);
         inputPanel.add(usernameField, c);
 
-        label = Utils.createLabel("密 码", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, new Dimension(40, 35));
+        label = JComponentUtils.createLabel("密 码", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, new Dimension(40, 35));
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 20.0;
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
+        c.insets = new Insets(0, 0, 4, 0);
         inputPanel.add(label, c);
 
         passwordField = new JPasswordField ();
         passwordField.setPreferredSize(new Dimension(100, 30));
-        passwordField.setFont(Style.FONT_12);
+        passwordField.setFont(JComponentStyle.FONT_12);
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 80.0;
         c.gridx = 1;
         c.gridy = 1;
         c.gridwidth = 2;
+        c.insets = new Insets(0, 0, 0, 0);
         inputPanel.add(passwordField, c);
 
-        autoLoginCheckbox = Utils.createCheckBox("自动登录", Style.FONT_12, Style.COLOR_FONT_GRAY, JCheckBox.TRAILING);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 40.0;
-        c.gridx = 1;
+        message = JComponentUtils.createLabel("", JComponentStyle.FONT_12, Color.RED, new Dimension(100, 26));
+        c.fill = GridBagConstraints.CENTER;
+        c.gridx = 0;
         c.gridy = 2;
+        c.gridwidth = 3;
+        c.insets = new Insets(0, 0, 0, 0);
+        inputPanel.add(message, c);
+
+        autoLoginCheckbox = JComponentUtils.createCheckBox("自动登录", JComponentStyle.FONT_12, JComponentStyle.COLOR_FONT_GRAY, JCheckBox.TRAILING);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 30.0;
+        c.gridx = 1;
+        c.gridy = 3;
         c.gridwidth = 1;
+        c.insets = new Insets(0, 0, 2, 0);
         inputPanel.add(autoLoginCheckbox, c);
 
-        modPasswordLabel = Utils.createLabel("修改密码", Style.FONT_12, Style.COLOR_FONT_GRAY, new Dimension(40, 35));
+        modPasswordLabel = JComponentUtils.createLabel("修改密码", JComponentStyle.FONT_12, JComponentStyle.COLOR_FONT_GRAY, new Dimension(40, 35));
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 40.0;
+        c.weightx = 30.0;
         c.gridx = 2;
-        c.gridy = 2;
+        c.gridy = 3;
         c.gridwidth = 1;
+        c.insets = new Insets(0, 0, 2, 0);
         inputPanel.add(modPasswordLabel, c);
         return inputPanel;
     }
@@ -191,5 +210,13 @@ public class LoginDialog extends JDialog {
 
     public void setShowPossition(Point showPossition) {
         this.showPossition = showPossition;
+    }
+
+    public JLabel getMessage() {
+        return message;
+    }
+
+    public void setMessage(JLabel message) {
+        this.message = message;
     }
 }

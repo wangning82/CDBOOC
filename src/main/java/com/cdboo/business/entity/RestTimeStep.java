@@ -1,17 +1,32 @@
-package com.cdboo.business.model;
+package com.cdboo.business.entity;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * 用户时段信息
  */
+@Entity
+@Table(name = "cdboo_period")
 public class RestTimeStep implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String timestepNo;        // 时段编号
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private long id;
+
+    @Column(name = "period_NO")
+    private String timestepNo; // 时段编号
+
+    @Column(name = "period_name")
     private String timestepName;      // 时段名称
+
+    @Column(name = "starttime")
     private String starttime;        // 开始时间
+
+    @Column(name = "endtime")
     private String endtime;        // 结束时间
 
     public String getTimestepNo() {

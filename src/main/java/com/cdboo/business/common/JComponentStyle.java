@@ -1,8 +1,8 @@
-package com.cdboo.business.util;
+package com.cdboo.business.common;
 
 import java.awt.*;
 
-public class Style {
+public class JComponentStyle {
 
     public static final int MAIN_WIDTH = 1010;
     public static final int MAIN_HEIGHT = 680;

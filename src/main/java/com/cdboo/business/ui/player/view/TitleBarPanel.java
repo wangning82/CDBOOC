@@ -1,8 +1,8 @@
 package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.ui.shared.view.AbstractJPanel;
-import com.cdboo.business.util.Style;
-import com.cdboo.business.util.Utils;
+import com.cdboo.business.common.JComponentStyle;
+import com.cdboo.business.common.JComponentUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,34 +37,34 @@ public class TitleBarPanel extends AbstractJPanel {
 
     @Override
     protected void setFrameUp() {
-        headButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/head.jpg")), Style.SIZE_30_30);
-        nickNameLabel = Utils.createLabel("匿名用户");
-        loginButton = Utils.createButton("登录", new Dimension(50, 30));
+        headButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/head.jpg")), JComponentStyle.SIZE_30_30);
+        nickNameLabel = JComponentUtils.createLabel("匿名用户");
+        loginButton = JComponentUtils.createButton("登录", new Dimension(50, 30));
 
-        timeCB = Utils.createComboBox();
+        timeCB = JComponentUtils.createComboBox();
         SimpleDateFormat sdf = new SimpleDateFormat("E yyyy/MM/dd");
-        timeLabel = Utils.createLabel(sdf.format(new Date()));
+        timeLabel = JComponentUtils.createLabel(sdf.format(new Date()));
 
-        settingsButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/settings.png")), Style.SIZE_30_30);
-        minButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/min.png")), Style.SIZE_25_25);
-        maxButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/max.png")), Style.SIZE_25_25);
-        closeButton = Utils.createButton(new ImageIcon(getClass().getResource("/images/shutdown.png")), Style.SIZE_25_25);
+        settingsButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/settings.png")), JComponentStyle.SIZE_30_30);
+        minButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/min.png")), JComponentStyle.SIZE_25_25);
+        maxButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/max.png")), JComponentStyle.SIZE_25_25);
+        closeButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/shutdown.png")), JComponentStyle.SIZE_25_25);
 
-        separator1 = Utils.createSeparator(JSeparator.VERTICAL);
-        separator2 = Utils.createSeparator(JSeparator.VERTICAL);
+        separator1 = JComponentUtils.createSeparator(JSeparator.VERTICAL);
+        separator2 = JComponentUtils.createSeparator(JSeparator.VERTICAL);
     }
 
     @Override
     protected void initComponents() {
         headPane = new JPanel();
         headPane.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 5));
-        headPane.setBackground(Style.COLOR_DEFAULT);
+        headPane.setBackground(JComponentStyle.COLOR_DEFAULT);
 
         btnPane = new JPanel();
         btnPane.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 5));
-        btnPane.setBackground(Style.COLOR_DEFAULT);
+        btnPane.setBackground(JComponentStyle.COLOR_DEFAULT);
 
-        this.setBackground(Style.COLOR_DEFAULT);
+        this.setBackground(JComponentStyle.COLOR_DEFAULT);
 
         headPane.add(headButton);
         headPane.add(nickNameLabel);

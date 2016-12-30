@@ -1,4 +1,4 @@
-package com.cdboo.business.util;
+package com.cdboo.business.common;
 
 import org.jb2011.ninepatch4j.NinePatch;
 

@@ -1,8 +1,8 @@
 package com.cdboo.business.ui.player.view;
 
-import com.cdboo.business.util.NPIconFactory;
-import com.cdboo.business.util.Style;
-import com.cdboo.business.util.Utils;
+import com.cdboo.business.common.NPIconFactory;
+import com.cdboo.business.common.JComponentStyle;
+import com.cdboo.business.common.JComponentUtils;
 import com.sun.awt.AWTUtilities;
 import org.jb2011.ninepatch4j.NinePatch;
 
@@ -51,13 +51,13 @@ public class SettingsDialog extends JDialog {
             }
         };
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
-        alwaysTop = Utils.createCheckBox("窗口总在最前", Style.COLOR_FONT_GRAY, JCheckBox.LEADING);
-        autoPlay = Utils.createCheckBox("开机启动播放", Style.COLOR_FONT_GRAY, JCheckBox.LEADING);
+        alwaysTop = JComponentUtils.createCheckBox("窗口总在最前", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
+        autoPlay = JComponentUtils.createCheckBox("开机启动播放", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
 
-        restore = Utils.createLabel(" 恢复频道", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
-        checkUpdate = Utils.createLabel(" 检查更新", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
-        logout = Utils.createLabel(" 退出登录", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
-        exit = Utils.createLabel(" 退出软件", Style.FONT_DEFAULT, Style.COLOR_FONT_GRAY, null);
+        restore = JComponentUtils.createLabel(" 恢复频道", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
+        checkUpdate = JComponentUtils.createLabel(" 检查更新", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
+        logout = JComponentUtils.createLabel(" 退出登录", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
+        exit = JComponentUtils.createLabel(" 退出软件", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
 
         settingsPanel.setOpaque(false);
         settingsPanel.add(alwaysTop);

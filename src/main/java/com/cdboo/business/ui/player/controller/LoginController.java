@@ -1,5 +1,8 @@
 package com.cdboo.business.ui.player.controller;
 
+import com.cdboo.business.common.Constants;
+import com.cdboo.business.service.UserService;
+import com.cdboo.business.ui.player.view.LoginDialog;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +17,30 @@ public class LoginController extends AbstractFrameController {
     @Autowired
     private MainFrame mainFrame;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public void prepareAndOpenFrame() {
         registerAction(mainFrame.getLoginDialog().getCloseButton(), (e) -> closeLoginWindow());
+        registerAction(mainFrame.getLoginDialog().getLoginButton(), (e) -> loginAction());
+
     }
 
     private void closeLoginWindow(){
         mainFrame.getLoginDialog().dispose();
+    }
+
+    private void loginAction(){
+        LoginDialog dialog = mainFrame.getLoginDialog();
+        String result = userService.checkUser(dialog.getUsernameField().getText(), String.valueOf(dialog.getPasswordField().getPassword()));
+        if(Constants.USER_NOT_EXIST.equals(result)){
+            dialog.getMessage().setText("该用户不存在!");
+        }else if(Constants.USER_PASSWORD_NOT_CORRECT.equals(result)){
+            dialog.getMessage().setText("用户密码不正确!");
+        }else if(Constants.USER_PASSWORD_CORRECT.equals(result)){
+            dialog.getMessage().setText("登录成功！");
+            mainFrame.getLoginDialog().dispose();
+        }
     }
 }
