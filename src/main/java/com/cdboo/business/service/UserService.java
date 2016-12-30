@@ -27,4 +27,8 @@ public class UserService {
     public static void main(String[] args) {
 
     }
+
+    public boolean updateUserData(){
+        return false;
+    }
 }
