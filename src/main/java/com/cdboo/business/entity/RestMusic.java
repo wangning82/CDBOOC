@@ -1,7 +1,10 @@
 package com.cdboo.business.entity;
 
+import com.google.common.collect.Lists;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户音乐信息
@@ -14,32 +17,41 @@ public class RestMusic implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "music_id")
     private long id;
 
     @Column(name = "music_NO")
-    private String musicNo;        // 音乐编号
+    private String musicNo; // 音乐编号
 
     @Column(name = "music_owner")
-    private String musicOwner;        // 音乐拥有者类型
+    private String musicOwner; // 音乐拥有者类型
 
     @Column(name = "music_name")
-    private String musicName;        // 音乐名称
+    private String musicName; // 音乐名称
 
     @Column(name = "actor")
-    private String actor;        // 艺人
+    private String actor; // 艺人
 
     @Column(name = "special")
-    private String special;        // 专辑
+    private String special; // 专辑
 
     @Column(name = "volume")
-    private String volume;        // 音量
+    private String volume; // 音量
 
     @Column(name = "status")
-    private String status;        // 状态（暂时没用）
+    private String status; // 状态（暂时没用）
 
     @Column(name = "path")
-    private String path;        // 音乐路径
+    private String path; // 音乐路径
+
+    @Column(name = "favorite")
+    private String favorite; // 收藏标志
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "cdboo_channel_music",
+            joinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "music_id")},
+            inverseJoinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "channel_id")})
+    private List<RestChannel> channelList = Lists.newArrayList();
 
     public String getMusicNo() {
         return musicNo;
@@ -103,6 +115,14 @@ public class RestMusic implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public List<RestChannel> getChannelList() {
+        return channelList;
+    }
+
+    public void setChannelList(List<RestChannel> channelList) {
+        this.channelList = channelList;
     }
 
 }

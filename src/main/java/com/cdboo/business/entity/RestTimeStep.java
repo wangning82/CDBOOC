@@ -14,20 +14,23 @@ public class RestTimeStep implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "period_id")
     private long id;
 
     @Column(name = "period_NO")
     private String timestepNo; // 时段编号
 
     @Column(name = "period_name")
-    private String timestepName;      // 时段名称
+    private String timestepName; // 时段名称
 
     @Column(name = "starttime")
-    private String starttime;        // 开始时间
+    private String starttime; // 开始时间
 
     @Column(name = "endtime")
-    private String endtime;        // 结束时间
+    private String endtime; // 结束时间
+
+    @OneToOne(optional=false, mappedBy="timestep")
+    private PlanModel planModel;
 
     public String getTimestepNo() {
         return timestepNo;
@@ -61,4 +64,19 @@ public class RestTimeStep implements Serializable {
         this.endtime = endtime;
     }
 
+    public PlanModel getPlanModel() {
+        return planModel;
+    }
+
+    public void setPlanModel(PlanModel planModel) {
+        this.planModel = planModel;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

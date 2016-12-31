@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/")
-public class WebMainController {
+public class WebViewController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "")
@@ -19,6 +19,19 @@ public class WebMainController {
         return "index";
     }
 
+    @RequestMapping(value = "myshop")
+    public String myshop(Model model){
+        return "myshop";
+    }
 
+    @RequestMapping(value = "favorite")
+    public String favorite(Model model){
+        return "favorite";
+    }
+
+    @RequestMapping(value = "channel")
+    public String channel(Model model){
+        return "channel";
+    }
 
 }

@@ -18,7 +18,7 @@ public class RestChannel implements Serializable {
 
     @Id
     @GeneratedValue
-    @Column(name = "id")
+    @Column(name = "channel_id")
     private long id;
 
     @Column(name = "channel_NO")
@@ -66,11 +66,20 @@ public class RestChannel implements Serializable {
     @Column(name = "channelType")
     private String channelType; // 频道类型(0子频道,1组合频道,2插播频道)
 
-    //如果是子频道，该集合有对应music的信息
-    private List<RestMusic> musicList = Lists.newArrayList();
+    @Column(name = "favorite")
+    private String favorite; // 收藏标志
 
-    //如果是组合频道，该集合有值
-    private List<RestChannel> childChannelList = Lists.newArrayList();
+    @OneToOne(optional=false, mappedBy="channel")
+    private PlanModel planModel;
+
+    @ManyToMany(mappedBy = "channelList")
+    private List<RestMusic> musicList = Lists.newArrayList(); //如果是子频道，该集合有对应music的信息
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "cdboo_channel_children",
+            joinColumns = {@JoinColumn(name = "child_channel_id", referencedColumnName = "channel_id")},
+            inverseJoinColumns = {@JoinColumn(name = "group_channel_id", referencedColumnName = "channel_id")})
+    private List<RestChannel> childChannelList = Lists.newArrayList(); //如果是组合频道，该集合有值
 
     public String getChannelNo() {
         return channelNo;
@@ -206,5 +215,13 @@ public class RestChannel implements Serializable {
 
     public void setChildChannelList(List<RestChannel> childChannelList) {
         this.childChannelList = childChannelList;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
