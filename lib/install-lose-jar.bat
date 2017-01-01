@@ -1,9 +1,7 @@
 @echo off
 echo.
-echo 向本地仓库添加依赖的JAR
+echo install lost jars
 echo.
-rem pause
-rem echo.
 
 set MAVEN_OPTS=%MAVEN_OPTS% -Xms256m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m
 

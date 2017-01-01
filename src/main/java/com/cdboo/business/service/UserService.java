@@ -24,10 +24,6 @@ public class UserService {
         return entity.getBody();
     }
 
-    public static void main(String[] args) {
-
-    }
-
     public boolean updateUserData(){
         return false;
     }

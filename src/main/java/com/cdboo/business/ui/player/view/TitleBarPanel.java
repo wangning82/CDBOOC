@@ -173,6 +173,7 @@ public class TitleBarPanel extends AbstractJPanel {
         this.loginButton = loginButton;
     }
 
+    /*
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -182,4 +183,5 @@ public class TitleBarPanel extends AbstractJPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
+    */
 }
