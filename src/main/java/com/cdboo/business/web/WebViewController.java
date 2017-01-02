@@ -34,4 +34,13 @@ public class WebViewController {
         return "channel";
     }
 
+    @RequestMapping(value = "plan")
+    public String plan(Model model){
+        return "plan";
+    }
+
+    @RequestMapping(value = "spot")
+    public String spot(Model model){
+        return "spot";
+    }
 }

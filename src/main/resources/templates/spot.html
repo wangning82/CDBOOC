@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>我的收藏</title>
+    <title>试听首页</title>
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}"/>
     <script src="../static/js/jquery-1.9.1.min.js" th:src="@{/js/jquery-1.9.1.min.js}"></script>
     <script src="../static/js/index.js" th:src="@{/js/index.js}"></script>
+    <script src="../static/js/lyz.calendar.min.js" th:src="@{/js/lyz.calendar.min.js}"></script>
     <meta charset="utf-8"/>
 </head>
 <body>
 <div class="warp">
+    <!--main=========================-->
     <section>
         <!--左-->
         <aside class="left">
@@ -35,53 +37,58 @@
         <!--右-->
         <article class="right">
             <div class="wdcbjh">
-                <h3>收藏<br/>
-                    我喜欢的歌</h3>
+                <h3>管理<br/>
+                    我的插播计划</h3>
             </div>
             <div id="buyact" class="row790">
                 <div class="thead">
                     <ul class="tab0">
-                        <li class="index"><span>歌曲列表</span></li>
-                        <li><span>频道列表</span></li>
+                        <li class="index"><span>插播列表</span></li>
                     </ul>
                 </div>
                 <div class="tbody">
                     <!--主题-->
                     <div class="block">
-                        <div class="sc_Btn">
-                            <input class="Btn_A Btn_B" name="" type="button" value="播放全部"/>
-                            <input class="Btn_A" name="" type="button" value="批量删除" onclick="ShowDiv('TK2','fade')"/>
-                        </div>
                         <div class="grzlk_tr">
-                            <ul class="grzlk_ul grzlk_pd">
-                                <li>歌名</li>
-                                <li>歌手</li>
-                                <li>专辑</li>
-                                <li class="w566">时长</li>
+                            <ul class="grzlk_ul chabo_list">
+                                <li>名称</li>
+                                <li>时长</li>
+                                <li>播放日期</li>
+                                <li>播放时间</li>
+                                <li>重复时间</li>
+                                <li>循环次数</li>
                             </ul>
-                            <ul class="grzlk_ul grzlk_pd">
-                                <li>Unkiss Me</li>
-                                <li>Maroon 5</li>
-                                <li>V (Deluxe)</li>
-                                <li class="w566">04:32</li>
+                            <ul class="grzlk_ul chabo_list">
+                                <li>开店口播</li>
+                                <li>3:00</li>
+                                <li>每天</li>
+                                <li></li>
+                                <li>
+                                    <input name="" type="text" value="09:00" class="inp_1"/>
+                                </li>
+                                <li>
+                                    <input name="" type="text" value="1小时" class="inp_1"/>
+                                </li>
+                                <li class="sx_1">
+                                    <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                                    <a href="javascript:;" class="shang"></a><a href="javascript:;" class="xia"></a>
+                                </li>
                             </ul>
-                            <ul class="grzlk_ul grzlk_pd">
-                                <li>Unkiss Me</li>
-                                <li>Maroon 5</li>
-                                <li>V (Deluxe)</li>
-                                <li class="w566">04:32</li>
-                            </ul>
-                            <ul class="grzlk_ul grzlk_pd">
-                                <li>Unkiss Me</li>
-                                <li>Maroon 5</li>
-                                <li>V (Deluxe)</li>
-                                <li class="w566">04:32</li>
-                            </ul>
-                            <ul class="grzlk_ul grzlk_pd">
-                                <li>Unkiss Me</li>
-                                <li>Maroon 5</li>
-                                <li>V (Deluxe)</li>
-                                <li class="w566">04:32</li>
+                            <ul class="grzlk_ul chabo_list">
+                                <li>注意事项</li>
+                                <li>3:00</li>
+                                <li>每天</li>
+                                <li></li>
+                                <li>
+                                    <input name="" type="text" value="09:00" class="inp_1"/>
+                                </li>
+                                <li>
+                                    <input name="" type="text" value="1小时" class="inp_1"/>
+                                </li>
+                                <li class="sx_1">
+                                    <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                                    <a href="#" class="shang"></a><a href="#" class="xia"></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -89,7 +96,7 @@
                     <!--风格-->
                     <div class="none">
                         <div class="sc_Btn">
-                            <input class="Btn_A" name="" type="button" value="批量删除" onclick="ShowDiv('TK3','fade')"/>
+                            <input class="Btn_A" name="" type="button" value="批量删除" onclick="ShowDiv('TK1')"/>
                         </div>
                         <dl class="Style Style_xin">
                             <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
@@ -208,61 +215,7 @@
         </div>
     </footer>
 </div>
-<!--弹框一、开始-->
 <!--遮罩=====-->
 <div id="fade" class="black_overlay"></div>
-<!--歌曲列表批量删除-->
-<div class="tankuang" id="TK2">
-    <div class="tan_top">
-        <h4>批量删除</h4>
-        <a href="##" class="top_07 top_sc" onclick="CloseDiv('TK2','fade')"></a></div>
-    <div class="tan_foot">
-        <div class="pindname">
-            <div class="pindname_B">
-                <ul class="List_New">
-                    <li><span><a onclick="hide(this)" class="b0" href="#" style=" margin-top:17px;"></a>歌曲名</span><span>歌手</span><span>时长</span>
-                    </li>
-                </ul>
-                <ul class="List_New">
-                    <li><span><a onclick="hide(this)" class="b0" href="#" style=" margin-top:17px;"></a>Unkiss Me</span><span>Maroon 5</span><span>04:32</span>
-                    </li>
-                    <li><span><a onclick="hide(this)" class="b0" href="#" style=" margin-top:17px;"></a>Unkiss Me</span><span>Maroon 5</span><span>04:32</span>
-                    </li>
-                    <li><span><a onclick="hide(this)" class="b0" href="#" style=" margin-top:17px;"></a>Unkiss Me</span><span>Maroon 5</span><span>04:32</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="Btn">
-            <input name="" type="button" class="shanchu" value="删除"/>
-        </div>
-    </div>
-</div>
-<!--频道列表批量删除-->
-<div class="tankuang" id="TK3">
-    <div class="tan_top">
-        <h4>批量删除</h4>
-        <a href="##" class="top_07 top_sc" onclick="CloseDiv('TK3','fade')"></a></div>
-    <div class="tan_foot">
-        <div class="pindname">
-            <div class="pindname_T">
-                <p class="pcmc"><a onclick="hide(this)" class="b0" href="#" style=" margin-top:18px;"></a> 频道名称 </p>
-                <input name="" type="text" class="ssm" placeholder="搜索频道昵称"/>
-            </div>
-            <div class="pindname_B">
-                <ul class="pindname_ul">
-                    <li><a onclick="hide(this)" class="b0" href="#"></a> 下之歌</li>
-                    <li><a onclick="hide(this)" class="b0" href="#"></a> 下之歌</li>
-                    <li><a onclick="hide(this)" class="b0" href="#"></a> 下之歌</li>
-                    <li><a onclick="hide(this)" class="b0" href="#"></a> 下之歌</li>
-                    <li><a onclick="hide(this)" class="b0" href="#"></a> 下之歌</li>
-                </ul>
-            </div>
-        </div>
-        <div class="Btn">
-            <input name="" type="button" class="shanchu" value="删除"/>
-        </div>
-    </div>
-</div>
 </body>
 </html>
