@@ -1,3 +1,4 @@
+// JavaScript Document
 //日期
 $(function () {
     var dayNames = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
@@ -51,14 +52,14 @@ $(function () {
 //切换tab
 $(function () {
     $(".thead ul li").click(function () {
-        $(this).addClass("index").siblings().removeClass("index");
-        var ind = $(".thead ul li ").index(this);
+        $(this).addClass("index").siblings().removeClass("index")
+        var ind = $(".thead ul li ").index(this)
         $(".tbody").children("div")
             .removeClass()
             .eq(ind)
             .addClass("block")
             .siblings()
-            .addClass("none");
+            .addClass("none")
     })
 });
 //点击弹出
@@ -104,7 +105,6 @@ function CloseDiv(show_div, bg_div) {
     document.getElementById(show_div).style.display = 'none';
     document.getElementById(bg_div).style.display = 'none';
 }
-
 //底部鼠标滑过
 window.onload = function () {
     var aLi = document.getElementById('nav').getElementsByTagName('li');

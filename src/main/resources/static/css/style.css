@@ -10,7 +10,6 @@ body, html {
     font-family: "微软雅黑";
     height: 100%;
     color: #333;
-    overflow: hidden;
 }
 
 a img {
@@ -45,7 +44,7 @@ input {
 
 .warp {
     width: 1010px;
-    height: 680px;
+    height: 624px;
     margin: 0 auto;
 }
 
@@ -990,7 +989,7 @@ footer {
     font-weight: normal;
 }
 
-.delect {
+.delete {
     width: 22px;
     height: 22px;
     background: url(../images/bg.png) no-repeat -331px 0;
@@ -1059,7 +1058,22 @@ footer {
 
 .bf_2 {
     background: url(../images/bg.png) no-repeat -411px 0;
-    margin-left: 6px;
+    margin-left: 10px;
+    width: 23px;
+    height: 23px;
+    display: block;
+    float: left;
+    cursor:pointer
+}
+
+.bf_3 {
+    background: url(../images/bg.png) no-repeat 0px -130px;
+    margin-left: 10px;
+    width: 23px;
+    height: 23px;
+    display: block;
+    float: right;
+    cursor:pointer
 }
 
 .di {

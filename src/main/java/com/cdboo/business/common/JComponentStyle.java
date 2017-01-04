@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class JComponentStyle {
 
-    public static final int MAIN_WIDTH = 1010;
-    public static final int MAIN_HEIGHT = 680;
+    public static final int MAIN_WIDTH = 1013;
+    public static final int MAIN_HEIGHT = 675;
     public static final int LOGIN_WIDTH = 420;
     public static final int LOGIN_HEIGHT = 298;
 

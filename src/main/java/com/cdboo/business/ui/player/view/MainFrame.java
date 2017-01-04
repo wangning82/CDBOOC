@@ -34,7 +34,7 @@ public class MainFrame extends JFrame {
             Scene scene = new Scene(root);
             webBrowser.setScene(scene);
             view = new WebView();
-            view.setPrefSize(new Integer(JComponentStyle.MAIN_WIDTH).doubleValue(), new Integer(JComponentStyle.MAIN_HEIGHT - 30).doubleValue());
+            view.setPrefSize(new Integer(JComponentStyle.MAIN_WIDTH).doubleValue(), new Integer(JComponentStyle.MAIN_HEIGHT).doubleValue());
             view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
             root.getChildren().add(view);
         });
