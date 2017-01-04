@@ -22,7 +22,37 @@
                 //}
             });
             $("#txtEndDate").calendar();
+
+            new jPlayerPlaylist({
+                jPlayer: "#jquery_jplayer_1",
+                cssSelectorAncestor: "#jp_container_1"
+            }, [
+                {
+                    title: "Cro Magnon Man",
+                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
+                    duration: "4:28"
+                },
+                {
+                    title: "Your Face",
+                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
+                    duration: "4:35"
+                },
+                {
+                    title: "Your Face",
+                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
+                    duration: "4:35"
+                }
+            ], {
+                swfPath: "js",
+                supplied: "oga, mp3",
+                wmode: "window",
+                useStateClassSkin: true,
+                autoBlur: false,
+                smoothPlayBar: true,
+                keyEnabled: true
+            });
         });
+
     </script>
 </head>
 <body>
@@ -250,92 +280,74 @@
     </section>
     <!--footer=========================-->
     <footer>
-        <div class="play_1">
-            <ul class="play_1_ul">
-                <li><a href="" class="btn_1"></a></li>
-                <!--暂停播放按钮-->
-                <!--<li><a href="" class="btn_2 btn_zt"></a></li>-->
-                <!--播放按钮-->
-                <li><a href="" class="btn_2"></a></li>
-                <li><a href="" class="btn_3"></a></li>
-            </ul>
-        </div>
-        <div class="play_2">
-            <dl class="play_2_dl">
-                <!--注意：当未登录时显示产品logo，登录之后显示用户头像*******************************-->
-                <!--logo-->
-                <!--<dt><img class="logo_sm" src="images/logo.png"></dt>-->
-                <!--头像-->
-                <dt><img class="tx_img" src="images/img_1.jpg"/>
-                <p>晨醒</p>
-                </dt>
-                <dd class="tx_bg"></dd>
-            </dl>
-        </div>
-        <!--正在播放时的状态-->
-        <div class="play_3">
-            <div class="Name">
-                <p>Hostital flowers--中文 City</p>
-                <time>02：44/4：44</time>
-            </div>
-            <div class="jindu">
-                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0"
-                     aria-valuemax="100" style="width:40%;"></div>
-                <a href="##" class="progress_scrile"></a></div>
-        </div>
-        <!--没有播放时的状态-->
-        <!--<div class="play_3">
-                <div class="Name">
-                        <p></p>
-                        <time>00：00/00：00</time>
-                </div>
-                <div class="jindu">
-                        <a href="##" class="progress_scrile"></a>
-                </div>
-        </div>-->
-
-        <div class="play_4">
-            <div class="di1" id="nav">
-                <ul class="play_4_ul">
-                    <li><a href="##" class="btn_4"></a>
-                        <div class="sub" style="left:-22px;">
-                            <div class="video_01">
-                                <div class="progress-bar progress_info" role="progressbar" aria-valuenow="20"
-                                     aria-valuemin="0" aria-valuemax="100" style="height:60%;"></div>
-                                <a href="##" class="progress_scrile progress_1"></a></div>
-                            <div class="yinliang"><a href="##" class="btn_4 btn_04"></a></div>
-                            <div class="di"><img src="images/di.png"/></div>
+        <div id="jquery_jplayer_1" class="jp-jplayer"></div>
+        <div id="jp_container_1" class="jp-audio" role="application" aria-label="media player">
+            <div class="jp-type-playlist">
+                <div class="jp-gui jp-interface">
+                    <div class="jp-controls">
+                        <button class="jp-previous" role="button" tabindex="0">previous</button>
+                        <button class="jp-play" role="button" tabindex="0">play</button>
+                        <button class="jp-next" role="button" tabindex="0">next</button>
+                    </div>
+                    <div style="position: absolute;left: 210px;top: 0px; font-size: 12px; padding: 1px;">
+                        <dl class="play_2_dl">
+                            <dt>
+                                <img class="tx_img" src="images/img_1.jpg" style="width: 52px; height: 52px;"/>
+                            </dt>
+                            <dt>晨醒</dt>
+                        </dl>
+                    </div>
+                    <div class="jp-progress">
+                        <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
                         </div>
-                    </li>
-                    <li><a href="##" class="btn_5"></a>
-                        <div class="sub" style="left:5px;">
-                            <ul class="hechang">
-                                <li><a href="##" class="btn_7"></a></li>
-                                <li><a href="##" class="btn_8"></a></li>
-                                <li><a href="##" class="btn_9"></a></li>
+                    </div>
+                    <div class="jp-time-holder" style="font-size: 14px; color: #979797">
+                        <div style="float: left;">Hostital flowers--中文 City</div>
+                        <div style="float: right; width: 100px;">
+                            <div class="jp-current-time" role="timer" aria-label="time"></div>
+                            <div style="float: left; top: 20px;">/</div>
+                            <div class="jp-duration" role="timer" aria-label="duration"></div>
+                        </div>
+                    </div>
+                    <div class="jp-volume-controls">
+                        <button class="jp-mute" role="button" tabindex="0">mute</button>
+                        <div class="jp-volume-bar">
+                            <div class="jp-volume-bar-value"></div>
+                        </div>
+                    </div>
+                    <div style="position: absolute;left: 870px;top: 0px; font-size: 12px; padding: 1px;">
+                        <div class="di1" id="nav">
+                            <ul class="play_4_ul">
+                                <li><a href="#" class="btn_5"></a>
+                                    <div class="sub" style="left:5px;">
+                                        <ul class="hechang">
+                                            <li><a href="#" class="btn_7"></a></li>
+                                            <li><a href="#" class="btn_8"></a></li>
+                                            <li><a href="#" class="btn_9"></a></li>
+                                        </ul>
+                                        <div class="yinliang"><a href="#" class="btn_5 btn_04"></a></div>
+                                        <div class="di"><img src="images/di.png"/></div>
+                                    </div>
+                                </li>
+                                <li><a href="#" class="btn_6"></a><span class="num num_1">10</span>
+                                    <div class="sub option_3">
+                                        <div class="liedui_top">
+                                            <h4 class="lie_h4">播放列队（共10首歌）</h4>
+                                            <i class="delete"></i>
+                                        </div>
+                                        <div class="jp-playlist">
+                                            <ul>
+                                                <li>&nbsp;</li>
+                                            </ul>
+                                        </div>
+                                        <div class="di di_1"><img src="images/di.png"/></div>
+                                    </div>
+                                </li>
                             </ul>
-                            <div class="yinliang"><a href="##" class="btn_5 btn_04"></a></div>
-                            <div class="di"><img src="images/di.png"/></div>
                         </div>
-                    </li>
-                    <li><a href="##" class="btn_6"></a><span class="num num_1">12</span>
-                        <div class="sub option_3">
-                            <div class="liedui_top">
-                                <h4 class="lie_h4">播放列队（共10首歌）</h4>
-                                <i class="delect">ee</i></div>
-                            <div class="liedui_mian">
-                                <ul class="liedui_ul">
-                                    <li><a href="">忽然之间忽然之间忽然之间忽然之间忽然之间忽然之间-杨乃文</a><span>4：38</span></li>
-                                    <li class="sele"><a href="">忽然之间-杨乃文</a><span><i class="bf_1"></i><i
-                                            class="bf_1 bf_2"></i></span></li>
-                                    <li><a href="">忽然之间-杨乃文</a><span>4：38</span></li>
-                                    <li class="now"><a href="">忽然之间-杨乃文</a><span>4：38</span></li>
-                                </ul>
-                            </div>
-                            <div class="di di_1"><img src="images/di.png"/></div>
-                        </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>

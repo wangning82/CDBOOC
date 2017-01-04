@@ -12,4 +12,8 @@ public class PlanService {
 
     @Autowired
     private PlanRepository planRepository;
+
+    public void deleteAll(){
+        planRepository.deleteAll();
+    }
 }

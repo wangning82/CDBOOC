@@ -24,5 +24,11 @@ public class ChannelService {
         return channelRepository.findAll();
     }
 
+    public void deleteAll(){
+        channelRepository.deleteAll();
+    }
+
+
+
 
 }

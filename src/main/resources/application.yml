@@ -44,6 +44,7 @@ url:
     server:
       ip: http://127.0.0.1:8080
       checkUser: /cdboo-service/check-user
+      getUserData: /cdboo-service/get-data
     client:
       ip: http://127.0.0.1:9000
       index:
