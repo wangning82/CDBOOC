@@ -1,5 +1,6 @@
 package com.cdboo.business.web;
 
+import com.cdboo.business.common.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -16,12 +17,8 @@ public class WebViewController {
 
     @RequestMapping(value = "")
     public String index(Model model){
+        model.addAttribute("config", Config.getConfigInstance());
         return "index";
-    }
-
-    @RequestMapping(value = "myshop")
-    public String myshop(Model model){
-        return "myshop";
     }
 
     @RequestMapping(value = "favorite")

@@ -40,9 +40,23 @@
                 keyEnabled: true
             });
         });
+
+        function showShop() {
+            $(".right div").remove();
+            var shop = $(".supper").clone().css("display", "block");
+            $(".right").append(shop);
+        }
     </script>
 </head>
 <body>
+<div class="supper" style="display: none;">
+    <ul class="supper_ul">
+        <li>店铺地址：太平鸟男装（北京三里屯店）</li>
+        <li>营业时间：9：00-22：00</li>
+        <li>店长：王聪</li>
+        <li>联系电话：898989891</li>
+    </ul>
+</div>
 <div class="warp">
     <!--main=========================-->
     <section>
@@ -52,7 +66,7 @@
                 <li class="details">
                     <h4>我的管理</h4>
                 </li>
-                <li><a href="#" th:href="@{/myshop}"><s class="S_xxjs_1"></s>我的店铺</a></li>
+                <li><a href="javascript:showShop();"><s class="S_xxjs_1"></s>我的店铺</a></li>
                 <li><a href="#"><s class="S_xxjs_2"></s>我的盒子</a></li>
                 <li><a href="#" th:href="@{/favorite}"><s class="S_xxjs_3"></s>我的收藏</a></li>
                 <li><a href="#" th:href="@{/plan}"><s class="S_xxjs_4"></s>播放计划</a></li>

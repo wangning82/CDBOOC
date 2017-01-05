@@ -1,5 +1,6 @@
 package com.cdboo.business.service;
 
+import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,9 @@ public class PlanService {
 
     public void deleteAll(){
         planRepository.deleteAll();
+    }
+
+    public void save(PlanModel planModel){
+        planRepository.save(planModel);
     }
 }

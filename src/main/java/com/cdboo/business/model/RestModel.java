@@ -15,7 +15,7 @@ public class RestModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String userName;//用户姓名
-    private String shopownerName;//店长姓名
+    private String shopOwnerName;//店长姓名
 
     private Date businessHoursBegin;//营业时间开始
     private Date businessHoursEnd;//营业时间结束
@@ -26,9 +26,7 @@ public class RestModel implements Serializable {
     private Date serviceTimeBegin;//用户服务时间开始时间，就是用户买了多久的会员就能用多久
     private Date serviceTimeEnd;//用户服务时间结束时间
 
-    private List<PlanModel> planModelList;
-
-    //插播计划 应该是个list
+    private List<PlanModel> planModelList; // 播放计划
 
     public String getUserName() {
         return userName;
@@ -38,12 +36,12 @@ public class RestModel implements Serializable {
         this.userName = userName;
     }
 
-    public String getShopownerName() {
-        return shopownerName;
+    public String getShopOwnerName() {
+        return shopOwnerName;
     }
 
-    public void setShopownerName(String shopownerName) {
-        this.shopownerName = shopownerName;
+    public void setShopOwnerName(String shopOwnerName) {
+        this.shopOwnerName = shopOwnerName;
     }
 
     public Date getBusinessHoursBegin() {
