@@ -53,7 +53,7 @@ $(function () {
 $(function () {
     $(".thead ul li").click(function () {
         $(this).addClass("index").siblings().removeClass("index")
-        var ind = $(".thead ul li ").index(this)
+        var ind = $(".thead ul li ").index(this);
         $(".tbody").children("div")
             .removeClass()
             .eq(ind)

@@ -2,7 +2,6 @@ package com.cdboo.business.web;
 
 import com.cdboo.business.common.Config;
 import com.cdboo.business.entity.BaseEntity;
-import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
 import org.slf4j.Logger;

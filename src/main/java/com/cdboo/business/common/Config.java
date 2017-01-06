@@ -38,8 +38,11 @@ public class Config implements Serializable {
             if (!USER_DATA_PATH.exists()) {
                 USER_DATA_PATH.mkdirs();
             }
-            ois = new ObjectInputStream(new FileInputStream(new File(Config.USER_DATA_PATH, USER_DATA_FILE)));
-            config = (Config) ois.readObject();
+            File file = new File(Config.USER_DATA_PATH, USER_DATA_FILE);
+            if(file.exists()){
+                ois = new ObjectInputStream(new FileInputStream(file));
+                config = (Config) ois.readObject();
+            }
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -58,7 +61,7 @@ public class Config implements Serializable {
             if (!Config.USER_DATA_PATH.exists()) {
                 Config.USER_DATA_PATH.mkdirs();
             }
-            FileOutputStream fout = new FileOutputStream((new File(Config.USER_DATA_PATH, USER_DATA_FILE + ".dat")));
+            FileOutputStream fout = new FileOutputStream((new File(Config.USER_DATA_PATH, USER_DATA_FILE)));
             ObjectOutputStream oos = new ObjectOutputStream(fout);
             oos.writeObject(config);
             oos.flush();
