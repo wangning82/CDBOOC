@@ -1,8 +1,10 @@
 package com.cdboo.business.service;
 
+import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.repository.ChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,8 @@ public class ChannelService {
         channelRepository.deleteAll();
     }
 
-
-
+    public List<RestChannel> findFavoriteList(){
+        return channelRepository.findByFavorite(Constants.FAVORITE_YES);
+    }
 
 }

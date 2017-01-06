@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "cdboo_period")
-public class RestTimeStep implements Serializable {
+public class RestTimeStep extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -13,4 +13,12 @@ public class Constants {
     public static final String MUSIC_FESTIVAL = "2"; // 节日
     public static final String MUSIC_THEME = "3"; // 主题
     public static final String MUSIC_STYLE = "4"; // 风格
+
+    public static final String CHANNEL_TYPE_SUB = "0"; // 子频道
+    public static final String CHANNEL_TYPE_GROUP = "1"; // 组合频道
+    public static final String CHANNEL_TYPE_SPOT = "2"; // 插播频道
+
+    public static final String FAVORITE_DEFAULT = "0"; // 未收藏
+    public static final String FAVORITE_YES = "1"; // 已收藏
+
 }

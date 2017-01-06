@@ -1,5 +1,6 @@
 package com.cdboo.business.entity;
 
+import com.cdboo.business.common.Constants;
 import com.google.common.collect.Lists;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "cdboo_music")
-public class RestMusic implements Serializable {
+public class RestMusic extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +30,9 @@ public class RestMusic implements Serializable {
     @Column(name = "music_name")
     private String musicName; // 音乐名称
 
+    @Column(name = "duration")
+    private String duration; // 音乐时长
+
     @Column(name = "actor")
     private String actor; // 艺人
 
@@ -45,7 +49,7 @@ public class RestMusic implements Serializable {
     private String path; // 音乐路径
 
     @Column(name = "favorite")
-    private String favorite; // 收藏标志
+    private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinTable(name = "cdboo_channel_music",
@@ -125,4 +129,19 @@ public class RestMusic implements Serializable {
         this.channelList = channelList;
     }
 
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 }

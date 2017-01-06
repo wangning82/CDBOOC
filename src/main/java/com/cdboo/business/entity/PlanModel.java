@@ -9,7 +9,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "cdboo_plan")
-public class PlanModel implements Serializable {
+public class PlanModel extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

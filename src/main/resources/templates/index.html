@@ -9,7 +9,7 @@
     <script src="../static/js/jquery.jplayer.js" th:src="@{/js/jquery.jplayer.js}"></script>
     <script src="../static/js/jplayer.playlist.js" th:src="@{/js/jplayer.playlist.js}"></script>
     <meta charset="utf-8"/>
-    <script>
+    <script th:inline="javascript">
         $(document).ready(function () {
             new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
@@ -46,9 +46,41 @@
             var shop = $(".supper").clone().css("display", "block");
             $(".right").append(shop);
         }
+        
+        function findFavorite() {
+            $.ajax({
+                type: "POST",
+                url: [[#{pageContext.request.contextPath}]] + "/favorite",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    $("#myFavorite .block").empty();
+                    $("#myFavorite .none").empty();
+                    if(data.channelList.length == 0){
+                        $("#myFavorite .block").append("<div class='Wu'></div>");
+                    }else{
+                        var button = $("#favoriteMusicButton").clone().css("display", "block");
+                        $("#myFavorite .block").append(button);
+                        for(var i = 0; i < data.channelList.length; i ++){
+
+                        }
+                    }
+                    if(data.musicList.length == 0){
+                        $("#myFavorite .none").append("<div class='Wu'></div>");
+                    }else {
+                        var button = $("#favoriteChannelButton").clone().css("display", "block");
+                        $("#myFavorite .none").append(button);
+                        for(var i = 0; i < data.musicList.length; i ++){
+
+                        }
+                    }
+                }
+            });
+        }
     </script>
 </head>
 <body>
+<!-- 店铺信息 -->
 <div class="supper" style="display: none;">
     <ul class="supper_ul">
         <li>店铺地址：太平鸟男装（北京三里屯店）</li>
@@ -57,6 +89,51 @@
         <li>联系电话：898989891</li>
     </ul>
 </div>
+
+<!-- 我的收藏 -->
+<div id="favoriteMusicButton" class="sc_Btn" style="display: none;">
+    <input class="Btn_A Btn_B" type="button" value="播放全部"/>
+    <input class="Btn_A" type="button" value="批量删除" onclick="ShowDiv('TK2','fade')"/>
+</div>
+<div id="favoriteChannelButton" class="sc_Btn" style="display: none;">
+    <input class="Btn_A" type="button" value="批量删除" onclick="ShowDiv('TK3','fade')"/>
+</div>
+
+<div id="myFavorite" style="display: none;">
+    <div class="wdcbjh">
+        <h3>收藏<br/>我喜欢的歌</h3>
+    </div>
+    <div class="row790">
+        <div class="thead">
+            <ul class="tab0">
+                <li class="index"><span>歌曲列表</span></li>
+                <li><span>频道列表</span></li>
+            </ul>
+        </div>
+        <div class="tbody">
+            <!--歌曲列表-->
+            <div class="block">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_pd">
+                        <li>歌名</li>
+                        <li>歌手</li>
+                        <li>专辑</li>
+                        <li class="w566">时长</li>
+                    </ul>
+                </div>
+            </div>
+            <!--频道列表-->
+            <div class="none">
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href="http://www.baidu.com"><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="warp">
     <!--main=========================-->
     <section>
@@ -84,7 +161,7 @@
         </aside>
         <!--右-->
         <article class="right">
-            <div id="buyact" class="row790">
+            <div class="row790">
                 <div class="thead">
                     <ul class="tab0">
                         <li class="index"><span>主题</span></li>
