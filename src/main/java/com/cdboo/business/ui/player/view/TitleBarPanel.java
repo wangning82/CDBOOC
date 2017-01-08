@@ -73,7 +73,7 @@ public class TitleBarPanel extends AbstractJPanel {
         headPane.add(loginButton);
         this.add(headPane, BorderLayout.WEST);
 
-        btnPane.add(timeCB);
+        //btnPane.add(timeCB);
         btnPane.add(timeLabel);
         btnPane.add(settingsButton);
 
