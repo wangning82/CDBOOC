@@ -24,20 +24,20 @@ public class UserService {
 
     public String checkUser(String username, String password) {
         RestTemplate template = new RestTemplate();
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("userName", username);
-        params.put("password", password);
-        String url = YamlUtils.getValue("url.cdboo.server.ip") + YamlUtils.getValue("url.cdboo.server.checkUser");
-        ResponseEntity<String> entity = template.postForEntity(url, params, String.class);
+        String url = YamlUtils.getValue("url.cdboo.server.ip");
+        url += YamlUtils.getValue("url.cdboo.server.checkUser");
+        url += "/" + username + "/" + password;
+        ResponseEntity<String> entity = template.getForEntity(url, String.class);
+
         return entity.getBody();
     }
 
     public RestModel getUserData(String username){
         RestTemplate template = new RestTemplate();
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("userName", username);
-        String url = YamlUtils.getValue("url.cdboo.server.ip") + YamlUtils.getValue("url.cdboo.server.getUserData");
-        ResponseEntity<RestModel> entity = template.postForEntity(url, params, RestModel.class);
+        String url = YamlUtils.getValue("url.cdboo.server.ip");
+        url += YamlUtils.getValue("url.cdboo.server.getUserData");
+        url += "/" + username;
+        ResponseEntity<RestModel> entity = template.getForEntity(url, RestModel.class);
         return entity.getBody();
     }
 
