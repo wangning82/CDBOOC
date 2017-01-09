@@ -1,6 +1,8 @@
 package com.cdboo.system;
 
 import com.cdboo.business.ui.player.controller.MainController;
+import com.cdboo.business.ui.player.view.MainFrame;
+import com.cdboo.business.ui.player.view.SplashWindow;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 import org.jb2011.lnf.beautyeye.utils.Platform;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -39,11 +41,15 @@ public class Application {
 
     public static void main(String[] args) {
         initUserInterface();
+        SplashWindow splashWindow = new SplashWindow();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class).headless(false).run(args);
                 MainController mainController = context.getBean(MainController.class);
                 mainController.prepareAndOpenFrame();
+                MainFrame mainFrame = mainController.getMainFrame();
+                splashWindow.dispose();
+                mainFrame.setVisible(true);
             }
         });
     }

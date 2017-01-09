@@ -35,7 +35,7 @@ public class MainController extends AbstractFrameController {
         titleBarController.prepareAndOpenFrame();
         loginController.prepareAndOpenFrame();
         settingsController.prepareAndOpenFrame();
-        mainFrame.setVisible(true);
+        mainFrame.setVisible(false);
 
         TitleBarPanel titleBarPanel = mainFrame.getTitleBarPanel();
         titleBarPanel.addMouseListener(new MouseAdapter() {
@@ -68,6 +68,10 @@ public class MainController extends AbstractFrameController {
                 Config.saveUserData();
             }
         });
+    }
+
+    public MainFrame getMainFrame() {
+        return mainFrame;
     }
 
 }

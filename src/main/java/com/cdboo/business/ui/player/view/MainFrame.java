@@ -62,6 +62,9 @@ public class MainFrame extends JFrame {
         setSize(JComponentStyle.MAIN_WIDTH, JComponentStyle.MAIN_HEIGHT);
         JComponentUtils.setCenter(this);
 
+        ImageIcon icon = new ImageIcon(getClass().getResource("/images/icon.png"));
+        setIconImage(icon.getImage());
+
     }
 
     /**

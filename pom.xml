@@ -180,9 +180,6 @@
                         <manifest>
                             <mainClass>com.cdboo.system.Application</mainClass>
                         </manifest>
-                        <manifestEntries>
-                            <Class-Path>config/</Class-Path>
-                        </manifestEntries>
                     </archive>
                 </configuration>
                 <executions>
