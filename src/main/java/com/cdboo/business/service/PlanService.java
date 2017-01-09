@@ -5,6 +5,9 @@ import com.cdboo.business.repository.PlanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by houyi on 2016/12/30 0030.
  */
@@ -21,4 +24,21 @@ public class PlanService {
     public void save(PlanModel planModel){
         planRepository.save(planModel);
     }
+
+    /**
+     * 查询场景业态
+     * @return
+     */
+    public List<String> findSceneList(){
+        List<String> result = new ArrayList<String>();
+        List<PlanModel> list = planRepository.findAll();
+        for(PlanModel planModel : list){
+            if(!result.contains(planModel.getScene())){
+                result.add(planModel.getScene());
+            }
+        }
+        return result;
+    }
+
+
 }

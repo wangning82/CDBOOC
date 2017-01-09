@@ -1,9 +1,12 @@
 package com.cdboo.business.web;
 
 import com.cdboo.business.common.Config;
+import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.BaseEntity;
+import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
+import com.cdboo.business.service.PlanService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +31,15 @@ public class WebViewController {
     private ChannelService channelService;
 
     @Autowired
+    private PlanService planService;
+
+    @Autowired
     private MusicService musicService;
 
     @RequestMapping(value = "")
     public String index(Model model){
         model.addAttribute("config", Config.getConfigInstance());
+        model.addAttribute("sceneList", planService.findSceneList());
         return "index";
     }
 
@@ -50,9 +57,26 @@ public class WebViewController {
         return result;
     }
 
+    /**
+     * 查询频道列表
+     * @param scene
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "channel")
-    public String channel(Model model){
-        return "channel";
+    @ResponseBody
+    public Map<String, List<RestChannel>> channel(String scene, Model model){
+        Map<String, List<RestChannel>> result = new HashMap<>();
+        if(scene == null){
+            result.put("festival", channelService.findChannelList(Constants.MUSIC_FESTIVAL, null));
+            result.put("theme", channelService.findChannelList(Constants.MUSIC_THEME, null));
+            result.put("style", channelService.findChannelList(Constants.MUSIC_STYLE, null));
+        }else{
+            result.put("festival", channelService.findChannelList(Constants.MUSIC_FESTIVAL, scene));
+            result.put("theme", channelService.findChannelList(Constants.MUSIC_THEME, scene));
+            result.put("style", channelService.findChannelList(Constants.MUSIC_STYLE, scene));
+        }
+        return result;
     }
 
     @RequestMapping(value = "plan")

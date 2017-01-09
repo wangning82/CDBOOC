@@ -21,4 +21,9 @@ public class Constants {
     public static final String FAVORITE_DEFAULT = "0"; // 未收藏
     public static final String FAVORITE_YES = "1"; // 已收藏
 
+    public static final String CHANNEL_VOICE_MALE = "0"; // 男声
+    public static final String CHANNEL_VOICE_FEMALE = "1"; // 女声
+    public static final String CHANNEL_VOICE_MIXED = "2"; // 混合
+    public static final String CHANNEL_VOICE_INSTRUMENT = "3"; // 乐器
+
 }

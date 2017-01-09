@@ -50,7 +50,7 @@ public class RestChannel extends BaseEntity {
     private String speed; // 速度
 
     @Column(name = "voice")
-    private String voice; // 人声
+    private String voice; // 人声(0男声，1女声，3合唱，4乐器)
 
     @Column(name = "element")
     private String element; // 元素

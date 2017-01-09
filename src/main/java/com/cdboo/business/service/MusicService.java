@@ -17,6 +17,10 @@ public class MusicService {
     @Autowired
     private MusicRepository musicRepository;
 
+    /**
+     * 查询收藏音乐
+     * @return
+     */
     public List<RestMusic> findFavoriteList(){
         return musicRepository.findByFavorite(Constants.FAVORITE_YES);
     }

@@ -34,12 +34,6 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getSettingsButton(), (e) -> showSettings());
         registerAction(mainFrame.getTitleBarPanel().getLoginButton(), (e) -> showLoginWindow());
 
-        String[] defaultTime = new String[]{};
-        for(int i = 0; i < channelService.findAll().size(); i ++){
-            defaultTime[i] = channelService.findAll().get(i).getChannelName();
-        }
-        mainFrame.getTitleBarPanel().getTimeCB().setModel(new DefaultComboBoxModel<String>(defaultTime));
-        //mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
     }
 
     /**

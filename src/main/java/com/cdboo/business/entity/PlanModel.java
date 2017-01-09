@@ -31,16 +31,22 @@ public class PlanModel extends BaseEntity {
     private String week; // 星期（数字，逗号分隔）
 
     @Column(name = "startDate")
-    private Date startDate; // 开始日期（节日才有用）
+    private String startDate; // 开始日期（节日才有用）
 
     @Column(name = "endDate")
-    private Date endDate; // 结束日期（节日才有用）
+    private String endDate; // 结束日期（节日才有用）
 
     @Column(name = "status")
     private String status; // 状态位显示（暂时没用）
 
     @Column(name = "cycleTimes")
-    private int cycleTimes; //循环次数，只有插播才有效
+    private String cycleTimes; // 循环次数，只有插播才有效
+
+    @Column(name = "scene")
+    private String scene; // 场景业态
+
+    @Column(name = "intervalTime")
+    private String intervalTime; //间隔时间
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="period_id", unique=true, nullable=false, updatable=false)
@@ -82,19 +88,19 @@ public class PlanModel extends BaseEntity {
         this.week = week;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -122,12 +128,20 @@ public class PlanModel extends BaseEntity {
         this.channel = channel;
     }
 
-    public int getCycleTimes() {
+    public String getCycleTimes() {
         return cycleTimes;
     }
 
-    public void setCycleTimes(int cycleTimes) {
+    public void setCycleTimes(String cycleTimes) {
         this.cycleTimes = cycleTimes;
+    }
+
+    public String getScene() {
+        return scene;
+    }
+
+    public void setScene(String scene) {
+        this.scene = scene;
     }
 
     public long getId() {
@@ -136,5 +150,13 @@ public class PlanModel extends BaseEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getIntervalTime() {
+        return intervalTime;
+    }
+
+    public void setIntervalTime(String intervalTime) {
+        this.intervalTime = intervalTime;
     }
 }
