@@ -8,7 +8,7 @@
 ## 技术选型
 1.后端
 * 核心框架：Spring Boot 1.4
-* 窗体框架：swing + Android Nine-patch（.9.png）
+* 窗体框架：swing + draw9patch
 * 持久层框架：Spring Data JPA + querydsl 4.1
 * 布局框架：thymeleaf 2.1
 

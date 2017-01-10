@@ -33,14 +33,16 @@ public class LoginController extends AbstractFrameController {
 
     private void loginAction(){
         LoginDialog dialog = mainFrame.getLoginDialog();
-        String result = userService.checkUser(dialog.getUsernameField().getText(), String.valueOf(dialog.getPasswordField().getPassword()));
+        String userName = dialog.getUsernameField().getText();
+        String result = userService.checkUser(userName, String.valueOf(dialog.getPasswordField().getPassword()));
         if(Constants.USER_NOT_EXIST.equals(result)){
             dialog.getMessage().setText("该用户不存在!");
         }else if(Constants.USER_PASSWORD_NOT_CORRECT.equals(result)){
             dialog.getMessage().setText("用户密码不正确!");
         }else if(Constants.USER_PASSWORD_CORRECT.equals(result)){
-            dialog.getMessage().setText("登录成功！");
-            mainFrame.getLoginDialog().dispose();
+            dialog.reset();
+            dialog.dispose();
+            userService.saveUserData(userService.getUserData(userName));
         }
     }
 }

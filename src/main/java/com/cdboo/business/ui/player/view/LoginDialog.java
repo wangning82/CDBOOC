@@ -156,6 +156,15 @@ public class LoginDialog extends JDialog {
         return this;
     }
 
+    /**
+     * 重置窗口
+     */
+    public void reset(){
+        this.getMessage().setText("");
+        this.getUsernameField().setText("");
+        this.getPasswordField().setText("");
+    }
+
     public JButton getCloseButton() {
         return closeButton;
     }

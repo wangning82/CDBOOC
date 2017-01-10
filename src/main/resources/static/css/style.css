@@ -428,6 +428,7 @@ section {
     height: 40px;
     line-height: 40px;
     font-size: 14px;
+    white-space: nowrap;
 }
 
 .left_ul li.S_xxjs {
@@ -478,6 +479,7 @@ section {
 }
 
 .left_ul li .S_xxjs_6 {
+    margin: 10px 10px 0px 0px;
     width: 21px;
     height: 18px;
     background: url(../images/bg.png) -41px -56px no-repeat;

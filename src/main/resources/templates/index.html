@@ -40,6 +40,8 @@
                 smoothPlayBar: true,
                 keyEnabled: true
             });
+
+            findChannel();
         });
 
         function showShop() {
@@ -100,13 +102,67 @@
             });
         }
         
-        function findChannel() {
-            
+        function findChannel(scene) {
+            $.ajax({
+                type: "POST",
+                url: "/channel",
+                data: {
+                    scene:scene
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#ztc").children().remove(); // 主题
+                    $("#fgc").children().remove(); // 风格
+                    $("#jrc").children().remove(); // 节日
+                    if (data.festival.length != 0) {
+                        for (var i = 0; i < data.festival.length; i++) {
+                            var str = "<dl class='zhuti' onclick='findMusic(" + data.festival[i] + ")'>";
+                            str += "<dt><a href='#'><img src='images/img_1.jpg'/></a></dt>";
+                            str += "<dd class='icon_bg'></dd>";
+                            str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
+                            str += "<dd class='Text'>" + data.festival[i].channelName + "</dd>";
+                            str += "<dd class='Play'><img src='images/play.png'/></dd>";
+                            str += "</dl>";
+                            $("#jrc").append(str);
+                        }
+                    }
+                    if (data.theme.length != 0) {
+                        for (var i = 0; i < data.theme.length; i++) {
+                            var str = "<dl class='zhuti' onclick='findMusic(" + data.theme[i] + ")'>";
+                            str += "<dt><img src='images/img_1.jpg'/></dt>";
+                            str += "<dd class='icon_bg'></dd>";
+                            str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
+                            str += "<dd class='Text'>" + data.theme[i].channelName + "</dd>";
+                            str += "<dd class='Play'><img src='images/play.png'/></dd>";
+                            str += "</dl>";
+                        }
+                    }
+
+                    if (data.manner.length != 0) {
+                        for (var i = 0; i < data.manner.length; i++) {
+                            var str = "<dl class='Style Style_xin' onclick='findMusic(" + data.manner[i] + ")'>";
+                            str += "<dt class='ash_mo'><a href='#'><img src='images/img_1.jpg'/></a></dt>";
+                            str += "<dd class='ashow'></dd>";
+                            str += "<dd class='Text'>" + data.manner[i].channelName + "</dd>";
+                            str += "</dl>";
+                        }
+                    }
+                    $(".right div").remove();
+                    $(".right").append($("#cl"));
+                    $("#cl").css("display", "block");
+                }
+            });
         }
+
+        function findMusic(channel) {
+            alert(channel.id);
+
+        }
+
         /*]]>*/
     </script>
 </head>
-<body>
+<body th:inline="text">
 <!-- 店铺信息 -->
 <div class="supper" style="display: none;">
     <ul class="supper_ul">
@@ -144,6 +200,95 @@
         </div>
     </div>
 </div>
+<!-- 频道列表 -->
+<div id="cl" class="row790" style="display: none;">
+    <div class="thead">
+        <ul class="tab0">
+            <li class="index"><span>主题</span></li>
+            <li><span>风格</span><i class="redsc"></i></li>
+            <li><span>节日</span></li>
+        </ul>
+    </div>
+    <div class="tbody">
+        <!--主题-->
+        <div class="block" id="ztc">
+            <dl class="zhuti" onclick="window.location.href='/channel'">
+                <dt><img src="images/img_1.jpg"/></dt>
+                <dd class="icon_bg"></dd>
+                <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
+                <dd class="Text">下之歌</dd>
+                <dd class="Play"><img src="images/play.png"/></dd>
+            </dl>
+        </div>
+        <!--风格-->
+        <div class="none" id="fgc">
+            <dl class="Style Style_xin" onclick="window.location.href='/channel'">
+                <dt class="ash_mo"><a href="#"><img src="images/img_1.jpg"/></a></dt>
+                <dd class="ashow"></dd>
+                <dd class="Text">下之歌</dd>
+            </dl>
+        </div>
+        <!--节日-->
+        <div class="none" id="jrc">
+            <dl class="zhuti" onclick="window.location.href='/channel'">
+                <dt><a href="#"><img src="images/img_1.jpg"/></a></dt>
+                <dd class="icon_bg"></dd>
+                <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
+                <dd class="Text">下之歌</dd>
+                <dd class="Play"><img src="images/play.png"/></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<!-- 频道主页 -->
+<div id="myChannel" style="display: none;">
+    <div class="Menu">
+        <dl class="zhuti_menu">
+            <dt><a href=""><img src="images/img_1.jpg"/></a></dt>
+            <dd class="icon_bg"></dd>
+            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
+        </dl>
+        <div class="Menu_you">
+            <div class="Menu_p">
+                <h4 class="channelName">服装促销季</h4>
+                <p style="float:left; margin-top:5px;"><i class="mu_1"></i><span class="num">20</span><i class="mu_1 mu_2"></i><span class="num">122222</span></p>
+                <input class="Btn_A Btn_c" type="button" value="收藏"/>
+            </div>
+            <div class="sc_div">
+                <div id="hutia">
+                    <i>简介：</i>这次制作的歌单是续上一歌单而制作的，每一首音乐都在一个小时以上，听起来很是享受，特别是您在行车的途中，听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐,听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐,听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="buyact" class="row790">
+        <div class="thead">
+            <ul class="tab0">
+                <li class="index"><span>歌曲列表</span></li>
+            </ul>
+        </div>
+        <div class="tbody">
+            <div class="block">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul">
+                        <li>歌名</li>
+                        <li>歌手</li>
+                        <li>专辑</li>
+                        <li class="w566">时长</li>
+                        <li class="w566">操作</li>
+                    </ul>
+                    <ul class="grzlk_ul">
+                        <li>Unkiss Me</li>
+                        <li>Maroon 5</li>
+                        <li>V (Deluxe)</li>
+                        <li class="w566">04:32</li>
+                        <li class="w566 w577"><a href="#" class="down_1"></a><a href="#"
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="warp">
     <!--main=========================-->
@@ -162,191 +307,11 @@
                 <li class="details">
                     <h4>场景业态</h4>
                 </li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_6"></s>购物中心</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_7"></s>超市</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_8"></s>餐饮</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_9"></s>服饰</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_10"></s>酒店</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_11"></s>奢侈品</a></li>
+                <li th:each="scene:${sceneList}"><s class="S_xxjs_6" style="float: left"></s><a href="#" th:onclick="'javascript:findChannel(\'' + ${scene} + '\');'" th:text="${scene}"></a></li>
             </ul>
         </aside>
         <!--右-->
-        <article class="right">
-            <div class="row790">
-                <div class="thead">
-                    <ul class="tab0">
-                        <li class="index"><span>主题</span></li>
-                        <li><span>风格</span><i class="redsc"></i></li>
-                        <li><span>节日</span></li>
-                    </ul>
-                </div>
-                <div class="tbody">
-                    <!--主题-->
-                    <div class="block">
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><img src="images/img_1.jpg" th:src="@{/images/img_1.jpg}"/></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                    </div>
-
-                    <!--风格-->
-                    <div class="none">
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                    </div>
-
-                    <!--节日-->
-                    <div class="none">
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </article>
+        <article class="right"></article>
     </section>
     <!--footer=========================-->
     <footer>

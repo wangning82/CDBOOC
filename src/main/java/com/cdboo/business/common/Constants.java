@@ -12,7 +12,7 @@ public class Constants {
     public static final String MUSIC_SPOT = "1"; // 插播
     public static final String MUSIC_FESTIVAL = "2"; // 节日
     public static final String MUSIC_THEME = "3"; // 主题
-    public static final String MUSIC_STYLE = "4"; // 风格
+    public static final String MUSIC_MANNER = "4"; // 风格
 
     public static final String CHANNEL_TYPE_SUB = "0"; // 子频道
     public static final String CHANNEL_TYPE_GROUP = "1"; // 组合频道

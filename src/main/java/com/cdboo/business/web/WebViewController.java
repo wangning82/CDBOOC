@@ -70,11 +70,11 @@ public class WebViewController {
         if(scene == null){
             result.put("festival", channelService.findChannelList(Constants.MUSIC_FESTIVAL, null));
             result.put("theme", channelService.findChannelList(Constants.MUSIC_THEME, null));
-            result.put("style", channelService.findChannelList(Constants.MUSIC_STYLE, null));
+            result.put("manner", channelService.findChannelList(Constants.MUSIC_MANNER, null));
         }else{
             result.put("festival", channelService.findChannelList(Constants.MUSIC_FESTIVAL, scene));
             result.put("theme", channelService.findChannelList(Constants.MUSIC_THEME, scene));
-            result.put("style", channelService.findChannelList(Constants.MUSIC_STYLE, scene));
+            result.put("manner", channelService.findChannelList(Constants.MUSIC_MANNER, scene));
         }
         return result;
     }

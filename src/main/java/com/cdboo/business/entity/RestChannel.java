@@ -70,6 +70,9 @@ public class RestChannel extends BaseEntity {
     @Column(name = "favorite")
     private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
 
+    @Column(name = "profile")
+    private String remarks; // 频道简介
+
     @ManyToMany(mappedBy = "channelList")
     private List<RestMusic> musicList = Lists.newArrayList(); //如果是子频道，该集合有对应music的信息
 
@@ -231,4 +234,11 @@ public class RestChannel extends BaseEntity {
         this.favorite = favorite;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
 }
