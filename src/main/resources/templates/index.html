@@ -155,8 +155,21 @@
         }
 
         function findMusic(channel) {
-            alert(channel.id);
-
+            $("#myChannel .channelName").innerHTML(channel.channelName);
+            $("#myChannel .profile").innerHTML(channel.remarks);
+            $("#myChannel .grzlk_tr").children().remove();
+            if(channel.musicList.length != 0){
+                $("#myChannel .grzlk_tr").append("<ul class='grzlk_ul'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li><li class='w566'>操作</li></ul>");
+                for (var i = 0; i < channel.musicList.length; i++) {
+                    var str = "<ul class='grzlk_ul'>";
+                    str += "<li>" + channel.musicList[i].musicName + "</li>";
+                    str += "<li>" + channel.musicList[i].actor + "</li>";
+                    str += "<li>" + channel.musicList[i].special + "</li>";
+                    str += "<li class='w566'>" + channel.musicList[i].duration + "</li>";
+                    str += "<li class='w566 w577'><a href='#' class='down_1'></a><a href='#' class='down_1 down_2'></a></li>";
+                    $("#myChannel .grzlk_tr").append(str);
+                }
+            }
         }
 
         /*]]>*/
@@ -244,7 +257,7 @@
 <div id="myChannel" style="display: none;">
     <div class="Menu">
         <dl class="zhuti_menu">
-            <dt><a href=""><img src="images/img_1.jpg"/></a></dt>
+            <dt><a href="#"><img src="images/img_1.jpg"/></a></dt>
             <dd class="icon_bg"></dd>
             <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
         </dl>
@@ -255,7 +268,7 @@
                 <input class="Btn_A Btn_c" type="button" value="收藏"/>
             </div>
             <div class="sc_div">
-                <div id="hutia">
+                <div id="hutia" class="profile">
                     <i>简介：</i>这次制作的歌单是续上一歌单而制作的，每一首音乐都在一个小时以上，听起来很是享受，特别是您在行车的途中，听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐,听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐,听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐
                 </div>
             </div>
@@ -282,7 +295,7 @@
                         <li>Maroon 5</li>
                         <li>V (Deluxe)</li>
                         <li class="w566">04:32</li>
-                        <li class="w566 w577"><a href="#" class="down_1"></a><a href="#"
+                        <li class="w566 w577"><a href="#" class="down_1"></a><a href="#" class="down_1 down_2"></a></li>
                     </ul>
                 </div>
             </div>
