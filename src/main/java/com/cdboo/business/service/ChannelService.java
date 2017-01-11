@@ -10,7 +10,9 @@ import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,10 +50,15 @@ public class ChannelService {
      * @return
      */
     public List<RestChannel> findChannelList(String style, String scene){
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String currentTime = sdf.format(new Date());
         List<RestChannel> result = new ArrayList<RestChannel>();
         Predicate predicate = null;
         if(scene != null){
-            predicate = QPlanModel.planModel.musicStyle.eq(style).and(QPlanModel.planModel.scene.eq(scene));
+            predicate = QPlanModel.planModel.musicStyle.eq(style)
+                    .and(QPlanModel.planModel.scene.eq(scene))
+                    .and(QPlanModel.planModel.timestep.starttime.lt(currentTime))
+                    .and(QPlanModel.planModel.timestep.endtime.gt(currentTime));
         }else{
             predicate = QPlanModel.planModel.musicStyle.eq(style);
         }

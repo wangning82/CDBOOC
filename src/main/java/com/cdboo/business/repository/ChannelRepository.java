@@ -24,5 +24,4 @@ public interface ChannelRepository extends JpaRepository<RestChannel, Long>, Que
     List<RestChannel> findByFavorite(@Param("favorite") String favorite);
 
 
-
 }

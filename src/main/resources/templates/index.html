@@ -44,6 +44,9 @@
             findChannel();
         });
 
+        var musicList = new Array(); // 歌曲列表
+
+
         function showShop() {
             $(".right div").remove();
             $(".right").append($(".supper"));
@@ -158,18 +161,26 @@
             $("#myChannel .channelName").innerHTML(channel.channelName);
             $("#myChannel .profile").innerHTML(channel.remarks);
             $("#myChannel .grzlk_tr").children().remove();
-            if(channel.musicList.length != 0){
-                $("#myChannel .grzlk_tr").append("<ul class='grzlk_ul'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li><li class='w566'>操作</li></ul>");
-                for (var i = 0; i < channel.musicList.length; i++) {
-                    var str = "<ul class='grzlk_ul'>";
-                    str += "<li>" + channel.musicList[i].musicName + "</li>";
-                    str += "<li>" + channel.musicList[i].actor + "</li>";
-                    str += "<li>" + channel.musicList[i].special + "</li>";
-                    str += "<li class='w566'>" + channel.musicList[i].duration + "</li>";
-                    str += "<li class='w566 w577'><a href='#' class='down_1'></a><a href='#' class='down_1 down_2'></a></li>";
-                    $("#myChannel .grzlk_tr").append(str);
+            $("#myChannel .grzlk_tr").append("<ul class='grzlk_ul'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li><li class='w566'>操作</li></ul>");
+            $.ajax({
+                type: "POST",
+                url: "/music",
+                data: {
+                    channelId:channel.id
+                },
+                dataType: "json",
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        var str = "<ul class='grzlk_ul'>";
+                        str += "<li>" + data[i].musicName + "</li>";
+                        str += "<li>" + data[i].actor + "</li>";
+                        str += "<li>" + data[i].special + "</li>";
+                        str += "<li class='w566'>" + data[i].duration + "</li>";
+                        str += "<li class='w566 w577'><a href='#' class='down_1'></a><a href='#' class='down_1 down_2'></a></li>";
+                        $("#myChannel .grzlk_tr").append(str);
+                    }
                 }
-            }
+            });
             $(".right div").remove();
             $(".right").append($("#myChannel"));
             $("#myChannel").css("display", "block");
@@ -182,10 +193,10 @@
 <!-- 店铺信息 -->
 <div class="supper" style="display: none;">
     <ul class="supper_ul">
-        <li>店铺地址：太平鸟男装（北京三里屯店）</li>
-        <li>营业时间：9：00-22：00</li>
-        <li>店长：王聪</li>
-        <li>联系电话：898989891</li>
+        <li th:text="|店铺地址：${config.address}|">店铺地址：太平鸟男装（北京三里屯店）</li>
+        <li th:text="|营业时间：${config.businessHoursBegin} - ${config.businessHoursEnd}|">营业时间：9：00-22：00</li>
+        <li th:text="|店长：${config.shopOwnerName}|">店长：王聪</li>
+        <li th:text="|联系电话：${config.phoneNumber}|">联系电话：898989891</li>
     </ul>
 </div>
 

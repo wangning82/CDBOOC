@@ -4,6 +4,7 @@ import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.BaseEntity;
 import com.cdboo.business.entity.RestChannel;
+import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
 import com.cdboo.business.service.PlanService;
@@ -77,6 +78,12 @@ public class WebViewController {
             result.put("manner", channelService.findChannelList(Constants.MUSIC_MANNER, scene));
         }
         return result;
+    }
+
+    @RequestMapping(value = "music")
+    @ResponseBody
+    public List<RestMusic> music(String channelId){
+        return musicService.findMusicByChannel(channelId);
     }
 
     @RequestMapping(value = "plan")
