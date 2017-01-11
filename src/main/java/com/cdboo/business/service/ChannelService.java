@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -52,11 +53,16 @@ public class ChannelService {
     public List<RestChannel> findChannelList(String style, String scene){
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentTime = sdf.format(new Date());
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+
         List<RestChannel> result = new ArrayList<RestChannel>();
         Predicate predicate = null;
         if(scene != null){
             predicate = QPlanModel.planModel.musicStyle.eq(style)
                     .and(QPlanModel.planModel.scene.eq(scene))
+                    .and(QPlanModel.planModel.week.contains(String.valueOf(calendar.get(Calendar.DAY_OF_WEEK))))
                     .and(QPlanModel.planModel.timestep.starttime.lt(currentTime))
                     .and(QPlanModel.planModel.timestep.endtime.gt(currentTime));
         }else{
