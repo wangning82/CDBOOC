@@ -40,5 +40,9 @@ public class PlanService {
         return result;
     }
 
+    public List<PlanModel> findPlanList(String style){
+        return null;
+    }
+
 
 }

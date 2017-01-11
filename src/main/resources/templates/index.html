@@ -45,6 +45,19 @@
         });
 
         var musicList = new Array(); // 歌曲列表
+        function Music(id, title, mp3, duration, volume, position){
+            this.id = id;
+            this.title = title;
+            this.mp3 = mp3;
+            this.duration = duration;
+            this.volume = volume;
+            this.position = position;
+        }
+
+        function playMusic(channelId) {
+            musicList.slice(0, musicList.length);
+
+        }
 
 
         function showShop() {

@@ -28,29 +28,55 @@ public class ChannelService {
     @Autowired
     private PlanRepository planRepository;
 
-    public void save(RestChannel channel){
+    /**
+     * 保存
+     *
+     * @param channel
+     */
+    public void save(RestChannel channel) {
         channelRepository.save(channel);
     }
 
-    public void deleteAll(){
+    /**
+     * 删除所有
+     */
+    public void deleteAll() {
         channelRepository.deleteAll();
+    }
+
+    private RestChannel findChannelById(Long channelId) {
+        return channelRepository.findOne(channelId);
+    }
+
+    /**
+     * 更新收藏状态
+     *
+     * @param channelId
+     * @param favorite
+     */
+    public void updateFavorite(Long channelId, String favorite) {
+        RestChannel channel = findChannelById(channelId);
+        channel.setFavorite(favorite);
+        channelRepository.flush();
     }
 
     /**
      * 查询收藏的频道
+     *
      * @return
      */
-    public List<RestChannel> findFavoriteList(){
+    public List<RestChannel> findFavoriteList() {
         return channelRepository.findByFavorite(Constants.FAVORITE_YES);
     }
 
     /**
      * 查询频道列表
+     *
      * @param style 风格
      * @param scene 场景业态
      * @return
      */
-    public List<RestChannel> findChannelList(String style, String scene){
+    public List<RestChannel> findChannelList(String style, String scene) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentTime = sdf.format(new Date());
 
@@ -59,18 +85,18 @@ public class ChannelService {
 
         List<RestChannel> result = new ArrayList<RestChannel>();
         Predicate predicate = null;
-        if(scene != null){
+        if (scene != null) {
             predicate = QPlanModel.planModel.musicStyle.eq(style)
                     .and(QPlanModel.planModel.scene.eq(scene))
                     .and(QPlanModel.planModel.week.contains(String.valueOf(calendar.get(Calendar.DAY_OF_WEEK))))
                     .and(QPlanModel.planModel.timestep.starttime.lt(currentTime))
                     .and(QPlanModel.planModel.timestep.endtime.gt(currentTime));
-        }else{
+        } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);
         }
         Iterable<PlanModel> list = planRepository.findAll(predicate);
-        for(PlanModel planModel : list){
-            if(!result.contains(planModel.getChannel())){
+        for (PlanModel planModel : list) {
+            if (!result.contains(planModel.getChannel())) {
                 result.add(planModel.getChannel());
             }
         }

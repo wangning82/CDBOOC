@@ -23,6 +23,21 @@ public class MusicService {
     @Autowired
     private ChannelRepository channelRepository;
 
+    private RestMusic findMusicById(Long musicId){
+        return musicRepository.findOne(musicId);
+    }
+
+    /**
+     * 更新收藏状态
+     * @param musicId
+     * @param favorite
+     */
+    public void updateFavorite(Long musicId, String favorite){
+        RestMusic music = findMusicById(musicId);
+        music.setFavorite(favorite);
+        musicRepository.flush();
+    }
+
     /**
      * 查询收藏音乐
      * @return
@@ -32,13 +47,13 @@ public class MusicService {
     }
 
     /**
-     * 查询歌单
+     * 查询频道歌单
      * @param channelId
      * @return
      */
-    public List<RestMusic> findMusicByChannel(String channelId){
+    public List<RestMusic> findMusicByChannel(Long channelId){
         List<RestMusic> result = new ArrayList();
-        RestChannel restChannel = channelRepository.findOne(Long.parseLong(channelId));
+        RestChannel restChannel = channelRepository.findOne(channelId);
         if(Constants.CHANNEL_TYPE_GROUP.equals(restChannel.getChannelType())){
             for(RestChannel channel : restChannel.getChildChannelList()){
                 for(RestMusic music : channel.getMusicList()){
@@ -53,5 +68,24 @@ public class MusicService {
         return result;
     }
 
+    /**
+     * 查询当前播放列表
+     * @return
+     */
+    public List<RestMusic> findMusic(){
+        List<RestMusic> result = new ArrayList();
+        // TODO
+        return result;
+    }
+
+    /**
+     * 查询插播列表
+     * @return
+     */
+    public List<RestMusic> findSpotMusic(){
+        List<RestMusic> result = new ArrayList();
+        // TODO
+        return result;
+    }
 
 }

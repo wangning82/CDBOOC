@@ -59,6 +59,46 @@ public class WebViewController {
     }
 
     /**
+     * 收藏频道
+     * @param channelId
+     */
+    @RequestMapping(value = "doFavoriteChannel")
+    @ResponseBody
+    public void doFavoriteChannel(String channelId){
+        channelService.updateFavorite(Long.parseLong(channelId), Constants.FAVORITE_YES);
+    }
+
+    /**
+     * 取消收藏频道
+     * @param channelId
+     */
+    @RequestMapping(value = "doNotFavoriteChannel")
+    @ResponseBody
+    public void doNotFavoriteChannel(String channelId){
+        channelService.updateFavorite(Long.parseLong(channelId), Constants.FAVORITE_DEFAULT);
+    }
+
+    /**
+     * 收藏音乐
+     * @param musicId
+     */
+    @RequestMapping(value = "doFavoriteMusic")
+    @ResponseBody
+    public void doFavoriteMusic(String musicId){
+        musicService.updateFavorite(Long.parseLong(musicId), Constants.FAVORITE_YES);
+    }
+
+    /**
+     * 取消收藏音乐
+     * @param musicId
+     */
+    @RequestMapping(value = "doNotFavoriteMusic")
+    @ResponseBody
+    public void doNotFavoriteMusic(String musicId){
+        musicService.updateFavorite(Long.parseLong(musicId), Constants.FAVORITE_DEFAULT);
+    }
+
+    /**
      * 查询频道列表
      * @param scene
      * @param model
@@ -80,10 +120,15 @@ public class WebViewController {
         return result;
     }
 
+    /**
+     * 获取频道下音乐
+     * @param channelId
+     * @return
+     */
     @RequestMapping(value = "music")
     @ResponseBody
     public List<RestMusic> music(String channelId){
-        return musicService.findMusicByChannel(channelId);
+        return musicService.findMusicByChannel(Long.parseLong(channelId));
     }
 
     @RequestMapping(value = "plan")
