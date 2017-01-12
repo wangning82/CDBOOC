@@ -26,7 +26,7 @@ public class ChannelService {
     private ChannelRepository channelRepository;
 
     @Autowired
-    private PlanRepository planRepository;
+    private PlanService planService;
 
     /**
      * 保存
@@ -77,24 +77,15 @@ public class ChannelService {
      * @return
      */
     public List<RestChannel> findChannelList(String style, String scene) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        String currentTime = sdf.format(new Date());
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-
         List<RestChannel> result = new ArrayList<RestChannel>();
         Predicate predicate = null;
         if (scene != null) {
-            predicate = QPlanModel.planModel.musicStyle.eq(style)
-                    .and(QPlanModel.planModel.scene.eq(scene))
-                    .and(QPlanModel.planModel.week.contains(String.valueOf(calendar.get(Calendar.DAY_OF_WEEK))))
-                    .and(QPlanModel.planModel.timestep.starttime.lt(currentTime))
-                    .and(QPlanModel.planModel.timestep.endtime.gt(currentTime));
+            predicate = planService.getPredicateByStyleAndTime(style)
+                    .and(QPlanModel.planModel.scene.eq(scene));
         } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);
         }
-        Iterable<PlanModel> list = planRepository.findAll(predicate);
+        Iterable<PlanModel> list = planService.findAll(predicate);
         for (PlanModel planModel : list) {
             if (!result.contains(planModel.getChannel())) {
                 result.add(planModel.getChannel());
