@@ -49,19 +49,15 @@ $(function () {
 
 
 });
-//切换tab
-$(function () {
-    $(".thead ul li").click(function () {
-        $(this).addClass("index").siblings().removeClass("index")
-        var ind = $(".thead ul li ").index(this);
-        $(".tbody").children("div")
-            .removeClass()
-            .eq(ind)
-            .addClass("block")
-            .siblings()
-            .addClass("none")
-    })
-});
+
+// 切换TAB
+function showTab(obj) {
+    $(obj).siblings().removeClass("index");
+    $(obj).addClass("index");
+    var index = $(obj).parent("ul").children("li").index(obj);
+    $(obj).parent().parent().next().children("div").removeClass().eq(index).addClass("block").siblings().addClass("none");
+}
+
 //点击弹出
 $(function () {
     $(".select_box").click(function (event) {

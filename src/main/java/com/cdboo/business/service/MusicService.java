@@ -7,15 +7,12 @@ import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.repository.ChannelRepository;
 import com.cdboo.business.repository.MusicRepository;
-import com.cdboo.business.repository.PlanRepository;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -34,16 +31,17 @@ public class MusicService {
     @Autowired
     private PlanService planService;
 
-    private RestMusic findMusicById(Long musicId){
+    private RestMusic findMusicById(Long musicId) {
         return musicRepository.findOne(musicId);
     }
 
     /**
      * 更新收藏状态
+     *
      * @param musicId
      * @param favorite
      */
-    public void updateFavorite(Long musicId, String favorite){
+    public void updateFavorite(Long musicId, String favorite) {
         RestMusic music = findMusicById(musicId);
         music.setFavorite(favorite);
         musicRepository.flush();
@@ -51,29 +49,31 @@ public class MusicService {
 
     /**
      * 查询收藏音乐
+     *
      * @return
      */
-    public List<RestMusic> findFavoriteList(){
+    public List<RestMusic> findFavoriteList() {
         return musicRepository.findByFavorite(Constants.FAVORITE_YES);
     }
 
     /**
      * 查询频道歌单
+     *
      * @param channelId
      * @return
      */
-    public List<RestMusic> findMusicByChannel(Long channelId){
+    public List<RestMusic> findMusicByChannel(Long channelId) {
         List<RestMusic> result = new ArrayList();
         RestChannel restChannel = channelRepository.findOne(channelId);
-        if(Constants.CHANNEL_TYPE_GROUP.equals(restChannel.getChannelType())){
-            for(RestChannel channel : restChannel.getChildChannelList()){
-                for(RestMusic music : channel.getMusicList()){
-                    if(!result.contains(music)){
+        if (Constants.CHANNEL_TYPE_GROUP.equals(restChannel.getChannelType())) {
+            for (RestChannel channel : restChannel.getChildChannelList()) {
+                for (RestMusic music : channel.getMusicList()) {
+                    if (!result.contains(music)) {
                         result.add(music);
                     }
                 }
             }
-        }else {
+        } else {
             result = restChannel.getMusicList();
         }
         return result;
@@ -81,9 +81,10 @@ public class MusicService {
 
     /**
      * 查询当前播放列表
+     *
      * @return
      */
-    public List<RestMusic> findMusic(){
+    public List<RestMusic> findMusic() {
         List<RestMusic> result = new ArrayList();
         // 根据优先级，节日 > 主题 > 风格
         findMusicByStyle(result, Constants.MUSIC_FESTIVAL);
@@ -93,16 +94,16 @@ public class MusicService {
     }
 
     /**
-     * 查询播发列表
+     * 查询播放列表
+     *
      * @param result
      * @param style
      */
     private void findMusicByStyle(List<RestMusic> result, String style) {
-        Predicate predicate = planService.getPredicateByStyleAndTime(style);
-        Iterable<PlanModel> festivalList = planService.findAll(predicate);
-        for(PlanModel planModel : festivalList){
-            for(RestMusic restMusic : planModel.getChannel().getMusicList()){
-                if(!result.contains(restMusic)){
+        Iterable<PlanModel> festivalList = planService.findPlanByStyle(style);
+        for (PlanModel planModel : festivalList) {
+            for (RestMusic restMusic : planModel.getChannel().getMusicList()) {
+                if (!result.contains(restMusic)) {
                     result.add(restMusic);
                 }
             }
@@ -111,9 +112,10 @@ public class MusicService {
 
     /**
      * 查询插播列表
+     *
      * @return
      */
-    public List<RestMusic> findSpotMusic(){
+    public List<RestMusic> findSpotMusic() {
         List<RestMusic> result = new ArrayList();
 
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
@@ -122,7 +124,7 @@ public class MusicService {
         Predicate predicate = planService.getPredicateByStyle(Constants.MUSIC_SPOT)
                 .and(QPlanModel.planModel.timestep.starttime.lt(currentTime));
         Iterable<PlanModel> list = planService.findAll(predicate);
-        for(PlanModel planModel : list){
+        for (PlanModel planModel : list) {
             // TODO 判断插播的间隔时间和次数
         }
 

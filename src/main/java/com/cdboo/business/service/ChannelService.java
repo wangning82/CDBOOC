@@ -5,15 +5,11 @@ import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.QPlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.repository.ChannelRepository;
-import com.cdboo.business.repository.PlanRepository;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,10 +74,15 @@ public class ChannelService {
      */
     public List<RestChannel> findChannelList(String style, String scene) {
         List<RestChannel> result = new ArrayList<RestChannel>();
-        Predicate predicate = null;
+        BooleanExpression predicate = null;
         if (scene != null) {
-            predicate = planService.getPredicateByStyleAndTime(style)
-                    .and(QPlanModel.planModel.scene.eq(scene));
+            predicate = planService.getPredicateByStyle(style)
+                    .and(planService.getPredicateByScene(scene))
+                    .and(planService.getPredicateByDate())
+                    .and(planService.getPredicateByTime());
+            if (Constants.MUSIC_THEME.equals(style) || Constants.MUSIC_MANNER.equals(style)) {
+                predicate = predicate.and(planService.getPredicateByWeek());
+            }
         } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);
         }

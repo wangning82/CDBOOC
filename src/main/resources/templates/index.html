@@ -62,8 +62,9 @@
 
         function showShop() {
             $(".right div").remove();
-            $(".right").append($(".supper"));
-            $(".supper").css("display", "block");
+            var shop = $(".supper").clone();
+            $(".right").append(shop);
+            shop.css("display", "block");
         }
 
         function findFavorite() {
@@ -112,8 +113,9 @@
                         }
                     }
                     $(".right div").remove();
-                    $(".right").append($("#myFavorite"));
-                    $("#myFavorite").css("display", "block");
+                    var favorite = $("#myFavorite").clone();
+                    $(".right").append(favorite);
+                    favorite.css("display", "block");
                 }
             });
         }
@@ -164,8 +166,9 @@
                         }
                     }
                     $(".right div").remove();
-                    $(".right").append($("#cl"));
-                    $("#cl").css("display", "block");
+                    var channel = $("#cl").clone();
+                    $(".right").append(channel);
+                    channel.css("display", "block");
                 }
             });
         }
@@ -195,8 +198,23 @@
                 }
             });
             $(".right div").remove();
-            $(".right").append($("#myChannel"));
-            $("#myChannel").css("display", "block");
+            var channel = $("#myChannel").clone();
+            $(".right").append(channel);
+            channel.css("display", "block");
+        }
+        
+        function findPlan() {
+            $(".right div").remove();
+            var plan = $("#myPlan").clone();
+            $(".right").append(plan);
+            plan.css("display", "block");
+        }
+
+        function findSpot() {
+            $(".right div").remove();
+            var spot = $("#mySpot").clone();
+            $(".right").append(spot);
+            spot.css("display", "block");
         }
 
         /*]]>*/
@@ -228,8 +246,8 @@
     <div class="row790">
         <div class="thead">
             <ul class="tab0">
-                <li class="index"><span>歌曲列表</span></li>
-                <li><span>频道列表</span></li>
+                <li class="index" onclick="showTab(this);"><span>歌曲列表</span></li>
+                <li onclick="showTab(this);"><span>频道列表</span></li>
             </ul>
         </div>
         <div class="tbody">
@@ -244,9 +262,9 @@
 <div id="cl" class="row790" style="display: none;">
     <div class="thead">
         <ul class="tab0">
-            <li class="index"><span>主题</span></li>
-            <li><span>风格</span><i class="redsc"></i></li>
-            <li><span>节日</span></li>
+            <li class="index" onclick="showTab(this);"><span>主题</span></li>
+            <li onclick="showTab(this);"><span>风格</span><i class="redsc"></i></li>
+            <li onclick="showTab(this);"><span>节日</span></li>
         </ul>
     </div>
     <div class="tbody">
@@ -330,6 +348,291 @@
     </div>
 </div>
 
+<!-- 播放计划 -->
+<div id="myPlan" style="display: none;">
+    <div class="row790">
+        <div class="thead">
+            <ul class="tab0 tab1">
+                <li class="index" onclick="showTab(this);"><span>节日计划</span></li>
+                <li onclick="showTab(this);"><span>主题计划</span></li>
+                <li onclick="showTab(this);"><span>风格计划</span></li>
+            </ul>
+        </div>
+        <div class="tbody tbody_02">
+            <!--主题-->
+            <div class="block">
+                <div class="festival">
+                    <ul class="festival_ul">
+                        <li>节日</li>
+                        <li>
+                            <div class="select_box box_fes">
+                                <span class="select_txt" style=" float:left;">圣诞节</span><i class="dao_sj dao_new"></i>
+                                <div class="option" id="option_fes"><a href="#" class="sel_jr">新年</a><a
+                                        href="#" class="sel_jr">七夕</a> <a href="#" class="sel_jr">春节</a><a
+                                        href="#" class="sel_jr">中秋节</a> <a href="#" class="sel_jr">情人节</a><a
+                                        href="#" class="sel_jr">教师节</a> <a href="#" class="sel_jr">愚人节</a><a
+                                        href="#" class="sel_jr">国庆节</a> <a href="#" class="sel_jr">劳动节</a><a
+                                        href="#" class="sel_jr">万圣节</a> <a href="#" class="sel_jr">母亲节</a><a
+                                        href="#" class="sel_jr">感恩节</a> <a href="#" class="sel_jr">儿童节</a><a
+                                        href="#" class="sel_jr">圣诞节</a> <a href="#" class="sel_jr">父亲节</a><a
+                                        href="#" class="sel_jr">生日</a></div>
+                            </div>
+                        </li>
+                        <li>开始时间</li>
+                        <li style=" position:relative;">
+                            <input id="txtBeginDate"
+                                   style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;margin-right:10px;"/>
+                            <i class="dao_sj dao_1"></i></li>
+                        <li>结束时间</li>
+                        <li style=" position:relative;">
+                            <input id="txtEndDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;"/>
+                            <i class="dao_sj dao_1"></i></li>
+                        <li>
+                            <input name="" type="button" value="保存" class="Save"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>凌晨</li>
+                        <li>00:00-06:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晨醒</li>
+                        <li>06:00-09:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>上午</li>
+                        <li>09:00-11:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>中午</li>
+                        <li>11:00-14:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>下午</li>
+                        <li>14:00-17:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>日落</li>
+                        <li>17:00-20:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晚间</li>
+                        <li>20:00-22:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>午夜</li>
+                        <li>22:00-24:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--风格-->
+            <div class="none">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>凌晨</li>
+                        <li>00:00-06:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晨醒</li>
+                        <li>06:00-09:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>上午</li>
+                        <li>09:00-11:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>中午</li>
+                        <li>11:00-14:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>下午</li>
+                        <li>14:00-17:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>日落</li>
+                        <li>17:00-20:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晚间</li>
+                        <li>20:00-22:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>午夜</li>
+                        <li>22:00-24:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="none">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>凌晨</li>
+                        <li>00:00-06:00</li>
+                        <li class="xingq">周一、周二、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晨醒</li>
+                        <li>06:00-09:00</li>
+                        <li class="xingq">周一、周二、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>上午</li>
+                        <li>09:00-11:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>中午</li>
+                        <li>11:00-14:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>下午</li>
+                        <li>14:00-17:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>日落</li>
+                        <li>17:00-20:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晚间</li>
+                        <li>20:00-22:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>午夜</li>
+                        <li>22:00-24:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 插播计划 -->
+<div id="mySpot" style="display: none;">
+    <div class="wdcbjh">
+        <h3>管理<br/>
+            我的插播计划</h3>
+    </div>
+    <div class="row790">
+        <div class="thead">
+            <ul class="tab0">
+                <li class="index"><span>插播列表</span></li>
+            </ul>
+        </div>
+        <div class="tbody">
+            <!--主题-->
+            <div class="block">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul chabo_list">
+                        <li>名称</li>
+                        <li>时长</li>
+                        <li>播放日期</li>
+                        <li>播放时间</li>
+                        <li>重复时间</li>
+                        <li>循环次数</li>
+                    </ul>
+                    <ul class="grzlk_ul chabo_list">
+                        <li>开店口播</li>
+                        <li>3:00</li>
+                        <li>每天</li>
+                        <li></li>
+                        <li>
+                            <input name="" type="text" value="09:00" class="inp_1"/>
+                        </li>
+                        <li>
+                            <input name="" type="text" value="1小时" class="inp_1"/>
+                        </li>
+                        <li class="sx_1">
+                            <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                            <a href="javascript:;" class="shang"></a><a href="javascript:;" class="xia"></a>
+                        </li>
+                    </ul>
+                    <ul class="grzlk_ul chabo_list">
+                        <li>注意事项</li>
+                        <li>3:00</li>
+                        <li>每天</li>
+                        <li></li>
+                        <li>
+                            <input name="" type="text" value="09:00" class="inp_1"/>
+                        </li>
+                        <li>
+                            <input name="" type="text" value="1小时" class="inp_1"/>
+                        </li>
+                        <li class="sx_1">
+                            <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                            <a href="#" class="shang"></a><a href="#" class="xia"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--风格-->
+            <div class="none">
+                <div class="sc_Btn">
+                    <input class="Btn_A" name="" type="button" value="批量删除" onclick="ShowDiv('TK1')"/>
+                </div>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="warp">
     <!--main=========================-->
     <section>
@@ -342,8 +645,8 @@
                 <li><a href="javascript:showShop();"><s class="S_xxjs_1"></s>我的店铺</a></li>
                 <li><a href="#"><s class="S_xxjs_2"></s>我的盒子</a></li>
                 <li><a href="javascript:findFavorite();"><s class="S_xxjs_3"></s>我的收藏</a></li>
-                <li><a href="#" th:href="@{/plan}"><s class="S_xxjs_4"></s>播放计划</a></li>
-                <li><a href="#" th:href="@{/spot}"><s class="S_xxjs_5"></s>插播计划</a></li>
+                <li><a href="javascript:findPlan();"><s class="S_xxjs_4"></s>播放计划</a></li>
+                <li><a href="javascript:findSpot();"><s class="S_xxjs_5"></s>插播计划</a></li>
                 <li class="details">
                     <h4>场景业态</h4>
                 </li>
