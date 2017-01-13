@@ -115,20 +115,18 @@ public class MusicService {
      *
      * @return
      */
-    public List<RestMusic> findSpotMusic() {
-        List<RestMusic> result = new ArrayList();
-
+    public RestMusic findSpotMusic() {
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
         String currentTime = sdf.format(new Date());
 
-        Predicate predicate = planService.getPredicateByStyle(Constants.MUSIC_SPOT)
-                .and(QPlanModel.planModel.timestep.starttime.lt(currentTime));
+        Predicate predicate = planService.getPredicateByStyle(Constants.MUSIC_SPOT).and(planService.getPredicateByDate());
         Iterable<PlanModel> list = planService.findAll(predicate);
         for (PlanModel planModel : list) {
             // TODO 判断插播的间隔时间和次数
-        }
 
-        return result;
+
+        }
+        return null;
     }
 
 }
