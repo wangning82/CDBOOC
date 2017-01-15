@@ -16,23 +16,7 @@
             myPlaylist = new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
                 cssSelectorAncestor: "#jp_container_1"
-            }, [
-                {
-                    title: "Cro Magnon Man",
-                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
-                    duration: "4:28"
-                },
-                {
-                    title: "Your Face",
-                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
-                    duration: "4:35"
-                },
-                {
-                    title: "Your Face",
-                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
-                    duration: "4:35"
-                }
-            ], {
+            }, [], {
                 swfPath: "js",
                 supplied: "oga, mp3",
                 wmode: "window",
@@ -43,6 +27,7 @@
             });
 
             findChannel();
+            loadPlanMusic();
         });
 
         var spotflag = false; // 是否插播
@@ -59,6 +44,7 @@
 
         // 加载播放计划音乐
         function loadPlanMusic() {
+            musicList.slice(0, musicList.length); // 清除数组
             $.ajax({
                 type: "POST",
                 url: "/planMusic",
@@ -69,6 +55,7 @@
                         var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0);
                         musicList.push(music);
                     }
+                    myPlaylist.setPlaylist(JSON.stringify(musicList)); // 把对象转换json
                 }
             });
         }
@@ -88,7 +75,6 @@
 
         // 加载播放列表
         function loadMusicList() {
-            musicList.slice(0, musicList.length); // 清除数组
 
 
         }
