@@ -1,10 +1,10 @@
 package com.cdboo.business.entity;
 
 import com.cdboo.business.common.Constants;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 /**

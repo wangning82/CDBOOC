@@ -3,6 +3,7 @@ package com.cdboo.business.web;
 import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.BaseEntity;
+import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.service.ChannelService;
@@ -40,7 +41,8 @@ public class WebViewController {
     @RequestMapping(value = "")
     public String index(Model model){
         model.addAttribute("config", Config.getConfigInstance());
-        model.addAttribute("sceneList", planService.findSceneList());
+        model.addAttribute("sceneList", planService.findSceneList()); // 场景业态
+        model.addAttribute("festivalList", planService.findFestivalList()); // 查询节日
         return "index";
     }
 
@@ -131,13 +133,67 @@ public class WebViewController {
         return musicService.findMusicByChannel(Long.parseLong(channelId));
     }
 
+    /**
+     * 获取播放计划
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "plan")
-    public String plan(Model model){
-        return "plan";
+    @ResponseBody
+    public Map<String, Iterable<PlanModel>> plan(String festival, Model model){
+        Map<String, Iterable<PlanModel>> result = new HashMap<>();
+        result.put("festival", planService.findFestivalPlan(festival));
+        result.put("theme", planService.findPlanByStyle(Constants.MUSIC_THEME));
+        result.put("manner", planService.findPlanByStyle(Constants.MUSIC_MANNER));
+        return result;
     }
 
-    @RequestMapping(value = "spot")
-    public String spot(Model model){
-        return "spot";
+    /**
+     * 获取节日计划
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "festivalPlan")
+    @ResponseBody
+    public Iterable<PlanModel> festivalPlan(String festival, Model model){
+        return planService.findFestivalPlan(festival);
     }
+
+    /**
+     * 获取插播计划
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "spot")
+    @ResponseBody
+    public Iterable<PlanModel> spot(Model model){
+        return planService.findSpotPlan();
+    }
+
+    /**
+     * 获取计划音乐
+     * @return
+     */
+    @RequestMapping(value = "planMusic")
+    @ResponseBody
+    public List<RestMusic> planMusic(){
+        return musicService.findPlanMusic();
+    }
+
+    /**
+     * 获取插播音乐
+     * @return
+     */
+    @RequestMapping(value = "spotMusic")
+    @ResponseBody
+    public RestMusic spotMusic(){
+        RestMusic result = null;
+        try{
+            result = musicService.findSpotMusic();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

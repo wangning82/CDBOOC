@@ -1,8 +1,6 @@
 package com.cdboo.business.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 播放计划

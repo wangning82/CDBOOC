@@ -42,7 +42,8 @@ logging:
 url:
   cdboo:
     server:
-      ip: http://139.129.240.92:8080/cdboo
+      #ip: http://139.129.240.92:8080/cdboo
+      ip: http://114.115.209.238:8080/cdboo
       checkUser: /cdboo-service/check-user
       getUserData: /cdboo-service/get-data
     client:

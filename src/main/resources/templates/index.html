@@ -11,8 +11,9 @@
     <meta charset="utf-8"/>
     <script th:inline="javascript">
         /*<![CDATA[*/
+        var myPlaylist;
         $(document).ready(function () {
-            new jPlayerPlaylist({
+            myPlaylist = new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
                 cssSelectorAncestor: "#jp_container_1"
             }, [
@@ -44,6 +45,8 @@
             findChannel();
         });
 
+        var spotflag = false; // 是否插播
+        var spotmusic; // 插播音乐
         var musicList = new Array(); // 歌曲列表
         function Music(id, title, mp3, duration, volume, position){
             this.id = id;
@@ -54,7 +57,37 @@
             this.position = position;
         }
 
-        function playMusic(channelId) {
+        // 加载播放计划音乐
+        function loadPlanMusic() {
+            $.ajax({
+                type: "POST",
+                url: "/planMusic",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    for(var i = 0 ; i < data.length; i ++){
+                        var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0);
+                        musicList.push(music);
+                    }
+                }
+            });
+        }
+
+        // 加载插播音乐
+        function loadSpotMusic() {
+            $.ajax({
+                type: "POST",
+                url: "/spotMusic",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    spotmusic = new Music(data.id, data.musicName, data.path, data.duration, data.volume, 0);
+                }
+            });
+        }
+
+        // 加载播放列表
+        function loadMusicList() {
             musicList.slice(0, musicList.length); // 清除数组
 
 

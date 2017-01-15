@@ -71,6 +71,15 @@ public class PlanService {
     }
 
     /**
+     * 节日查询
+     * @param themeConcreteType
+     * @return
+     */
+    public BooleanExpression getPredicateBythemeConcrete(String themeConcreteType) {
+        return QPlanModel.planModel.channel.themeConcreteType.eq(themeConcreteType);
+    }
+
+    /**
      * 业态条件查询
      *
      * @param scene
@@ -120,11 +129,33 @@ public class PlanService {
      * @return
      */
     public Iterable<PlanModel> findPlanByStyle(String musicStyle) {
-        BooleanExpression predicate = getPredicateByStyle(musicStyle).and(getPredicateByDate()).and(getPredicateByTime());
-        if (Constants.MUSIC_THEME.equals(musicStyle) || Constants.MUSIC_MANNER.equals(musicStyle)) {
-            predicate = predicate.and(getPredicateByWeek());
-        }
+        BooleanExpression predicate = getPredicateByStyle(musicStyle).and(getPredicateByDate()).and(getPredicateByTime()).and(getPredicateByWeek());
         return findAll(predicate);
+    }
+
+    /**
+     * 查询节日计划
+     * @param festival
+     * @return
+     */
+    public Iterable<PlanModel> findFestivalPlan(String festival){
+        BooleanExpression predicate = getPredicateByStyle(Constants.MUSIC_FESTIVAL).and(getPredicateBythemeConcrete(festival));
+        return findAll(predicate);
+    }
+
+    /**
+     * 查询节日
+     * @return
+     */
+    public List<String> findFestivalList(){
+        List<String> result = new ArrayList<>();
+        Iterable<PlanModel> list = findAll(getPredicateByStyle(Constants.MUSIC_FESTIVAL));
+        for(PlanModel planModel : list){
+            if(!result.contains(planModel.getChannel().getThemeConcreteType())){
+                result.add(planModel.getChannel().getThemeConcreteType());
+            }
+        }
+        return result;
     }
 
     /**

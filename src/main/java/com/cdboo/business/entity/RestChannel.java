@@ -5,7 +5,6 @@ import com.cdboo.business.common.Constants;
 import com.google.common.collect.Lists;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ public class RestChannel extends BaseEntity {
     private String themeType; // 风格类型
 
     @Column(name = "themeConcreteType")
-    private String themeConcreteType; // 风格类型明细
+    private String themeConcreteType; // 风格类型明细（节日）
 
     @Column(name = "channelVersion")
     private String channelVersion; // 频道版本

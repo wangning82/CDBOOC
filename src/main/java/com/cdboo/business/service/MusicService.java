@@ -11,8 +11,10 @@ import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -84,7 +86,7 @@ public class MusicService {
      *
      * @return
      */
-    public List<RestMusic> findMusic() {
+    public List<RestMusic> findPlanMusic() {
         List<RestMusic> result = new ArrayList();
         // 根据优先级，节日 > 主题 > 风格
         findMusicByStyle(result, Constants.MUSIC_FESTIVAL);
@@ -111,22 +113,37 @@ public class MusicService {
     }
 
     /**
-     * 查询插播列表
+     * 查询插播列表(每秒检索)
      *
      * @return
      */
-    public RestMusic findSpotMusic() {
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+    public RestMusic findSpotMusic() throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
         String currentTime = sdf.format(new Date());
+
+        List<RestMusic> result = new ArrayList<>();
 
         Predicate predicate = planService.getPredicateByStyle(Constants.MUSIC_SPOT).and(planService.getPredicateByDate());
         Iterable<PlanModel> list = planService.findAll(predicate);
+        // 判断插播的间隔时间和次数
         for (PlanModel planModel : list) {
-            // TODO 判断插播的间隔时间和次数
-
-
+            int cycle = 0;
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(sdf.parse(planModel.getTimestep().getStarttime()));
+            while (cycle <= Integer.parseInt(planModel.getCycleTimes()) - 1){
+                calendar.add(Calendar.MINUTE, cycle * Integer.parseInt(planModel.getIntervalTime()));
+                if(currentTime.equals(sdf.format(calendar.getTime()))){
+                    result = planModel.getChannel().getMusicList();
+                    break;
+                }
+                cycle ++;
+            }
         }
-        return null;
+        if(result.size() != 0){
+            return result.get(0);
+        }else{
+            return null;
+        }
     }
 
 }

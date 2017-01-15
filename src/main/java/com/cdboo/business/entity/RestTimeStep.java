@@ -29,9 +29,6 @@ public class RestTimeStep extends BaseEntity {
     @Column(name = "endtime")
     private String endtime; // 结束时间
 
-    @OneToOne(optional=false, mappedBy="timestep")
-    private PlanModel planModel;
-
     public String getTimestepNo() {
         return timestepNo;
     }
@@ -62,14 +59,6 @@ public class RestTimeStep extends BaseEntity {
 
     public void setEndtime(String endtime) {
         this.endtime = endtime;
-    }
-
-    public PlanModel getPlanModel() {
-        return planModel;
-    }
-
-    public void setPlanModel(PlanModel planModel) {
-        this.planModel = planModel;
     }
 
     public long getId() {
