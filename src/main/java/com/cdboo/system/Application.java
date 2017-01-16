@@ -3,17 +3,20 @@ package com.cdboo.system;
 import com.cdboo.business.ui.player.controller.MainController;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.player.view.SplashWindow;
+import com.cdboo.system.spring.PropsConfig;
 import org.jb2011.lnf.beautyeye.BeautyEyeLNFHelper;
 import org.jb2011.lnf.beautyeye.utils.Platform;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.swing.*;
 
 @SpringBootApplication
 @EnableAutoConfiguration
+@EnableConfigurationProperties({PropsConfig.class})
 public class Application {
 
     private static void initUserInterface() {
