@@ -72,7 +72,10 @@ public class RestChannel extends BaseEntity {
     @Column(name = "profile")
     private String remarks; // 频道简介
 
-    @ManyToMany(mappedBy = "channelList")
+    @ManyToMany(cascade=CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "cdboo_channel_music",
+            inverseJoinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "music_id")},
+            joinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "channel_id")})
     private List<RestMusic> musicList = Lists.newArrayList(); //如果是子频道，该集合有对应music的信息
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

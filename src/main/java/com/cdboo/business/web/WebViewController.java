@@ -9,6 +9,7 @@ import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
 import com.cdboo.business.service.PlanService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class WebViewController {
 
     @Autowired
     private MusicService musicService;
+
+    private ObjectMapper mapper = new ObjectMapper();
 
     @RequestMapping(value = "")
     public String index(Model model){
@@ -129,8 +132,11 @@ public class WebViewController {
      */
     @RequestMapping(value = "music")
     @ResponseBody
-    public List<RestMusic> music(String channelId){
-        return musicService.findMusicByChannel(Long.parseLong(channelId));
+    public Map<String, Object> music(String channelId){
+        Map<String, Object> result = new HashMap<>();
+        result.put("channel", channelService.findChannelById(Long.parseLong(channelId)));
+        result.put("musicList", musicService.findMusicByChannel(Long.parseLong(channelId)));
+        return result;
     }
 
     /**

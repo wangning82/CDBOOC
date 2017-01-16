@@ -1,11 +1,8 @@
 package com.cdboo.business.entity;
 
 import com.cdboo.business.common.Constants;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Lists;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * 用户音乐信息
@@ -50,12 +47,6 @@ public class RestMusic extends BaseEntity {
 
     @Column(name = "favorite")
     private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
-
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "cdboo_channel_music",
-            joinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "music_id")},
-            inverseJoinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "channel_id")})
-    private List<RestChannel> channelList = Lists.newArrayList();
 
     public String getMusicNo() {
         return musicNo;
@@ -119,14 +110,6 @@ public class RestMusic extends BaseEntity {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public List<RestChannel> getChannelList() {
-        return channelList;
-    }
-
-    public void setChannelList(List<RestChannel> channelList) {
-        this.channelList = channelList;
     }
 
     public String getFavorite() {

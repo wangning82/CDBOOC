@@ -28,8 +28,8 @@ public class PlanService {
         planRepository.deleteAll();
     }
 
-    public void save(PlanModel planModel) {
-        planRepository.save(planModel);
+    public PlanModel save(PlanModel planModel) {
+        return planRepository.save(planModel);
     }
 
     /**
@@ -129,7 +129,10 @@ public class PlanService {
      * @return
      */
     public Iterable<PlanModel> findPlanByStyle(String musicStyle) {
-        BooleanExpression predicate = getPredicateByStyle(musicStyle).and(getPredicateByDate()).and(getPredicateByTime()).and(getPredicateByWeek());
+        BooleanExpression predicate = getPredicateByStyle(musicStyle).and(getPredicateByTime()).and(getPredicateByWeek());
+        if(Constants.MUSIC_FESTIVAL.equals(musicStyle)){
+            predicate = predicate.and(getPredicateByDate());
+        }
         return findAll(predicate);
     }
 

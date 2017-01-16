@@ -16,7 +16,15 @@ public class PeriodService {
     @Autowired
     private PeriodRepository periodRepository;
 
+    public RestTimeStep save(RestTimeStep period){
+        return periodRepository.save(period);
+    }
+
     public List<RestTimeStep> findAll(){
         return periodRepository.findAll();
+    }
+
+    public void deleteAll() {
+        periodRepository.deleteAll();
     }
 }

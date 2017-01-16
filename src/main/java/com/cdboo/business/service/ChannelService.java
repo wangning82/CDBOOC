@@ -29,8 +29,8 @@ public class ChannelService {
      *
      * @param channel
      */
-    public void save(RestChannel channel) {
-        channelRepository.save(channel);
+    public RestChannel save(RestChannel channel) {
+        return channelRepository.save(channel);
     }
 
     /**
@@ -40,7 +40,12 @@ public class ChannelService {
         channelRepository.deleteAll();
     }
 
-    private RestChannel findChannelById(Long channelId) {
+    /**
+     * 查询频道
+     * @param channelId
+     * @return
+     */
+    public RestChannel findChannelById(Long channelId) {
         return channelRepository.findOne(channelId);
     }
 
@@ -77,11 +82,11 @@ public class ChannelService {
         BooleanExpression predicate = null;
         if (scene != null) {
             predicate = planService.getPredicateByStyle(style)
-                    .and(planService.getPredicateByScene(scene))
-                    .and(planService.getPredicateByDate())
-                    .and(planService.getPredicateByTime());
+                    .and(planService.getPredicateByScene(scene));
             if (Constants.MUSIC_THEME.equals(style) || Constants.MUSIC_MANNER.equals(style)) {
                 predicate = predicate.and(planService.getPredicateByWeek());
+            }else if(Constants.MUSIC_SPOT.equals(style) || Constants.MUSIC_FESTIVAL.equals(style)){
+                predicate = predicate.and(planService.getPredicateByDate()).and(planService.getPredicateByTime());;
             }
         } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);

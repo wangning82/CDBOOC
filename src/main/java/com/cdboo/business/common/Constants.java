@@ -9,10 +9,10 @@ public class Constants {
     public static final String USER_PASSWORD_NOT_CORRECT = "1";//密码不正确
     public static final String USER_PASSWORD_CORRECT = "2";//正确
 
-    public static final String MUSIC_SPOT = "1"; // 插播
-    public static final String MUSIC_FESTIVAL = "2"; // 节日
-    public static final String MUSIC_THEME = "3"; // 主题
-    public static final String MUSIC_MANNER = "4"; // 风格
+    public static final String MUSIC_SPOT = "3"; // 插播
+    public static final String MUSIC_FESTIVAL = "1"; // 节日
+    public static final String MUSIC_THEME = "0"; // 主题
+    public static final String MUSIC_MANNER = "2"; // 风格
 
     public static final String CHANNEL_TYPE_SUB = "0"; // 子频道
     public static final String CHANNEL_TYPE_GROUP = "1"; // 组合频道

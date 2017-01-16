@@ -37,6 +37,14 @@ public class MusicService {
         return musicRepository.findOne(musicId);
     }
 
+    public RestMusic save(RestMusic music){
+        return musicRepository.save(music);
+    }
+
+    public void deleteAll() {
+        musicRepository.deleteAll();
+    }
+
     /**
      * 更新收藏状态
      *
@@ -59,7 +67,7 @@ public class MusicService {
     }
 
     /**
-     * 查询频道歌单
+     * 查询频道歌单(去除子频道重复的歌曲)
      *
      * @param channelId
      * @return
