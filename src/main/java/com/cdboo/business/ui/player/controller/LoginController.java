@@ -1,6 +1,7 @@
 package com.cdboo.business.ui.player.controller;
 
 import com.cdboo.business.common.Constants;
+import com.cdboo.business.common.YamlUtils;
 import com.cdboo.business.service.UserService;
 import com.cdboo.business.ui.player.view.LoginDialog;
 import com.cdboo.business.ui.player.view.MainFrame;
@@ -43,6 +44,7 @@ public class LoginController extends AbstractFrameController {
             dialog.reset();
             dialog.dispose();
             userService.saveUserData(userService.getUserData(userName));
+            mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
         }
     }
 }
