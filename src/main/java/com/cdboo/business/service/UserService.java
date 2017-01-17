@@ -73,16 +73,12 @@ public class UserService {
         config.setServiceTimeEnd(model.getServiceTimeEnd());
         config.saveUserData();
 
-        if(new File(propsConfig.getMusic()).exists()){
-            new File(propsConfig.getMusic()).delete();
+        if(!new File(propsConfig.getMusic()).exists()){
+            new File(propsConfig.getMusic()).mkdirs();
         }
-        if(new File(propsConfig.getImages()).exists()){
-            new File(propsConfig.getImages()).delete();
+        if(!new File(propsConfig.getImages()).exists()){
+            new File(propsConfig.getImages()).mkdirs();
         }
-        new File(propsConfig.getMusic()).mkdirs();
-        new File(propsConfig.getImages()).mkdirs();
-
-        musicService.deleteAll();
         planService.deleteAll();
 
         for (PlanModel planModel : model.getPlanModelList()) {
@@ -134,21 +130,23 @@ public class UserService {
     }
 
     private void saveToFile(String destUrl, String fileName) throws IOException {
-        byte[] buf = new byte[BUFFER_SIZE];
-        int size = 0;
+        if(!new File(fileName).exists()){
+            byte[] buf = new byte[BUFFER_SIZE];
+            int size = 0;
 
-        URL url = new URL(destUrl.replaceAll(" ", "%20"));
-        HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
-        httpUrl.connect();
-        BufferedInputStream bis = new BufferedInputStream(httpUrl.getInputStream());
-        FileOutputStream fos = new FileOutputStream(fileName);
+            URL url = new URL(destUrl.replaceAll(" ", "%20"));
+            HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
+            httpUrl.connect();
+            BufferedInputStream bis = new BufferedInputStream(httpUrl.getInputStream());
+            FileOutputStream fos = new FileOutputStream(fileName);
 
-        // 保存文件
-        while ((size = bis.read(buf)) != -1)
-            fos.write(buf, 0, size);
+            // 保存文件
+            while ((size = bis.read(buf)) != -1)
+                fos.write(buf, 0, size);
 
-        fos.close();
-        bis.close();
-        httpUrl.disconnect();
+            fos.close();
+            bis.close();
+            httpUrl.disconnect();
+        }
     }
 }

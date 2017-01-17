@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.view;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
 import com.cdboo.business.common.YamlUtils;
@@ -10,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,7 +37,9 @@ public class MainFrame extends JFrame {
             webBrowser.setScene(scene);
             view = new WebView();
             view.setPrefSize(new Integer(JComponentStyle.MAIN_WIDTH).doubleValue(), new Integer(JComponentStyle.MAIN_HEIGHT).doubleValue());
-            view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
+            if(Config.getConfigInstance().isAutoLogin() && !StringUtils.isEmpty(Config.getConfigInstance().getUserName())){
+                view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
+            }
             root.getChildren().add(view);
         });
 

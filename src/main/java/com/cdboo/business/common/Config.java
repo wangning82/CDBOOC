@@ -28,6 +28,8 @@ public class Config implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date serviceTimeEnd; //用户服务时间结束时间
 
+    private boolean autoLogin; // 是否自动登录
+
     private static Config config = null;
 
     public synchronized static Config getConfigInstance() {
@@ -148,4 +150,14 @@ public class Config implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    public boolean isAutoLogin() {
+        return autoLogin;
+    }
+
+    public void setAutoLogin(boolean autoLogin) {
+        this.autoLogin = autoLogin;
+    }
+
+
 }

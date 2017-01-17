@@ -45,15 +45,13 @@ public class Application {
     public static void main(String[] args) {
         initUserInterface();
         SplashWindow splashWindow = new SplashWindow();
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class).headless(false).run(args);
-                MainController mainController = context.getBean(MainController.class);
-                mainController.prepareAndOpenFrame();
-                MainFrame mainFrame = mainController.getMainFrame();
-                splashWindow.dispose();
-                mainFrame.setVisible(true);
-            }
+        SwingUtilities.invokeLater(() -> {
+            ConfigurableApplicationContext context = new SpringApplicationBuilder(Application.class).headless(false).run(args);
+            MainController mainController = context.getBean(MainController.class);
+            mainController.prepareAndOpenFrame();
+            MainFrame mainFrame = mainController.getMainFrame();
+            splashWindow.dispose();
+            mainFrame.setVisible(true);
         });
     }
 

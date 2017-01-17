@@ -2236,6 +2236,9 @@ a:hover {
     text-align: center;
     margin-bottom: 30px;
 }
+div.jp-details {
+    display: block !important;
+}
 
 
 

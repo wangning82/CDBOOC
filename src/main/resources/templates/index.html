@@ -38,15 +38,9 @@
                 useStateClassSkin: true,
                 autoBlur: false,
                 smoothPlayBar: true,
-                keyEnabled: true
-            });
-
-            $("#jquery_jplayer_1").jPlayer({
+                keyEnabled: true,
                 play: function(e) {
-                    if(!spotflag){
-                        console.log(e.jPlayer.status.media.title);
-                        console.log(e.jPlayer.status.media.id);
-                    }
+                    $(".songTitle").html(e.jPlayer.status.media.title);
                 },
                 ended: function (e) {
                     spotflag = false;
@@ -61,7 +55,7 @@
 
             findChannel();
             loadPlanMusic();
-            window.setInterval(findSpot, 30000);
+            window.setInterval(findSpotMusic, 30000);
 
         });
 
@@ -99,7 +93,7 @@
         }
 
         // 查找插播
-        function findSpot() {
+        function findSpotMusic() {
             if(!spotflag){
                 loadSpotMusic();
                 if (typeof(spotmusic) != "undefined" && spotmusic != null) {
@@ -193,7 +187,7 @@
                     if (data.festival.length != 0) {
                         for (var i = 0; i < data.festival.length; i++) {
                             var str = "<dl class='zhuti' onclick='findMusic(" + data.festival[i].id + ")'>";
-                            str += "<dt><a href='#'><img src='images/img_1.jpg'/></a></dt>";
+                            str += "<dt><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='icon_bg'></dd>";
                             str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
                             str += "<dd class='Text'>" + data.festival[i].channelName + "</dd>";
@@ -205,7 +199,7 @@
                     if (data.theme.length != 0) {
                         for (var i = 0; i < data.theme.length; i++) {
                             var str = "<dl class='zhuti' onclick='findMusic(" + data.theme[i].id + ")'>";
-                            str += "<dt><img src='images/img_1.jpg'/></dt>";
+                            str += "<dt><img src='" + data.festival[i].photoPath+ "'/></dt>";
                             str += "<dd class='icon_bg'></dd>";
                             str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
                             str += "<dd class='Text'>" + data.theme[i].channelName + "</dd>";
@@ -218,7 +212,7 @@
                     if (data.manner.length != 0) {
                         for (var i = 0; i < data.manner.length; i++) {
                             var str = "<dl class='Style Style_xin' onclick='findMusic(" + data.manner[i].id + ")'>";
-                            str += "<dt class='ash_mo'><a href='#'><img src='images/img_1.jpg'/></a></dt>";
+                            str += "<dt class='ash_mo'><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='ashow'></dd>";
                             str += "<dd class='Text'>" + data.manner[i].channelName + "</dd>";
                             str += "</dl>";
@@ -246,6 +240,7 @@
                     $("#myChannel .channelName").html(data.channel.channelName);
                     $("#myChannel .profile").html(data.channel.remarks);
                     $("#myChannel .gqsl").html(data.musicList.length);
+                    $("#myChannel .zhuti_menu img").attr("src", data.channel.photoPath);
                     $("#myChannel .grzlk_tr").children().remove();
                     $("#myChannel .grzlk_tr").append("<ul class='grzlk_ul'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li><li class='w566'>操作</li></ul>");
                     for (var i = 0; i < data.musicList.length; i++) {
@@ -257,6 +252,16 @@
                         str += "<li class='w566 w577'><a href='#' class='down_1'></a><a href='#' class='down_1 down_2'></a></li>";
                         $("#myChannel .grzlk_tr").append(str);
                     }
+                    $("#myChannel .mu_2").click(function () {
+                        myPlaylist.setPlaylist({}); // 清空播放列表
+                        $(".liedui_top .lie_h4").html("播放队列（共" + data.musicList.length + "首歌）");
+                        $("#nav .num_1").html(data.musicList.length);
+                        for (var i = 0; i < data.musicList.length; i++) {
+                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0);
+                            myPlaylist.add(music);
+                        }
+                        myPlaylist.play(0);
+                    });
                 }
             });
             $(".right div").remove();
@@ -280,7 +285,7 @@
         function findSpot() {
             $(".right div").remove();
 
-
+            // TODO
 
             var spot = $("#mySpot").clone();
             $(".right").append(spot);
@@ -373,13 +378,13 @@
     <div class="Menu">
         <dl class="zhuti_menu">
             <dt><a href="#"><img src="images/img_1.jpg"/></a></dt>
-            <dd class="icon_bg"></dd>
-            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
+            <!--<dd class="icon_bg"></dd>-->
+            <!--<dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>-->
         </dl>
         <div class="Menu_you">
             <div class="Menu_p">
                 <h4 class="channelName">服装促销季</h4>
-                <p style="float:left; margin-top:5px;"><i class="mu_1"></i><span class="num gqsl">歌曲数量</span><i class="mu_1 mu_2"></i><span class="num bfcs">播放次数</span></p>
+                <p style="float:left; margin-top:5px;"><i class="mu_1"></i><span class="num gqsl">歌曲数量</span><i class="mu_1 mu_2"></i><span class="num bfcs"></span></p>
                 <input class="Btn_A Btn_c" type="button" value="收藏"/>
             </div>
             <div class="sc_div">
@@ -751,7 +756,7 @@
                         </div>
                     </div>
                     <div class="jp-time-holder" style="font-size: 14px; color: #979797">
-                        <div style="float: left;">Hostital flowers--中文 City</div>
+                        <div style="float: left;" class="songTitle"></div>
                         <div style="float: right; width: 100px;">
                             <div class="jp-current-time" role="timer" aria-label="time"></div>
                             <div style="float: left; top: 20px;">/</div>
@@ -778,7 +783,7 @@
                                         <div class="di"><img src="images/di.png"/></div>
                                     </div>
                                 </li>
-                                <li><a href="#" class="btn_6"></a><span class="num num_1">10</span>
+                                <li><a href="#" class="btn_6"></a><span class="num num_1">0</span>
                                     <div class="sub option_3">
                                         <div class="liedui_top">
                                             <h4 class="lie_h4">播放列队（共10首歌）</h4>
