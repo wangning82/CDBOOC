@@ -118,7 +118,7 @@ public class LoginDialog extends JDialog {
         c.insets = new Insets(0, 0, 0, 0);
         inputPanel.add(passwordField, c);
 
-        message = JComponentUtils.createLabel("", JComponentStyle.FONT_12, Color.RED, new Dimension(100, 26));
+        message = JComponentUtils.createLabel("", JComponentStyle.FONT_12, Color.RED, new Dimension(180, 26));
         c.fill = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 2;

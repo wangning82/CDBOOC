@@ -67,6 +67,7 @@ public class TitleBarController extends AbstractFrameController {
         double y = p.getY() + mainFrame.getHeight() / 2 - JComponentStyle.LOGIN_HEIGHT / 2;
         mainFrame.getLoginDialog().setShowPossition(new Point(new Double(x).intValue(), new Double(y).intValue()));
         mainFrame.getLoginDialog().showItNow();
+        mainFrame.getLoginDialog().reset();
     }
 
     /**

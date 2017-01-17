@@ -40,11 +40,14 @@ public class PlanModel extends BaseEntity {
     @Column(name = "cycleTimes")
     private String cycleTimes; // 循环次数，只有插播才有效
 
+    @Column(name = "intervalTime")
+    private String intervalTime; //间隔时间
+
     @Column(name = "scene")
     private String scene; // 场景业态
 
-    @Column(name = "intervalTime")
-    private String intervalTime; //间隔时间
+    @Column(name = "sceneImage")
+    private String sceneImg;//业态图片
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="period_id", unique=true, nullable=false, updatable=false)
@@ -156,5 +159,13 @@ public class PlanModel extends BaseEntity {
 
     public void setIntervalTime(String intervalTime) {
         this.intervalTime = intervalTime;
+    }
+
+    public String getSceneImg() {
+        return sceneImg;
+    }
+
+    public void setSceneImg(String sceneImg) {
+        this.sceneImg = sceneImg;
     }
 }

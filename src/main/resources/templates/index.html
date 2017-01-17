@@ -11,7 +11,21 @@
     <meta charset="utf-8"/>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var myPlaylist;
+        var myPlaylist; // 播放列表
+        var spotflag = false; // 当前是否插播
+        var spotmusic; // 插播音乐
+        var musicList = new Array(); // 歌曲列表
+        var playIndex = 0;
+
+        function Music(id, title, mp3, duration, volume, position){
+            this.id = id;
+            this.title = title;
+            this.mp3 = mp3;
+            this.duration = duration;
+            this.volume = volume;
+            this.position = position;
+        }
+
         $(document).ready(function () {
             myPlaylist = new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
@@ -27,22 +41,29 @@
                 keyEnabled: true
             });
 
+            $("#jquery_jplayer_1").jPlayer({
+                play: function(e) {
+                    if(!spotflag){
+                        console.log(e.jPlayer.status.media.title);
+                        console.log(e.jPlayer.status.media.id);
+                    }
+                },
+                ended: function (e) {
+                    spotflag = false;
+                    if(playIndex != 0){
+                        myPlaylist.setPlaylist(musicList);
+                        myPlaylist.play(playIndex);
+                    }else{
+                        loadPlanMusic();
+                    }
+                }
+            });
+
             findChannel();
             loadPlanMusic();
-        });
+            window.setInterval(findSpot, 30000);
 
-        var spotflag = false; // 是否插播
-        var spotmusic; // 插播音乐
-        var musicList = new Array(); // 歌曲列表
-        var channel; // 当前频道
-        function Music(id, title, mp3, duration, volume, position){
-            this.id = id;
-            this.title = title;
-            this.mp3 = mp3;
-            this.duration = duration;
-            this.volume = volume;
-            this.position = position;
-        }
+        });
 
         // 加载播放计划音乐
         function loadPlanMusic() {
@@ -58,6 +79,8 @@
                         musicList.push(music);
                         myPlaylist.add(music);
                     }
+                    myPlaylist.play(0);
+                    $(".liedui_top .lie_h4").html("播放队列（共" + data.length + "首歌）");
                 }
             });
         }
@@ -75,6 +98,24 @@
             });
         }
 
+        // 查找插播
+        function findSpot() {
+            if(!spotflag){
+                loadSpotMusic();
+                if (typeof(spotmusic) != "undefined" && spotmusic != null) {
+                    musicList[playIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置
+                    myPlaylist.setPlaylist({}); // 清空播放列表
+                    myPlaylist.add({
+                        title: spotmusic.title,
+                        mp3: spotmusic.mp3
+                    });
+                    myPlaylist.play(0);
+                    spotflag = true;
+                }
+            }
+        }
+
+        // 查找店铺信息
         function showShop() {
             $(".right div").remove();
             var shop = $(".supper").clone();
@@ -82,6 +123,7 @@
             shop.css("display", "block");
         }
 
+        // 查找收藏
         function findFavorite() {
             $.ajax({
                 type: "POST",
@@ -134,7 +176,8 @@
                 }
             });
         }
-        
+
+        // 查找频道
         function findChannel(scene) {
             $.ajax({
                 type: "POST",
@@ -190,6 +233,7 @@
             });
         }
 
+        // 查找频道歌曲
         function findMusic(channelId) {
             $.ajax({
                 type: "POST",
@@ -224,6 +268,9 @@
         // 查找计划
         function findPlan() {
             $(".right div").remove();
+
+            // TODO
+
             var plan = $("#myPlan").clone();
             $(".right").append(plan);
             plan.css("display", "block");
@@ -232,6 +279,9 @@
         // 查找插播
         function findSpot() {
             $(".right div").remove();
+
+
+
             var spot = $("#mySpot").clone();
             $(".right").append(spot);
             spot.css("display", "block");

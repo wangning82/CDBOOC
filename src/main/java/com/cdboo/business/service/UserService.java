@@ -4,6 +4,7 @@ import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.common.YamlUtils;
 import com.cdboo.business.entity.PlanModel;
+import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.model.RestModel;
 import com.cdboo.system.spring.PropsConfig;
@@ -11,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -27,6 +30,9 @@ public class UserService {
 
     @Autowired
     private PlanService planService;
+
+    @Autowired
+    private MusicService musicService;
 
     @Autowired
     private PropsConfig propsConfig;
@@ -58,6 +64,7 @@ public class UserService {
         Config config = Config.getConfigInstance();
         config.setUserName(model.getUserName());
         config.setShopOwnerName(model.getShopOwnerName());
+        config.setPhoneNumber(model.getPhoneNumber());
         config.setAddress(model.getAddress());
         config.setPhoto(getImagePath(model.getPhoto()));
         config.setBusinessHoursBegin(model.getBusinessHoursBegin());
@@ -66,41 +73,71 @@ public class UserService {
         config.setServiceTimeEnd(model.getServiceTimeEnd());
         config.saveUserData();
 
+        if(new File(propsConfig.getMusic()).exists()){
+            new File(propsConfig.getMusic()).delete();
+        }
+        if(new File(propsConfig.getImages()).exists()){
+            new File(propsConfig.getImages()).delete();
+        }
+        new File(propsConfig.getMusic()).mkdirs();
+        new File(propsConfig.getImages()).mkdirs();
+
+        musicService.deleteAll();
         planService.deleteAll();
+
         for (PlanModel planModel : model.getPlanModelList()) {
-            planModel.getChannel().setPhotoPath(getImagePath(planModel.getChannel().getPhotoPath()));
-            for (RestMusic restMusic : planModel.getChannel().getMusicList()) {
-                restMusic.setPath(getMusicPath(restMusic.getPath()));
+            planModel.setSceneImg(getImagePath(planModel.getSceneImg()));
+
+            saveChannel(planModel.getChannel());
+            for(RestChannel channel : planModel.getChannel().getChildChannelList()){
+                saveChannel(channel);
             }
             planService.save(planModel);
         }
     }
 
-    private String getImagePath(String source) {
-        String filename = source.substring(source.lastIndexOf("/"));
-        try{
-            saveToFile(SERVER_IP + source, propsConfig.getImages() + filename);
-        }catch (Exception ex){
-            ex.printStackTrace();
+    private void saveChannel(RestChannel channel){
+        channel.setPhotoPath(getImagePath(channel.getPhotoPath()));
+        for (RestMusic restMusic : channel.getMusicList()) {
+            restMusic.setPath(getMusicPath(restMusic.getPath()));
         }
-        return Constants.URL_IMAGES + filename;
+    }
+
+    private String getImagePath(String source) {
+        if(!StringUtils.isEmpty(source)){
+            try{
+                String filename = source.substring(source.lastIndexOf("/") + 1);
+                saveToFile(SERVER_IP + source, propsConfig.getImages() + filename);
+                return Constants.URL_IMAGES + filename;
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 
     private String getMusicPath(String source) {
-        String filename = source.substring(source.lastIndexOf("/"));
-        try{
-            saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
-        }catch (Exception ex){
-            ex.printStackTrace();
+        if(!StringUtils.isEmpty(source)){
+            try{
+                String filename = source.substring(source.lastIndexOf("/") + 1);
+                saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
+                return Constants.URL_MUSIC + filename;
+            }catch (Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+        }else {
+            return null;
         }
-        return Constants.URL_MUSIC + filename;
     }
 
     private void saveToFile(String destUrl, String fileName) throws IOException {
         byte[] buf = new byte[BUFFER_SIZE];
         int size = 0;
 
-        URL url = new URL(destUrl);
+        URL url = new URL(destUrl.replaceAll(" ", "%20"));
         HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
         httpUrl.connect();
         BufferedInputStream bis = new BufferedInputStream(httpUrl.getInputStream());

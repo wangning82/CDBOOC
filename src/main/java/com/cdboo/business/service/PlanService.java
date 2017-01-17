@@ -8,6 +8,7 @@ import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class PlanService {
         List<String> result = new ArrayList<String>();
         List<PlanModel> list = planRepository.findAll();
         for (PlanModel planModel : list) {
-            if (!result.contains(planModel.getScene())) {
+            if (!StringUtils.isEmpty(planModel.getScene()) && !result.contains(planModel.getScene())) {
                 result.add(planModel.getScene());
             }
         }
