@@ -1,0 +1,4 @@
+1.客户端cdboo.exe为免安装的运行程序.
+2.客户端本地存储配置文件config/cdboo.properties
+  客户端默认读取的音频文件路径为：e:/cloud/music/，默认图片文件路径为e:/cloud/images/。
+3.环境支持运行包：jre必须为1.8以上
