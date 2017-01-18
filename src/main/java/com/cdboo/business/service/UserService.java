@@ -32,9 +32,6 @@ public class UserService {
     private PlanService planService;
 
     @Autowired
-    private MusicService musicService;
-
-    @Autowired
     private PropsConfig propsConfig;
 
     private static int BUFFER_SIZE = 10240;
@@ -66,7 +63,11 @@ public class UserService {
         config.setShopOwnerName(model.getShopOwnerName());
         config.setPhoneNumber(model.getPhoneNumber());
         config.setAddress(model.getAddress());
-        config.setPhoto(getImagePath(model.getPhoto()));
+
+        String userPhoto = model.getPhoto().substring(model.getPhoto().lastIndexOf("/") + 1);
+        saveToFile(SERVER_IP + model.getPhoto(), propsConfig.getImages() + userPhoto);
+        config.setPhoto(propsConfig.getImages() + userPhoto);
+
         config.setBusinessHoursBegin(model.getBusinessHoursBegin());
         config.setBusinessHoursEnd(model.getBusinessHoursEnd());
         config.setServiceTimeBegin(model.getServiceTimeBegin());
@@ -101,14 +102,9 @@ public class UserService {
 
     private String getImagePath(String source) {
         if(!StringUtils.isEmpty(source)){
-            try{
-                String filename = source.substring(source.lastIndexOf("/") + 1);
-                saveToFile(SERVER_IP + source, propsConfig.getImages() + filename);
-                return Constants.URL_IMAGES + filename;
-            }catch (Exception ex){
-                ex.printStackTrace();
-                return null;
-            }
+            String filename = source.substring(source.lastIndexOf("/") + 1);
+            saveToFile(SERVER_IP + source, propsConfig.getImages() + filename);
+            return Constants.URL_IMAGES + filename;
         }else{
             return null;
         }
@@ -116,37 +112,51 @@ public class UserService {
 
     private String getMusicPath(String source) {
         if(!StringUtils.isEmpty(source)){
-            try{
-                String filename = source.substring(source.lastIndexOf("/") + 1);
-                saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
-                return Constants.URL_MUSIC + filename;
-            }catch (Exception ex){
-                ex.printStackTrace();
-                return null;
-            }
+            String filename = source.substring(source.lastIndexOf("/") + 1);
+            saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
+            return Constants.URL_MUSIC + filename;
         }else {
             return null;
         }
     }
 
-    private void saveToFile(String destUrl, String fileName) throws IOException {
+    private void saveToFile(String destUrl, String fileName) {
         if(!new File(fileName).exists()){
-            byte[] buf = new byte[BUFFER_SIZE];
-            int size = 0;
+            BufferedInputStream bis = null;
+            FileOutputStream fos = null;
+            try{
+                byte[] buf = new byte[BUFFER_SIZE];
+                int size = 0;
 
-            URL url = new URL(destUrl.replaceAll(" ", "%20"));
-            HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
-            httpUrl.connect();
-            BufferedInputStream bis = new BufferedInputStream(httpUrl.getInputStream());
-            FileOutputStream fos = new FileOutputStream(fileName);
+                URL url = new URL(destUrl.replaceAll(" ", "%20"));
+                HttpURLConnection httpUrl = (HttpURLConnection) url.openConnection();
+                httpUrl.connect();
+                bis = new BufferedInputStream(httpUrl.getInputStream());
+                fos = new FileOutputStream(fileName);
+                // 保存文件
+                while ((size = bis.read(buf)) != -1){
+                    fos.write(buf, 0, size);
+                }
+                httpUrl.disconnect();
+            }catch (Exception e){
+                e.printStackTrace();
+            }finally {
+                if(fos != null){
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(bis != null){
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
-            // 保存文件
-            while ((size = bis.read(buf)) != -1)
-                fos.write(buf, 0, size);
-
-            fos.close();
-            bis.close();
-            httpUrl.disconnect();
         }
     }
 }

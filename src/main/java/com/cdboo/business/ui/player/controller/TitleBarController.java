@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.controller;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
 import com.cdboo.business.entity.RestTimeStep;
@@ -74,6 +75,7 @@ public class TitleBarController extends AbstractFrameController {
      * 关闭窗口
      */
     private void closeClientsWindow(){
+        Config.getConfigInstance().saveUserData();
         System.exit(0);
     }
 
@@ -112,6 +114,7 @@ public class TitleBarController extends AbstractFrameController {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     systemTray.remove(trayIcon);
+                    Config.getConfigInstance().saveUserData();
                     System.exit(0);
                 }
             });

@@ -9,7 +9,6 @@ import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
 import com.cdboo.business.service.PlanService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +37,6 @@ public class WebViewController {
 
     @Autowired
     private MusicService musicService;
-
-    private ObjectMapper mapper = new ObjectMapper();
 
     @RequestMapping(value = "")
     public String index(Model model){
@@ -170,9 +167,9 @@ public class WebViewController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "spot")
+    @RequestMapping(value = "spotPlan")
     @ResponseBody
-    public Iterable<PlanModel> spot(Model model){
+    public Iterable<PlanModel> spotPlan(Model model){
         return planService.findSpotPlan();
     }
 

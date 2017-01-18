@@ -16,23 +16,6 @@ $(function () {
         $("#zhcz").toggle();
     });
 
-    //主题效果
-    $(".zhuti").hover(function () {
-        $("dt", this).animate({
-            "top": -170
-        }, 300);
-        $(".Play", this).animate({
-            "top": 0
-        })
-    }, function () {
-        $("dt", this).animate({
-            "top": 0
-        }, 300);
-        $(".Play", this).animate({
-            "top": -170
-        })
-    });
-
     //点击弹出
     $(".select_box").click(function (event) {
         event.stopPropagation();
@@ -64,6 +47,26 @@ $(function () {
     });
 
 });
+
+// 鼠标滑过效果
+function hoverIn(obj) {
+    $(obj).find("dt").animate({
+        "top": -170
+    }, 300);
+    $(obj).find(".Play").animate({
+        "top": 0
+    });
+}
+
+// 鼠标滑出效果
+function hoverOut(obj) {
+    $(obj).find("dt").animate({
+        "top": 0
+    }, 300);
+    $(obj).find(".Play").animate({
+        "top": -170
+    });
+}
 
 // 切换TAB
 function showTab(obj) {

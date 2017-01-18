@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * Created by houyi on 2017/1/16 0016.
  */
-@ConfigurationProperties(prefix = "path.download", locations = "classpath:config/cdboo.properties")
+@ConfigurationProperties(prefix = "path.download", locations = "classpath:cdboo.properties")
 public class PropsConfig {
     private String music;
     private String images;
