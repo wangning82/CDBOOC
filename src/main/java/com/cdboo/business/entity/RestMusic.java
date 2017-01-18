@@ -1,17 +1,15 @@
 package com.cdboo.business.entity;
 
-import com.google.common.collect.Lists;
+import com.cdboo.business.common.Constants;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
 
 /**
  * 用户音乐信息
  */
 @Entity
 @Table(name = "cdboo_music")
-public class RestMusic implements Serializable {
+public class RestMusic extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +27,9 @@ public class RestMusic implements Serializable {
     @Column(name = "music_name")
     private String musicName; // 音乐名称
 
+    @Column(name = "duration")
+    private String duration; // 音乐时长
+
     @Column(name = "actor")
     private String actor; // 艺人
 
@@ -45,13 +46,7 @@ public class RestMusic implements Serializable {
     private String path; // 音乐路径
 
     @Column(name = "favorite")
-    private String favorite; // 收藏标志
-
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "cdboo_channel_music",
-            joinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "music_id")},
-            inverseJoinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "channel_id")})
-    private List<RestChannel> channelList = Lists.newArrayList();
+    private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
 
     public String getMusicNo() {
         return musicNo;
@@ -117,12 +112,19 @@ public class RestMusic implements Serializable {
         this.path = path;
     }
 
-    public List<RestChannel> getChannelList() {
-        return channelList;
+    public String getFavorite() {
+        return favorite;
     }
 
-    public void setChannelList(List<RestChannel> channelList) {
-        this.channelList = channelList;
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
     }
 
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 }

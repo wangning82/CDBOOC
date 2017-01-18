@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "cdboo_period")
-public class RestTimeStep implements Serializable {
+public class RestTimeStep extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,9 +28,6 @@ public class RestTimeStep implements Serializable {
 
     @Column(name = "endtime")
     private String endtime; // 结束时间
-
-    @OneToOne(optional=false, mappedBy="timestep")
-    private PlanModel planModel;
 
     public String getTimestepNo() {
         return timestepNo;
@@ -62,14 +59,6 @@ public class RestTimeStep implements Serializable {
 
     public void setEndtime(String endtime) {
         this.endtime = endtime;
-    }
-
-    public PlanModel getPlanModel() {
-        return planModel;
-    }
-
-    public void setPlanModel(PlanModel planModel) {
-        this.planModel = planModel;
     }
 
     public long getId() {

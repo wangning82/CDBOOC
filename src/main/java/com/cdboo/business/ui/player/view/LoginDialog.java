@@ -118,7 +118,7 @@ public class LoginDialog extends JDialog {
         c.insets = new Insets(0, 0, 0, 0);
         inputPanel.add(passwordField, c);
 
-        message = JComponentUtils.createLabel("", JComponentStyle.FONT_12, Color.RED, new Dimension(100, 26));
+        message = JComponentUtils.createLabel("", JComponentStyle.FONT_12, Color.RED, new Dimension(180, 26));
         c.fill = GridBagConstraints.CENTER;
         c.gridx = 0;
         c.gridy = 2;
@@ -154,6 +154,15 @@ public class LoginDialog extends JDialog {
             this.setLocation(new Point(showPossition.x < 0 ? 0 : showPossition.x, showPossition.y < 0 ? 0 : showPossition.y));
         this.setVisible(true);
         return this;
+    }
+
+    /**
+     * 重置窗口
+     */
+    public void reset(){
+        this.getMessage().setText("");
+        this.getUsernameField().setText("");
+        this.getPasswordField().setText("");
     }
 
     public JButton getCloseButton() {

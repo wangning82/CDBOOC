@@ -16,9 +16,10 @@ public class RestModel implements Serializable {
 
     private String userName;//用户姓名
     private String shopOwnerName;//店长姓名
+    private String phoneNumber; //联系电话
 
-    private Date businessHoursBegin;//营业时间开始
-    private Date businessHoursEnd;//营业时间结束
+    private String businessHoursBegin;//营业时间开始
+    private String businessHoursEnd;//营业时间结束
 
     private String address;//门店地址
     private String photo;//用户头像
@@ -44,19 +45,19 @@ public class RestModel implements Serializable {
         this.shopOwnerName = shopOwnerName;
     }
 
-    public Date getBusinessHoursBegin() {
+    public String getBusinessHoursBegin() {
         return businessHoursBegin;
     }
 
-    public void setBusinessHoursBegin(Date businessHoursBegin) {
+    public void setBusinessHoursBegin(String businessHoursBegin) {
         this.businessHoursBegin = businessHoursBegin;
     }
 
-    public Date getBusinessHoursEnd() {
+    public String getBusinessHoursEnd() {
         return businessHoursEnd;
     }
 
-    public void setBusinessHoursEnd(Date businessHoursEnd) {
+    public void setBusinessHoursEnd(String businessHoursEnd) {
         this.businessHoursEnd = businessHoursEnd;
     }
 
@@ -100,4 +101,11 @@ public class RestModel implements Serializable {
         this.serviceTimeEnd = serviceTimeEnd;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

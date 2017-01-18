@@ -1,10 +1,11 @@
 package com.cdboo.business.ui.player.controller;
 
-import com.cdboo.business.service.ChannelService;
-import com.cdboo.business.ui.player.view.MainFrame;
-import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
+import com.cdboo.business.entity.RestTimeStep;
+import com.cdboo.business.service.PeriodService;
+import com.cdboo.business.ui.player.view.MainFrame;
+import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -14,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 /**
  * Created by houyi on 2016/12/6.
@@ -24,7 +26,7 @@ public class TitleBarController extends AbstractFrameController {
     private MainFrame mainFrame;
 
     @Autowired
-    private ChannelService channelService;
+    private PeriodService periodService;
 
     @Override
     public void prepareAndOpenFrame() {
@@ -34,12 +36,15 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getSettingsButton(), (e) -> showSettings());
         registerAction(mainFrame.getTitleBarPanel().getLoginButton(), (e) -> showLoginWindow());
 
-        String[] defaultTime = new String[]{};
-        for(int i = 0; i < channelService.findAll().size(); i ++){
-            defaultTime[i] = channelService.findAll().get(i).getChannelName();
+        List<RestTimeStep> periodList = periodService.findAll();
+        String[] defaultTime = new String[periodList.size()];
+        for(int i = 0; i < periodList.size(); i ++){
+            defaultTime[i] = periodList.get(i).getTimestepName();
         }
         mainFrame.getTitleBarPanel().getTimeCB().setModel(new DefaultComboBoxModel<String>(defaultTime));
-        //mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
+        if(defaultTime.length != 0){
+            mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
+        }
     }
 
     /**
@@ -62,6 +67,7 @@ public class TitleBarController extends AbstractFrameController {
         double y = p.getY() + mainFrame.getHeight() / 2 - JComponentStyle.LOGIN_HEIGHT / 2;
         mainFrame.getLoginDialog().setShowPossition(new Point(new Double(x).intValue(), new Double(y).intValue()));
         mainFrame.getLoginDialog().showItNow();
+        mainFrame.getLoginDialog().reset();
     }
 
     /**

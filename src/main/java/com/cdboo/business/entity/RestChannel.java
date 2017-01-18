@@ -1,10 +1,10 @@
 package com.cdboo.business.entity;
 
 
+import com.cdboo.business.common.Constants;
 import com.google.common.collect.Lists;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "cdboo_channel")
-public class RestChannel implements Serializable {
+public class RestChannel extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class RestChannel implements Serializable {
     private String themeType; // 风格类型
 
     @Column(name = "themeConcreteType")
-    private String themeConcreteType; // 风格类型明细
+    private String themeConcreteType; // 风格类型明细（节日）
 
     @Column(name = "channelVersion")
     private String channelVersion; // 频道版本
@@ -49,7 +49,7 @@ public class RestChannel implements Serializable {
     private String speed; // 速度
 
     @Column(name = "voice")
-    private String voice; // 人声
+    private String voice; // 人声(0男声，1女声，3合唱，4乐器)
 
     @Column(name = "element")
     private String element; // 元素
@@ -67,15 +67,18 @@ public class RestChannel implements Serializable {
     private String channelType; // 频道类型(0子频道,1组合频道,2插播频道)
 
     @Column(name = "favorite")
-    private String favorite; // 收藏标志
+    private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
 
-    @OneToOne(optional=false, mappedBy="channel")
-    private PlanModel planModel;
+    @Column(name = "profile")
+    private String remarks; // 频道简介
 
-    @ManyToMany(mappedBy = "channelList")
+    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @JoinTable(name = "cdboo_channel_music",
+            inverseJoinColumns = {@JoinColumn(name = "music_id", referencedColumnName = "music_id")},
+            joinColumns = {@JoinColumn(name = "channel_id", referencedColumnName = "channel_id")})
     private List<RestMusic> musicList = Lists.newArrayList(); //如果是子频道，该集合有对应music的信息
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     @JoinTable(name = "cdboo_channel_children",
             joinColumns = {@JoinColumn(name = "child_channel_id", referencedColumnName = "channel_id")},
             inverseJoinColumns = {@JoinColumn(name = "group_channel_id", referencedColumnName = "channel_id")})
@@ -223,5 +226,21 @@ public class RestChannel implements Serializable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(String favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }

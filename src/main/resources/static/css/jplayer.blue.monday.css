@@ -484,7 +484,7 @@ div.jp-type-playlist div.jp-playlist a {
     color: #979797;
     text-decoration: none;
     float: left;
-    width: 260px;
+    width: 230px;
 }
 
 div.jp-type-playlist div.jp-playlist a:hover {
@@ -495,7 +495,7 @@ div.jp-type-playlist div.jp-playlist a.jp-playlist-current {
     /*color: #0d88c1;*/
     color: #979797;
     float: left;
-    width: 260px;
+    width: 230px;
 }
 
 div.jp-type-playlist div.jp-playlist span.jp-playlist-current {

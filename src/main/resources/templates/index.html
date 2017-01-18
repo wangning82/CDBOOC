@@ -9,27 +9,28 @@
     <script src="../static/js/jquery.jplayer.js" th:src="@{/js/jquery.jplayer.js}"></script>
     <script src="../static/js/jplayer.playlist.js" th:src="@{/js/jplayer.playlist.js}"></script>
     <meta charset="utf-8"/>
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var myPlaylist; // 播放列表
+        var spotflag = false; // 当前是否插播
+        var spotmusic; // 插播音乐
+        var musicList = new Array(); // 歌曲列表
+        var playIndex = 0;
+
+        function Music(id, title, mp3, duration, volume, position){
+            this.id = id;
+            this.title = title;
+            this.mp3 = mp3;
+            this.duration = duration;
+            this.volume = volume;
+            this.position = position;
+        }
+
         $(document).ready(function () {
-            new jPlayerPlaylist({
+            myPlaylist = new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
                 cssSelectorAncestor: "#jp_container_1"
             }, [
-                {
-                    title: "Cro Magnon Man",
-                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
-                    duration: "4:28"
-                },
-                {
-                    title: "Your Face",
-                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
-                    duration: "4:35"
-                },
-                {
-                    title: "Your Face",
-                    mp3: "http://127.0.0.1:9000/CloudMusic/李逸朗 - 化身孤岛的鲸.mp3",
-                    duration: "4:35"
-                }
             ], {
                 swfPath: "js",
                 supplied: "oga, mp3",
@@ -37,26 +38,676 @@
                 useStateClassSkin: true,
                 autoBlur: false,
                 smoothPlayBar: true,
-                keyEnabled: true
+                keyEnabled: true,
+                play: function(e) {
+                    $(".songTitle").html(e.jPlayer.status.media.title);
+                },
+                ended: function (e) {
+                    spotflag = false;
+                    if(playIndex != 0){
+                        myPlaylist.setPlaylist(musicList);
+                        myPlaylist.play(playIndex);
+                    }else{
+                        loadPlanMusic();
+                    }
+                }
             });
+
+            findChannel();
+            loadPlanMusic();
+            window.setInterval(findSpotMusic, 30000);
+
         });
 
+        // 加载播放计划音乐
+        function loadPlanMusic() {
+            musicList.slice(0, musicList.length); // 清除数组
+            $.ajax({
+                type: "POST",
+                url: "/planMusic",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    for(var i = 0 ; i < data.length; i ++){
+                        var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0);
+                        musicList.push(music);
+                        myPlaylist.add(music);
+                    }
+                    myPlaylist.play(0);
+                    $(".liedui_top .lie_h4").html("播放队列（共" + data.length + "首歌）");
+                }
+            });
+        }
+
+        // 加载插播音乐
+        function loadSpotMusic() {
+            $.ajax({
+                type: "POST",
+                url: "/spotMusic",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    spotmusic = new Music(data.id, data.musicName, data.path, data.duration, data.volume, 0);
+                }
+            });
+        }
+
+        // 查找插播
+        function findSpotMusic() {
+            if(!spotflag){
+                loadSpotMusic();
+                if (typeof(spotmusic) != "undefined" && spotmusic != null) {
+                    musicList[playIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置
+                    myPlaylist.setPlaylist({}); // 清空播放列表
+                    myPlaylist.add({
+                        title: spotmusic.title,
+                        mp3: spotmusic.mp3
+                    });
+                    myPlaylist.play(0);
+                    spotflag = true;
+                }
+            }
+        }
+
+        // 查找店铺信息
         function showShop() {
             $(".right div").remove();
-            var shop = $(".supper").clone().css("display", "block");
+            var shop = $(".supper").clone();
             $(".right").append(shop);
+            shop.css("display", "block");
         }
+
+        // 查找收藏
+        function findFavorite() {
+            $.ajax({
+                type: "POST",
+                url: "/favorite",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    $("#myFavorite .block").children().remove();
+                    if (data.musicList.length == 0) {
+                        $("#myFavorite .block").append("<div class='Wu'></div>");
+                    } else {
+                        $("#myFavorite .block").append($("#favoriteMusicButton"));
+                        $("#favoriteMusicButton").css("display", "block");
+                        var musicDiv = $("<div></div>");
+                        musicDiv.addclass("grzlk_tr");
+                        musicDiv.append("<ul class='grzlk_ul grzlk_pd'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li>");
+                        for (var i = 0; i < data.musicList.length; i++) {
+                            var str = "<ul class='grzlk_ul grzlk_pd'><li>";
+                            str += data.musicList[i].musicName;
+                            str += "</li><li>";
+                            str += data.musicList[i].actor;
+                            str += "</li><li>";
+                            str += data.musicList[i].special;
+                            str += "</li><li class='w566'>";
+                            str += data.musicList[i].duration;
+                            str += "</li>";
+                            musicDiv.append(str);
+                        }
+                        musicDiv.appendTo($("#myFavorite .block"));
+                    }
+
+                    $("#myFavorite .none").children().remove();
+                    if (data.channelList.length == 0) {
+                        $("#myFavorite .none").append("<div class='Wu'></div>");
+                    } else {
+                        $("#myFavorite .none").append($("#favoriteChannelButton"));
+                        $("#favoriteChannelButton").css("display", "block");
+                        for (var i = 0; i < data.channelList.length; i++) {
+                            var str = "<dl class='Style Style_xin'>";
+                            str += "<dt class='ash_mo'><a href=''><img src='" + data.channelList[i].photoPath + "'/></a></dt>";
+                            str += "<dd class='ashow'></dd>";
+                            str += "<dd class='Text'>" + data.channelList[i].channelName + "</dd>";
+                            $("#myFavorite .none").append(str);
+                        }
+                    }
+                    $(".right div").remove();
+                    var favorite = $("#myFavorite").clone();
+                    $(".right").append(favorite);
+                    favorite.css("display", "block");
+                }
+            });
+        }
+
+        // 查找频道
+        function findChannel(scene) {
+            $.ajax({
+                type: "POST",
+                url: "/channel",
+                data: {
+                    scene:scene
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#ztc").children().remove(); // 主题
+                    $("#fgc").children().remove(); // 风格
+                    $("#jrc").children().remove(); // 节日
+                    if (data.festival.length != 0) {
+                        for (var i = 0; i < data.festival.length; i++) {
+                            var str = "<dl class='zhuti' onclick='findMusic(" + data.festival[i].id + ")'>";
+                            str += "<dt><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
+                            str += "<dd class='icon_bg'></dd>";
+                            str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
+                            str += "<dd class='Text'>" + data.festival[i].channelName + "</dd>";
+                            str += "<dd class='Play'><img src='images/play.png'/></dd>";
+                            str += "</dl>";
+                            $("#jrc").append(str);
+                        }
+                    }
+                    if (data.theme.length != 0) {
+                        for (var i = 0; i < data.theme.length; i++) {
+                            var str = "<dl class='zhuti' onclick='findMusic(" + data.theme[i].id + ")'>";
+                            str += "<dt><img src='" + data.festival[i].photoPath+ "'/></dt>";
+                            str += "<dd class='icon_bg'></dd>";
+                            str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
+                            str += "<dd class='Text'>" + data.theme[i].channelName + "</dd>";
+                            str += "<dd class='Play'><img src='images/play.png'/></dd>";
+                            str += "</dl>";
+                            $("#ztc").append(str);
+                        }
+                    }
+
+                    if (data.manner.length != 0) {
+                        for (var i = 0; i < data.manner.length; i++) {
+                            var str = "<dl class='Style Style_xin' onclick='findMusic(" + data.manner[i].id + ")'>";
+                            str += "<dt class='ash_mo'><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
+                            str += "<dd class='ashow'></dd>";
+                            str += "<dd class='Text'>" + data.manner[i].channelName + "</dd>";
+                            str += "</dl>";
+                            $("#fgc").append(str);
+                        }
+                    }
+                    $(".right div").remove();
+                    var channel = $("#cl").clone();
+                    $(".right").append(channel);
+                    channel.css("display", "block");
+                }
+            });
+        }
+
+        // 查找频道歌曲
+        function findMusic(channelId) {
+            $.ajax({
+                type: "POST",
+                url: "/music",
+                data: {
+                    channelId:channelId
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#myChannel .channelName").html(data.channel.channelName);
+                    $("#myChannel .profile").html(data.channel.remarks);
+                    $("#myChannel .gqsl").html(data.musicList.length);
+                    $("#myChannel .zhuti_menu img").attr("src", data.channel.photoPath);
+                    $("#myChannel .grzlk_tr").children().remove();
+                    $("#myChannel .grzlk_tr").append("<ul class='grzlk_ul'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li><li class='w566'>操作</li></ul>");
+                    for (var i = 0; i < data.musicList.length; i++) {
+                        var str = "<ul class='grzlk_ul'>";
+                        str += "<li>" + data.musicList[i].musicName + "</li>";
+                        str += "<li>" + data.musicList[i].actor + "</li>";
+                        str += "<li>" + data.musicList[i].special + "</li>";
+                        str += "<li class='w566'>" + data.musicList[i].duration + "</li>";
+                        str += "<li class='w566 w577'><a href='#' class='down_1'></a><a href='#' class='down_1 down_2'></a></li>";
+                        $("#myChannel .grzlk_tr").append(str);
+                    }
+                    $("#myChannel .mu_2").click(function () {
+                        myPlaylist.setPlaylist({}); // 清空播放列表
+                        $(".liedui_top .lie_h4").html("播放队列（共" + data.musicList.length + "首歌）");
+                        $("#nav .num_1").html(data.musicList.length);
+                        for (var i = 0; i < data.musicList.length; i++) {
+                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0);
+                            myPlaylist.add(music);
+                        }
+                        myPlaylist.play(0);
+                    });
+                }
+            });
+            $(".right div").remove();
+            var channel = $("#myChannel").clone();
+            $(".right").append(channel);
+            channel.css("display", "block");
+        }
+
+        // 查找计划
+        function findPlan() {
+            $(".right div").remove();
+
+            // TODO
+
+            var plan = $("#myPlan").clone();
+            $(".right").append(plan);
+            plan.css("display", "block");
+        }
+
+        // 查找插播
+        function findSpot() {
+            $(".right div").remove();
+
+            // TODO
+
+            var spot = $("#mySpot").clone();
+            $(".right").append(spot);
+            spot.css("display", "block");
+        }
+
+        /*]]>*/
     </script>
 </head>
-<body>
+<body th:inline="text">
+<!-- 店铺信息 -->
 <div class="supper" style="display: none;">
     <ul class="supper_ul">
-        <li>店铺地址：太平鸟男装（北京三里屯店）</li>
-        <li>营业时间：9：00-22：00</li>
-        <li>店长：王聪</li>
-        <li>联系电话：898989891</li>
+        <li th:text="|店铺地址：${config.address}|">店铺地址：太平鸟男装（北京三里屯店）</li>
+        <li th:text="|营业时间：${config.businessHoursBegin} - ${config.businessHoursEnd}|">营业时间：9：00-22：00</li>
+        <li th:text="|店长：${config.shopOwnerName}|">店长：王聪</li>
+        <li th:text="|联系电话：${config.phoneNumber}|">联系电话：898989891</li>
     </ul>
 </div>
+
+<!-- 我的收藏 -->
+<div id="favoriteMusicButton" class="sc_Btn" style="display: none;">
+    <input class="Btn_A Btn_B" type="button" value="播放全部"/>
+    <input class="Btn_A" type="button" value="批量删除" onclick="ShowDiv('TK2','fade')"/>
+</div>
+<div id="favoriteChannelButton" class="sc_Btn" style="display: none;">
+    <input class="Btn_A" type="button" value="批量删除" onclick="ShowDiv('TK3','fade')"/>
+</div>
+<div id="myFavorite" style="display: none;">
+    <div class="wdcbjh">
+        <h3>收藏<br/>我喜欢的歌</h3>
+    </div>
+    <div class="row790">
+        <div class="thead">
+            <ul class="tab0">
+                <li class="index" onclick="showTab(this);"><span>歌曲列表</span></li>
+                <li onclick="showTab(this);"><span>频道列表</span></li>
+            </ul>
+        </div>
+        <div class="tbody">
+            <!--歌曲列表-->
+            <div class="block"></div>
+            <!--频道列表-->
+            <div class="none"></div>
+        </div>
+    </div>
+</div>
+<!-- 频道列表 -->
+<div id="cl" class="row790" style="display: none;">
+    <div class="thead">
+        <ul class="tab0">
+            <li class="index" onclick="showTab(this);"><span>主题</span></li>
+            <li onclick="showTab(this);"><span>风格</span><i class="redsc"></i></li>
+            <li onclick="showTab(this);"><span>节日</span></li>
+        </ul>
+    </div>
+    <div class="tbody">
+        <!--主题-->
+        <div class="block" id="ztc">
+            <dl class="zhuti" onclick="window.location.href='/channel'">
+                <dt><img src="images/img_1.jpg"/></dt>
+                <dd class="icon_bg"></dd>
+                <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
+                <dd class="Text">下之歌</dd>
+                <dd class="Play"><img src="images/play.png"/></dd>
+            </dl>
+        </div>
+        <!--风格-->
+        <div class="none" id="fgc">
+            <dl class="Style Style_xin" onclick="window.location.href='/channel'">
+                <dt class="ash_mo"><a href="#"><img src="images/img_1.jpg"/></a></dt>
+                <dd class="ashow"></dd>
+                <dd class="Text">下之歌</dd>
+            </dl>
+        </div>
+        <!--节日-->
+        <div class="none" id="jrc">
+            <dl class="zhuti" onclick="window.location.href='/channel'">
+                <dt><a href="#"><img src="images/img_1.jpg"/></a></dt>
+                <dd class="icon_bg"></dd>
+                <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
+                <dd class="Text">下之歌</dd>
+                <dd class="Play"><img src="images/play.png"/></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<!-- 频道主页 -->
+<div id="myChannel" style="display: none;">
+    <div class="Menu">
+        <dl class="zhuti_menu">
+            <dt><a href="#"><img src="images/img_1.jpg"/></a></dt>
+            <!--<dd class="icon_bg"></dd>-->
+            <!--<dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>-->
+        </dl>
+        <div class="Menu_you">
+            <div class="Menu_p">
+                <h4 class="channelName">服装促销季</h4>
+                <p style="float:left; margin-top:5px;"><i class="mu_1"></i><span class="num gqsl">歌曲数量</span><i class="mu_1 mu_2"></i><span class="num bfcs"></span></p>
+                <input class="Btn_A Btn_c" type="button" value="收藏"/>
+            </div>
+            <div class="sc_div">
+                <div id="hutia" class="profile">
+                    <i>简介：</i>这次制作的歌单是续上一歌单而制作的，每一首音乐都在一个小时以上，听起来很是享受，特别是您在行车的途中，听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐,听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐,听到这些音乐听到这些音乐听到这些音乐听到这些音乐听到这些音乐
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="buyact" class="row790">
+        <div class="thead">
+            <ul class="tab0">
+                <li class="index"><span>歌曲列表</span></li>
+            </ul>
+        </div>
+        <div class="tbody">
+            <div class="block">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul">
+                        <li>歌名</li>
+                        <li>歌手</li>
+                        <li>专辑</li>
+                        <li class="w566">时长</li>
+                        <li class="w566">操作</li>
+                    </ul>
+                    <ul class="grzlk_ul">
+                        <li>Unkiss Me</li>
+                        <li>Maroon 5</li>
+                        <li>V (Deluxe)</li>
+                        <li class="w566">04:32</li>
+                        <li class="w566 w577"><a href="#" class="down_1"></a><a href="#" class="down_1 down_2"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 播放计划 -->
+<div id="myPlan" style="display: none;">
+    <div class="row790">
+        <div class="thead">
+            <ul class="tab0 tab1">
+                <li class="index" onclick="showTab(this);"><span>节日计划</span></li>
+                <li onclick="showTab(this);"><span>主题计划</span></li>
+                <li onclick="showTab(this);"><span>风格计划</span></li>
+            </ul>
+        </div>
+        <div class="tbody tbody_02">
+            <!--主题-->
+            <div class="block">
+                <div class="festival">
+                    <ul class="festival_ul">
+                        <li>节日</li>
+                        <li>
+                            <div class="select_box box_fes">
+                                <span class="select_txt" style=" float:left;">圣诞节</span><i class="dao_sj dao_new"></i>
+                                <div class="option" id="option_fes"><a href="#" class="sel_jr">新年</a><a
+                                        href="#" class="sel_jr">七夕</a> <a href="#" class="sel_jr">春节</a><a
+                                        href="#" class="sel_jr">中秋节</a> <a href="#" class="sel_jr">情人节</a><a
+                                        href="#" class="sel_jr">教师节</a> <a href="#" class="sel_jr">愚人节</a><a
+                                        href="#" class="sel_jr">国庆节</a> <a href="#" class="sel_jr">劳动节</a><a
+                                        href="#" class="sel_jr">万圣节</a> <a href="#" class="sel_jr">母亲节</a><a
+                                        href="#" class="sel_jr">感恩节</a> <a href="#" class="sel_jr">儿童节</a><a
+                                        href="#" class="sel_jr">圣诞节</a> <a href="#" class="sel_jr">父亲节</a><a
+                                        href="#" class="sel_jr">生日</a></div>
+                            </div>
+                        </li>
+                        <li>开始时间</li>
+                        <li style=" position:relative;">
+                            <input id="txtBeginDate"
+                                   style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;margin-right:10px;"/>
+                            <i class="dao_sj dao_1"></i></li>
+                        <li>结束时间</li>
+                        <li style=" position:relative;">
+                            <input id="txtEndDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;"/>
+                            <i class="dao_sj dao_1"></i></li>
+                        <li>
+                            <input name="" type="button" value="保存" class="Save"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>凌晨</li>
+                        <li>00:00-06:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晨醒</li>
+                        <li>06:00-09:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>上午</li>
+                        <li>09:00-11:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>中午</li>
+                        <li>11:00-14:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>下午</li>
+                        <li>14:00-17:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>日落</li>
+                        <li>17:00-20:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晚间</li>
+                        <li>20:00-22:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>午夜</li>
+                        <li>22:00-24:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--风格-->
+            <div class="none">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>凌晨</li>
+                        <li>00:00-06:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晨醒</li>
+                        <li>06:00-09:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>上午</li>
+                        <li>09:00-11:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>中午</li>
+                        <li>11:00-14:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>下午</li>
+                        <li>14:00-17:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>日落</li>
+                        <li>17:00-20:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晚间</li>
+                        <li>20:00-22:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>午夜</li>
+                        <li>22:00-24:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="none">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>凌晨</li>
+                        <li>00:00-06:00</li>
+                        <li class="xingq">周一、周二、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晨醒</li>
+                        <li>06:00-09:00</li>
+                        <li class="xingq">周一、周二、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>上午</li>
+                        <li>09:00-11:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>中午</li>
+                        <li>11:00-14:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>下午</li>
+                        <li>14:00-17:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>日落</li>
+                        <li>17:00-20:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>晚间</li>
+                        <li>20:00-22:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>午夜</li>
+                        <li>22:00-24:00</li>
+                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 插播计划 -->
+<div id="mySpot" style="display: none;">
+    <div class="wdcbjh">
+        <h3>管理<br/>
+            我的插播计划</h3>
+    </div>
+    <div class="row790">
+        <div class="thead">
+            <ul class="tab0">
+                <li class="index"><span>插播列表</span></li>
+            </ul>
+        </div>
+        <div class="tbody">
+            <!--主题-->
+            <div class="block">
+                <div class="grzlk_tr">
+                    <ul class="grzlk_ul chabo_list">
+                        <li>名称</li>
+                        <li>时长</li>
+                        <li>播放日期</li>
+                        <li>播放时间</li>
+                        <li>重复时间</li>
+                        <li>循环次数</li>
+                    </ul>
+                    <ul class="grzlk_ul chabo_list">
+                        <li>开店口播</li>
+                        <li>3:00</li>
+                        <li>每天</li>
+                        <li></li>
+                        <li>
+                            <input name="" type="text" value="09:00" class="inp_1"/>
+                        </li>
+                        <li>
+                            <input name="" type="text" value="1小时" class="inp_1"/>
+                        </li>
+                        <li class="sx_1">
+                            <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                            <a href="javascript:;" class="shang"></a><a href="javascript:;" class="xia"></a>
+                        </li>
+                    </ul>
+                    <ul class="grzlk_ul chabo_list">
+                        <li>注意事项</li>
+                        <li>3:00</li>
+                        <li>每天</li>
+                        <li></li>
+                        <li>
+                            <input name="" type="text" value="09:00" class="inp_1"/>
+                        </li>
+                        <li>
+                            <input name="" type="text" value="1小时" class="inp_1"/>
+                        </li>
+                        <li class="sx_1">
+                            <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                            <a href="#" class="shang"></a><a href="#" class="xia"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--风格-->
+            <div class="none">
+                <div class="sc_Btn">
+                    <input class="Btn_A" name="" type="button" value="批量删除" onclick="ShowDiv('TK1')"/>
+                </div>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+                <dl class="Style Style_xin">
+                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
+                    <dd class="ashow"></dd>
+                    <dd class="Text">下之歌</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="warp">
     <!--main=========================-->
     <section>
@@ -68,197 +719,17 @@
                 </li>
                 <li><a href="javascript:showShop();"><s class="S_xxjs_1"></s>我的店铺</a></li>
                 <li><a href="#"><s class="S_xxjs_2"></s>我的盒子</a></li>
-                <li><a href="#" th:href="@{/favorite}"><s class="S_xxjs_3"></s>我的收藏</a></li>
-                <li><a href="#" th:href="@{/plan}"><s class="S_xxjs_4"></s>播放计划</a></li>
-                <li><a href="#" th:href="@{/spot}"><s class="S_xxjs_5"></s>插播计划</a></li>
+                <li><a href="javascript:findFavorite();"><s class="S_xxjs_3"></s>我的收藏</a></li>
+                <li><a href="javascript:findPlan();"><s class="S_xxjs_4"></s>播放计划</a></li>
+                <li><a href="javascript:findSpot();"><s class="S_xxjs_5"></s>插播计划</a></li>
                 <li class="details">
                     <h4>场景业态</h4>
                 </li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_6"></s>购物中心</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_7"></s>超市</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_8"></s>餐饮</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_9"></s>服饰</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_10"></s>酒店</a></li>
-                <li><a href="#" th:href="@{/}"><s class="S_xxjs_11"></s>奢侈品</a></li>
+                <li th:each="scene:${sceneList}"><s class="S_xxjs_6" style="float: left"></s><a href="#" th:onclick="'javascript:findChannel(\'' + ${scene} + '\');'" th:text="${scene}"></a></li>
             </ul>
         </aside>
         <!--右-->
-        <article class="right">
-            <div id="buyact" class="row790">
-                <div class="thead">
-                    <ul class="tab0">
-                        <li class="index"><span>主题</span></li>
-                        <li><span>风格</span><i class="redsc"></i></li>
-                        <li><span>节日</span></li>
-                    </ul>
-                </div>
-                <div class="tbody">
-                    <!--主题-->
-                    <div class="block">
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><img src="images/img_1.jpg" th:src="@{/images/img_1.jpg}"/></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                    </div>
-
-                    <!--风格-->
-                    <div class="none">
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                        <dl class="Style Style_xin" onclick="window.location.href='/channel'">
-                            <dt class="ash_mo"><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="ashow"></dd>
-                            <dd class="Text">下之歌</dd>
-                        </dl>
-                    </div>
-
-                    <!--节日-->
-                    <div class="none">
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                        <dl class="zhuti" onclick="window.location.href='/channel'">
-                            <dt><a href="#" th:href="@{/channel}"><img src="images/img_1.jpg"/></a></dt>
-                            <dd class="icon_bg"></dd>
-                            <dd class="icon_dd"><i class="icon"></i><span>4万</span></dd>
-                            <dd class="Text">下之歌</dd>
-                            <dd class="Play"><img src="images/play.png"/></dd>
-                        </dl>
-                    </div>
-                </div>
-            </div>
-        </article>
+        <article class="right"></article>
     </section>
     <!--footer=========================-->
     <footer>
@@ -285,7 +756,7 @@
                         </div>
                     </div>
                     <div class="jp-time-holder" style="font-size: 14px; color: #979797">
-                        <div style="float: left;">Hostital flowers--中文 City</div>
+                        <div style="float: left;" class="songTitle"></div>
                         <div style="float: right; width: 100px;">
                             <div class="jp-current-time" role="timer" aria-label="time"></div>
                             <div style="float: left; top: 20px;">/</div>
@@ -312,7 +783,7 @@
                                         <div class="di"><img src="images/di.png"/></div>
                                     </div>
                                 </li>
-                                <li><a href="#" class="btn_6"></a><span class="num num_1">10</span>
+                                <li><a href="#" class="btn_6"></a><span class="num num_1">0</span>
                                     <div class="sub option_3">
                                         <div class="liedui_top">
                                             <h4 class="lie_h4">播放列队（共10首歌）</h4>

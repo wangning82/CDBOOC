@@ -1,12 +1,11 @@
 server:
   port: 9000
   contextPath:
-path:
-  mp3: E:/CloudMusic
 spring:
   datasource:
     platform: h2
-    url: jdbc:h2:file:~/cdboo
+    #url: jdbc:h2:file:~/cdboo
+    url:  jdbc:h2:tcp://localhost/~/cdboo
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -25,10 +24,6 @@ spring:
   thymeleaf:
     #开发时关闭缓存,不然没法看到实时页面
     cache: false
-  mvc:
-    static-path-pattern: /**
-  resources:
-    static-locations: classpath:/static/, file:${path.mp3}
 logging:
   level:
     org:
@@ -42,9 +37,10 @@ logging:
 url:
   cdboo:
     server:
-      ip: http://127.0.0.1:8080
-      checkUser: /cdboo-service/check-user
-      getUserData: /cdboo-service/get-data
+      ip: http://139.129.240.92:8080
+      #ip: http://114.115.209.238:8080
+      checkUser: /CDBOO/cdboo-service/check-user
+      getUserData: /CDBOO/cdboo-service/get-data
     client:
       ip: http://127.0.0.1:9000
       index:

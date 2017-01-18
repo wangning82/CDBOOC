@@ -1,5 +1,7 @@
 package com.cdboo.business.common;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.*;
 import java.util.Date;
 
@@ -12,15 +14,21 @@ public class Config implements Serializable {
 
     private String userName;//用户姓名
     private String shopOwnerName;//店长姓名
+    private String phoneNumber; //联系电话
 
-    private Date businessHoursBegin;//营业时间开始
-    private Date businessHoursEnd;//营业时间结束
+    private String businessHoursBegin;//营业时间开始
+    private String businessHoursEnd;//营业时间结束
 
     private String address;//门店地址
     private String photo;//用户头像
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date serviceTimeBegin; //用户服务时间开始时间，就是用户买了多久的会员就能用多久
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date serviceTimeEnd; //用户服务时间结束时间
+
+    private boolean autoLogin; // 是否自动登录
 
     private static Config config = null;
 
@@ -38,8 +46,11 @@ public class Config implements Serializable {
             if (!USER_DATA_PATH.exists()) {
                 USER_DATA_PATH.mkdirs();
             }
-            ois = new ObjectInputStream(new FileInputStream(new File(Config.USER_DATA_PATH, USER_DATA_FILE)));
-            config = (Config) ois.readObject();
+            File file = new File(Config.USER_DATA_PATH, USER_DATA_FILE);
+            if(file.exists()){
+                ois = new ObjectInputStream(new FileInputStream(file));
+                config = (Config) ois.readObject();
+            }
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -58,7 +69,7 @@ public class Config implements Serializable {
             if (!Config.USER_DATA_PATH.exists()) {
                 Config.USER_DATA_PATH.mkdirs();
             }
-            FileOutputStream fout = new FileOutputStream((new File(Config.USER_DATA_PATH, USER_DATA_FILE + ".dat")));
+            FileOutputStream fout = new FileOutputStream((new File(Config.USER_DATA_PATH, USER_DATA_FILE)));
             ObjectOutputStream oos = new ObjectOutputStream(fout);
             oos.writeObject(config);
             oos.flush();
@@ -84,19 +95,19 @@ public class Config implements Serializable {
         this.shopOwnerName = shopOwnerName;
     }
 
-    public Date getBusinessHoursBegin() {
+    public String getBusinessHoursBegin() {
         return businessHoursBegin;
     }
 
-    public void setBusinessHoursBegin(Date businessHoursBegin) {
+    public void setBusinessHoursBegin(String businessHoursBegin) {
         this.businessHoursBegin = businessHoursBegin;
     }
 
-    public Date getBusinessHoursEnd() {
+    public String getBusinessHoursEnd() {
         return businessHoursEnd;
     }
 
-    public void setBusinessHoursEnd(Date businessHoursEnd) {
+    public void setBusinessHoursEnd(String businessHoursEnd) {
         this.businessHoursEnd = businessHoursEnd;
     }
 
@@ -131,5 +142,22 @@ public class Config implements Serializable {
     public void setServiceTimeEnd(Date serviceTimeEnd) {
         this.serviceTimeEnd = serviceTimeEnd;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isAutoLogin() {
+        return autoLogin;
+    }
+
+    public void setAutoLogin(boolean autoLogin) {
+        this.autoLogin = autoLogin;
+    }
+
 
 }

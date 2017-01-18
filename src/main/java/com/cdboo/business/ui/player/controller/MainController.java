@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.controller;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.player.view.TitleBarPanel;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
@@ -7,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 
 /**
  * Created by houyi on 2016/11/30.
@@ -36,7 +35,7 @@ public class MainController extends AbstractFrameController {
         titleBarController.prepareAndOpenFrame();
         loginController.prepareAndOpenFrame();
         settingsController.prepareAndOpenFrame();
-        mainFrame.setVisible(true);
+        mainFrame.setVisible(false);
 
         TitleBarPanel titleBarPanel = mainFrame.getTitleBarPanel();
         titleBarPanel.addMouseListener(new MouseAdapter() {
@@ -61,6 +60,18 @@ public class MainController extends AbstractFrameController {
                 mainFrame.shutdownAll();
             }
         });
+
+        mainFrame.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                Config.saveUserData();
+            }
+        });
+    }
+
+    public MainFrame getMainFrame() {
+        return mainFrame;
     }
 
 }
