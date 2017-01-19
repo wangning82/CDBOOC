@@ -292,14 +292,14 @@
                 dataType: "json",
                 success: function (data) {
                     $("#mySpot .grzlk_tr").children().remove();
-                    $("#mySpot .grzlk_tr").append("<ul class='grzlk_ul chabo_list'><li>名称</li><li>时长</li><li>播放日期</li><li>播放时间</li><li>重复时间</li><li>循环次数</li></ul>");
+                    $("#mySpot .grzlk_tr").append("<ul class='grzlk_ul chabo_list'><li>名称</li><li>时长</li><li style='width: 200px;'>播放日期</li><li>播放时间</li><li>重复时间</li><li>循环次数</li></ul>");
                     for(var i = 0 ; i < data.length; i ++){
                         var str = "<ul class='grzlk_ul chabo_list'>";
                         str += "<li>" + data[i].playName+ "</li>";
                         str += "<li>" + data[i].channel.musicList[0].duration + "</li>";
-                        str += "<li>" + data[i].startDate + "-" + data[i].endDate + "</li>";
+                        str += "<li style='width: 200px;'>" + data[i].startDate + " - " + data[i].endDate + "</li>";
                         str += "<li><input type='text' value='" + data[i].timestep.starttime + "' class='inp_1'/></li>";
-                        str += "<li><input type='text' value='" + data[i].intervalTime + "' class='inp_1'/></li>";
+                        str += "<li><input type='text' value='" + data[i].intervalTime + "' class='inp_1 inp_2'/></li>";
                         str += "<li><input type='text' value='" + data[i].cycleTimes + "' class='inp_1 inp_2'/></li>";
                         str += "</ul>";
                         $("#mySpot .grzlk_tr").append(str);
