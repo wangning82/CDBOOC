@@ -51,11 +51,10 @@ public class LoginController extends AbstractFrameController {
                     userService.saveUserData(userService.getUserData(userName));
                     dialog.reset();
                     dialog.dispose();
-                    // TODO 更新标题栏:登录头像，时段
-                    mainFrame.getTitleBarPanel().getNickNameLabel().setText(userName);
+                    // TODO 更新标题栏:时段
+                    mainFrame.getTitleBarPanel().loadUserInfo();
                     if(dialog.getAutoLoginCheckbox().isSelected()){
                         Config.getConfigInstance().setAutoLogin(true);
-                        Config.getConfigInstance().setUserName(userName);
                     }
                     Platform.runLater(() -> {
                         mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));

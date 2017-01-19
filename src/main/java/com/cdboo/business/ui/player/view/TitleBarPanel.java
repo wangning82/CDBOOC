@@ -1,11 +1,14 @@
 package com.cdboo.business.ui.player.view;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.ui.shared.view.AbstractJPanel;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
+import org.springframework.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -52,6 +55,10 @@ public class TitleBarPanel extends AbstractJPanel {
 
         separator1 = JComponentUtils.createSeparator(JSeparator.VERTICAL);
         separator2 = JComponentUtils.createSeparator(JSeparator.VERTICAL);
+
+        if (Config.getConfigInstance().isAutoLogin() && !StringUtils.isEmpty(Config.getConfigInstance().getUserName())) {
+            loadUserInfo();
+        }
     }
 
     @Override
@@ -83,6 +90,18 @@ public class TitleBarPanel extends AbstractJPanel {
         btnPane.add(closeButton);
         this.add(btnPane, BorderLayout.EAST);
         this.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 8));
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public void loadUserInfo() {
+        if (!StringUtils.isEmpty(Config.getConfigInstance().getPhoto())) {
+            ImageIcon imageIcon = new ImageIcon(Config.getConfigInstance().getPhoto());
+            Image smallImage = imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_FAST);
+            headButton.setIcon(new ImageIcon(smallImage));
+        }
+        nickNameLabel.setText(Config.getConfigInstance().getUserName());
     }
 
     public JButton getHeadButton() {

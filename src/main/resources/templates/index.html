@@ -186,7 +186,7 @@
                     $("#jrc").children().remove(); // 节日
                     if (data.festival.length != 0) {
                         for (var i = 0; i < data.festival.length; i++) {
-                            var str = "<dl class='zhuti' onclick='findMusic(" + data.festival[i].id + ")'>";
+                            var str = "<dl class='zhuti' onmousemove='hoverIn(this)' onmouseout='hoverOut(this)' onclick='findMusic(" + data.festival[i].id + ")'>";
                             str += "<dt><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='icon_bg'></dd>";
                             str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
@@ -198,8 +198,8 @@
                     }
                     if (data.theme.length != 0) {
                         for (var i = 0; i < data.theme.length; i++) {
-                            var str = "<dl class='zhuti' onclick='findMusic(" + data.theme[i].id + ")'>";
-                            str += "<dt><img src='" + data.festival[i].photoPath+ "'/></dt>";
+                            var str = "<dl class='zhuti' onmousemove='hoverIn(this)' onmouseout='hoverOut(this)' onclick='findMusic(" + data.theme[i].id + ")'>";
+                            str += "<dt><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='icon_bg'></dd>";
                             str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
                             str += "<dd class='Text'>" + data.theme[i].channelName + "</dd>";
@@ -211,7 +211,7 @@
 
                     if (data.manner.length != 0) {
                         for (var i = 0; i < data.manner.length; i++) {
-                            var str = "<dl class='Style Style_xin' onclick='findMusic(" + data.manner[i].id + ")'>";
+                            var str = "<dl class='Style Style_xin' onmousemove='hoverIn(this)' onmouseout='hoverOut(this)' onclick='findMusic(" + data.manner[i].id + ")'>";
                             str += "<dt class='ash_mo'><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='ashow'></dd>";
                             str += "<dd class='Text'>" + data.manner[i].channelName + "</dd>";
@@ -281,11 +281,31 @@
             plan.css("display", "block");
         }
 
-        // 查找插播
+        // 查找插播计划
         function findSpot() {
             $(".right div").remove();
 
-            // TODO
+            $.ajax({
+                type: "POST",
+                url: "/spotPlan",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    $("#mySpot .grzlk_tr").children().remove();
+                    $("#mySpot .grzlk_tr").append("<ul class='grzlk_ul chabo_list'><li>名称</li><li>时长</li><li style='width: 200px;'>播放日期</li><li>播放时间</li><li>重复时间</li><li>循环次数</li></ul>");
+                    for(var i = 0 ; i < data.length; i ++){
+                        var str = "<ul class='grzlk_ul chabo_list'>";
+                        str += "<li>" + data[i].playName+ "</li>";
+                        str += "<li>" + data[i].channel.musicList[0].duration + "</li>";
+                        str += "<li style='width: 200px;'>" + data[i].startDate + " - " + data[i].endDate + "</li>";
+                        str += "<li><input type='text' value='" + data[i].timestep.starttime + "' class='inp_1'/></li>";
+                        str += "<li><input type='text' value='" + data[i].intervalTime + "' class='inp_1 inp_2'/></li>";
+                        str += "<li><input type='text' value='" + data[i].cycleTimes + "' class='inp_1 inp_2'/></li>";
+                        str += "</ul>";
+                        $("#mySpot .grzlk_tr").append(str);
+                    }
+                }
+            });
 
             var spot = $("#mySpot").clone();
             $(".right").append(spot);
@@ -384,7 +404,7 @@
         <div class="Menu_you">
             <div class="Menu_p">
                 <h4 class="channelName">服装促销季</h4>
-                <p style="float:left; margin-top:5px;"><i class="mu_1"></i><span class="num gqsl">歌曲数量</span><i class="mu_1 mu_2"></i><span class="num bfcs"></span></p>
+                <p style="float:left; margin-top:5px;"><i class="mu_1"></i><span class="num gqsl">歌曲数量</span><i class="mu_1 mu_2" style="cursor: pointer;"></i><span class="num bfcs"></span></p>
                 <input class="Btn_A Btn_c" type="button" value="收藏"/>
             </div>
             <div class="sc_div">
@@ -434,7 +454,7 @@
             </ul>
         </div>
         <div class="tbody tbody_02">
-            <!--主题-->
+            <!--节日-->
             <div class="block">
                 <div class="festival">
                     <ul class="festival_ul">
@@ -455,8 +475,7 @@
                         </li>
                         <li>开始时间</li>
                         <li style=" position:relative;">
-                            <input id="txtBeginDate"
-                                   style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;margin-right:10px;"/>
+                            <input id="txtBeginDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;margin-right:10px;"/>
                             <i class="dao_sj dao_1"></i></li>
                         <li>结束时间</li>
                         <li style=" position:relative;">
@@ -478,44 +497,8 @@
                         <li>00:00-06:00</li>
                         <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
                     </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>晨醒</li>
-                        <li>06:00-09:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>上午</li>
-                        <li>09:00-11:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>中午</li>
-                        <li>11:00-14:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>下午</li>
-                        <li>14:00-17:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>日落</li>
-                        <li>17:00-20:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>晚间</li>
-                        <li>20:00-22:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>午夜</li>
-                        <li>22:00-24:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
                 </div>
             </div>
-
             <!--风格-->
             <div class="none">
                 <div class="grzlk_tr">
@@ -527,41 +510,6 @@
                     <ul class="grzlk_ul grzlk_a">
                         <li>凌晨</li>
                         <li>00:00-06:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>晨醒</li>
-                        <li>06:00-09:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>上午</li>
-                        <li>09:00-11:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>中午</li>
-                        <li>11:00-14:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>下午</li>
-                        <li>14:00-17:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>日落</li>
-                        <li>17:00-20:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>晚间</li>
-                        <li>20:00-22:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>午夜</li>
-                        <li>22:00-24:00</li>
                         <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
                     </ul>
                 </div>
@@ -578,41 +526,6 @@
                         <li>00:00-06:00</li>
                         <li class="xingq">周一、周二、周日</li>
                     </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>晨醒</li>
-                        <li>06:00-09:00</li>
-                        <li class="xingq">周一、周二、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>上午</li>
-                        <li>09:00-11:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>中午</li>
-                        <li>11:00-14:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>下午</li>
-                        <li>14:00-17:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>日落</li>
-                        <li>17:00-20:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>晚间</li>
-                        <li>20:00-22:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>午夜</li>
-                        <li>22:00-24:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
                 </div>
             </div>
         </div>
@@ -622,8 +535,7 @@
 <!-- 插播计划 -->
 <div id="mySpot" style="display: none;">
     <div class="wdcbjh">
-        <h3>管理<br/>
-            我的插播计划</h3>
+        <h3>管理<br/>我的插播计划</h3>
     </div>
     <div class="row790">
         <div class="thead">
@@ -632,77 +544,30 @@
             </ul>
         </div>
         <div class="tbody">
-            <!--主题-->
-            <div class="block">
-                <div class="grzlk_tr">
-                    <ul class="grzlk_ul chabo_list">
-                        <li>名称</li>
-                        <li>时长</li>
-                        <li>播放日期</li>
-                        <li>播放时间</li>
-                        <li>重复时间</li>
-                        <li>循环次数</li>
-                    </ul>
-                    <ul class="grzlk_ul chabo_list">
-                        <li>开店口播</li>
-                        <li>3:00</li>
-                        <li>每天</li>
-                        <li></li>
-                        <li>
-                            <input name="" type="text" value="09:00" class="inp_1"/>
-                        </li>
-                        <li>
-                            <input name="" type="text" value="1小时" class="inp_1"/>
-                        </li>
-                        <li class="sx_1">
-                            <input name="" type="text" value="2" class="inp_1 inp_2"/>
-                            <a href="javascript:;" class="shang"></a><a href="javascript:;" class="xia"></a>
-                        </li>
-                    </ul>
-                    <ul class="grzlk_ul chabo_list">
-                        <li>注意事项</li>
-                        <li>3:00</li>
-                        <li>每天</li>
-                        <li></li>
-                        <li>
-                            <input name="" type="text" value="09:00" class="inp_1"/>
-                        </li>
-                        <li>
-                            <input name="" type="text" value="1小时" class="inp_1"/>
-                        </li>
-                        <li class="sx_1">
-                            <input name="" type="text" value="2" class="inp_1 inp_2"/>
-                            <a href="#" class="shang"></a><a href="#" class="xia"></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!--风格-->
-            <div class="none">
-                <div class="sc_Btn">
-                    <input class="Btn_A" name="" type="button" value="批量删除" onclick="ShowDiv('TK1')"/>
-                </div>
-                <dl class="Style Style_xin">
-                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
-                    <dd class="ashow"></dd>
-                    <dd class="Text">下之歌</dd>
-                </dl>
-                <dl class="Style Style_xin">
-                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
-                    <dd class="ashow"></dd>
-                    <dd class="Text">下之歌</dd>
-                </dl>
-                <dl class="Style Style_xin">
-                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
-                    <dd class="ashow"></dd>
-                    <dd class="Text">下之歌</dd>
-                </dl>
-                <dl class="Style Style_xin">
-                    <dt class="ash_mo"><a href=""><img src="images/img_1.jpg"/></a></dt>
-                    <dd class="ashow"></dd>
-                    <dd class="Text">下之歌</dd>
-                </dl>
+            <div class="grzlk_tr">
+                <ul class="grzlk_ul chabo_list">
+                    <li>名称</li>
+                    <li>时长</li>
+                    <li>播放日期</li>
+                    <li>播放时间</li>
+                    <li>重复时间</li>
+                    <li>循环次数</li>
+                </ul>
+                <ul class="grzlk_ul chabo_list">
+                    <li>开店口播</li>
+                    <li>3:00</li>
+                    <li>每天</li>
+                    <li></li>
+                    <li>
+                        <input name="" type="text" value="09:00" class="inp_1"/>
+                    </li>
+                    <li>
+                        <input name="" type="text" value="1" class="inp_1"/>
+                    </li>
+                    <li class="sx_1">
+                        <input name="" type="text" value="2" class="inp_1 inp_2"/>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -742,14 +607,6 @@
                         <button class="jp-play" role="button" tabindex="0">play</button>
                         <button class="jp-next" role="button" tabindex="0">next</button>
                     </div>
-                    <div style="position: absolute;left: 210px;top: 0px; font-size: 12px; padding: 1px;">
-                        <dl class="play_2_dl">
-                            <dt>
-                                <img class="tx_img" src="images/img_1.jpg" style="width: 52px; height: 52px;"/>
-                            </dt>
-                            <dt>晨醒</dt>
-                        </dl>
-                    </div>
                     <div class="jp-progress">
                         <div class="jp-seek-bar">
                             <div class="jp-play-bar"></div>
@@ -786,7 +643,7 @@
                                 <li><a href="#" class="btn_6"></a><span class="num num_1">0</span>
                                     <div class="sub option_3">
                                         <div class="liedui_top">
-                                            <h4 class="lie_h4">播放列队（共10首歌）</h4>
+                                            <h4 class="lie_h4">播放列队（共0首歌）</h4>
                                             <i class="delete"></i>
                                         </div>
                                         <div class="jp-playlist">
