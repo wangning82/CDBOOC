@@ -273,9 +273,49 @@
         // 查找计划
         function findPlan() {
             $(".right div").remove();
-
-            // TODO
-
+            $.ajax({
+                type: "POST",
+                url: "/plan",
+                data: {
+                    festival : [[${festivalList[0]}]]
+                },
+                dataType: "json",
+                success: function (data) {
+                    // 节日
+                    $("#myPlan .select_txt").html(data.festival[0].channel.themeConcreteType);
+                    $("#myPlan .txtBeginDate").val(data.festival[0].startDate);
+                    $("#myPlan .txtEndDate").val(data.festival[0].endDate);
+                    $("#myPlan .fplan").children().remove();
+                    $("#myPlan .fplan").append("<ul class='grzlk_ul grzlk_a'><li>时段</li><li>时间</li><li class='xingq'>日期</li></ul>");
+                    for(var i = 0 ; i < data.festival.length; i ++){
+                        var str = "<ul class='grzlk_ul grzlk_a'>";
+                        str += "<li>" + data.festival[i].timestep.timestepName + "</li>";
+                        str += "<li>" + data.festival[i].timestep.starttime + " - " + data.festival[i].timestep.endtime + "</li>";
+                        str += "<li class='xingq'>" + parseWeek(data.festival[i].week) + "</li>";
+                        $("#myPlan .fplan").append(str);
+                    }
+                    // 主题
+                    $("#myPlan .tplan").children().remove();
+                    $("#myPlan .tplan").append("<ul class='grzlk_ul grzlk_a'><li>时段</li><li>时间</li><li class='xingq'>日期</li></ul>");
+                    for(var i = 0 ; i < data.theme.length; i ++){
+                        var str = "<ul class='grzlk_ul grzlk_a'>";
+                        str += "<li>" + data.theme[i].timestep.timestepName + "</li>";
+                        str += "<li>" + data.theme[i].timestep.starttime + " - " + data.theme[i].timestep.endtime + "</li>";
+                        str += "<li class='xingq'>" + parseWeek(data.theme[i].week) + "</li>";
+                        $("#myPlan .tplan").append(str);
+                    }
+                    // 风格
+                    $("#myPlan .mplan").children().remove();
+                    $("#myPlan .mplan").append("<ul class='grzlk_ul grzlk_a'><li>时段</li><li>时间</li><li class='xingq'>日期</li></ul>");
+                    for(var i = 0 ; i < data.manner.length; i ++){
+                        var str = "<ul class='grzlk_ul grzlk_a'>";
+                        str += "<li>" + data.manner[i].timestep.timestepName + "</li>";
+                        str += "<li>" + data.manner[i].timestep.starttime + " - " + data.manner[i].timestep.endtime + "</li>";
+                        str += "<li class='xingq'>" + parseWeek(data.manner[i].week) + "</li>";
+                        $("#myPlan .mplan").append(str);
+                    }
+                }
+            });
             var plan = $("#myPlan").clone();
             $(".right").append(plan);
             plan.css("display", "block");
@@ -284,7 +324,6 @@
         // 查找插播计划
         function findSpot() {
             $(".right div").remove();
-
             $.ajax({
                 type: "POST",
                 url: "/spotPlan",
@@ -460,33 +499,38 @@
                     <ul class="festival_ul">
                         <li>节日</li>
                         <li>
-                            <div class="select_box box_fes">
-                                <span class="select_txt" style=" float:left;">圣诞节</span><i class="dao_sj dao_new"></i>
-                                <div class="option" id="option_fes"><a href="#" class="sel_jr">新年</a><a
-                                        href="#" class="sel_jr">七夕</a> <a href="#" class="sel_jr">春节</a><a
-                                        href="#" class="sel_jr">中秋节</a> <a href="#" class="sel_jr">情人节</a><a
-                                        href="#" class="sel_jr">教师节</a> <a href="#" class="sel_jr">愚人节</a><a
-                                        href="#" class="sel_jr">国庆节</a> <a href="#" class="sel_jr">劳动节</a><a
-                                        href="#" class="sel_jr">万圣节</a> <a href="#" class="sel_jr">母亲节</a><a
-                                        href="#" class="sel_jr">感恩节</a> <a href="#" class="sel_jr">儿童节</a><a
-                                        href="#" class="sel_jr">圣诞节</a> <a href="#" class="sel_jr">父亲节</a><a
-                                        href="#" class="sel_jr">生日</a></div>
+                            <div class="select_box box_fes" onclick="findOptions(this);">
+                                <span class="select_txt" style="float:left;" th:text="${festivalList[0]}"></span><i class="dao_sj dao_new"></i>
+                                <div class="option" id="option_fes">
+                                    <a th:each="festival:${festivalList}" href="#" class="sel_jr" onclick="showOptions(this);" th:text="${festival}">
+                                    </a>
+                                </div>
                             </div>
                         </li>
                         <li>开始时间</li>
-                        <li style=" position:relative;">
-                            <input id="txtBeginDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;margin-right:10px;"/>
-                            <i class="dao_sj dao_1"></i></li>
+                        <li style="position:relative;">
+                            <input class="txtBeginDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;margin-right:10px;"/>
+                        </li>
                         <li>结束时间</li>
-                        <li style=" position:relative;">
-                            <input id="txtEndDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;"/>
-                            <i class="dao_sj dao_1"></i></li>
+                        <li style="position:relative;">
+                            <input class="txtEndDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;"/>
+                        </li>
                         <li>
                             <input name="" type="button" value="保存" class="Save"/>
                         </li>
                     </ul>
                 </div>
-                <div class="grzlk_tr">
+                <div class="grzlk_tr fplan">
+                    <ul class="grzlk_ul grzlk_a">
+                        <li>时段</li>
+                        <li>时间</li>
+                        <li class="xingq">日期</li>
+                    </ul>
+                </div>
+            </div>
+            <!--主题-->
+            <div class="none">
+                <div class="grzlk_tr tplan">
                     <ul class="grzlk_ul grzlk_a">
                         <li>时段</li>
                         <li>时间</li>
@@ -499,23 +543,9 @@
                     </ul>
                 </div>
             </div>
-            <!--风格-->
+            <!-- 风格 -->
             <div class="none">
-                <div class="grzlk_tr">
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>时段</li>
-                        <li>时间</li>
-                        <li class="xingq">日期</li>
-                    </ul>
-                    <ul class="grzlk_ul grzlk_a">
-                        <li>凌晨</li>
-                        <li>00:00-06:00</li>
-                        <li class="xingq">周一、周二、周三、周四、周五、周六、周日</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="none">
-                <div class="grzlk_tr">
+                <div class="grzlk_tr mplan">
                     <ul class="grzlk_ul grzlk_a">
                         <li>时段</li>
                         <li>时间</li>
@@ -590,7 +620,10 @@
                 <li class="details">
                     <h4>场景业态</h4>
                 </li>
-                <li th:each="scene:${sceneList}"><s class="S_xxjs_6" style="float: left"></s><a href="#" th:onclick="'javascript:findChannel(\'' + ${scene} + '\');'" th:text="${scene}"></a></li>
+                <li th:each="scene:${sceneList}">
+                    <s class="S_xxjs_6" style="float: left"></s>
+                    <a href="#" th:onclick="'javascript:findChannel(\'' + ${scene} + '\');'" th:text="${scene}"></a>
+                </li>
             </ul>
         </aside>
         <!--右-->

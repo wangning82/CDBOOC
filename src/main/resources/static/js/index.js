@@ -1,43 +1,4 @@
 $(function () {
-    var dayNames = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
-    var mydate = new Date();
-
-    function show() {
-        var str = "" + mydate.getFullYear() + "/";
-        str += (mydate.getMonth() + 1) + "/";
-        str += mydate.getDate();
-        return str;
-    }
-
-    $("#shijian").html("" + dayNames[mydate.getDay()] + "&nbsp;&nbsp;&nbsp;&nbsp;" + show());
-
-    //头部下拉
-    $("#zhm").hover(function () {
-        $("#zhcz").toggle();
-    });
-
-    //点击弹出
-    $(".select_box").click(function (event) {
-        event.stopPropagation();
-        $(this).find(".option").toggle();
-        $(this).parent().siblings().find(".option").hide();
-    });
-
-    /*
-    $(document).click(function (event) {
-        var eo = $(event.target);
-        if ($(".select_box").is(":visible") && eo.attr("class") != "option" && !eo.parent(".option").length)
-            $('.option').hide();
-    });
-    */
-
-    /*赋值给文本框*/
-    $(".option a").click(function () {
-        var value = $(this).text();
-        $(this).parent().siblings(".select_txt").text(value);
-        $(this).parent().siblings(".select_txt").parent().siblings(".select_value").val(value);
-    });
-
     //底部鼠标滑过
     $("#nav ul:eq(0) li").mouseover(function () {
         $(this).find("div:eq(0)").css("display", "block");
@@ -45,8 +6,18 @@ $(function () {
     $("#nav ul:eq(0) li").mouseout(function () {
         $(this).find("div:eq(0)").css("display", "none");
     });
-
 });
+
+function findOptions(obj) {
+    $(obj).find(".option").toggle();
+    $(obj).parent().siblings().find(".option").hide();
+}
+
+function showOptions(obj) {
+    var value = $(obj).text();
+    $(obj).parent().siblings(".select_txt").text(value);
+    $(obj).parent().siblings(".select_txt").parent().siblings(".select_value").val(value);
+}
 
 // 鼠标滑过效果
 function hoverIn(obj) {
@@ -99,6 +70,15 @@ function ShowDiv(show_div, bg_div) {
 function CloseDiv(show_div, bg_div) {
     document.getElementById(show_div).style.display = 'none';
     document.getElementById(bg_div).style.display = 'none';
+}
+
+function parseWeek(number) {
+    if(number != null){
+        return number.replace("1", "星期日").replace("2", "星期一").replace("3", "星期二").replace("4", "星期三").replace("5", "星期四").replace("6", "星期五").replace("7", "星期六");
+    }else{
+        return "";
+    }
+
 }
 
 
