@@ -199,7 +199,7 @@
                     if (data.theme.length != 0) {
                         for (var i = 0; i < data.theme.length; i++) {
                             var str = "<dl class='zhuti' onmousemove='hoverIn(this)' onmouseout='hoverOut(this)' onclick='findMusic(" + data.theme[i].id + ")'>";
-                            str += "<dt><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
+                            str += "<dt><a href='#'><img src='" + data.theme[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='icon_bg'></dd>";
                             str += "<dd class='icon_dd'><i class='icon'></i><span>4万</span></dd>";
                             str += "<dd class='Text'>" + data.theme[i].channelName + "</dd>";
@@ -212,7 +212,7 @@
                     if (data.manner.length != 0) {
                         for (var i = 0; i < data.manner.length; i++) {
                             var str = "<dl class='Style Style_xin' onmousemove='hoverIn(this)' onmouseout='hoverOut(this)' onclick='findMusic(" + data.manner[i].id + ")'>";
-                            str += "<dt class='ash_mo'><a href='#'><img src='" + data.festival[i].photoPath+ "'/></a></dt>";
+                            str += "<dt class='ash_mo'><a href='#'><img src='" + data.manner[i].photoPath+ "'/></a></dt>";
                             str += "<dd class='ashow'></dd>";
                             str += "<dd class='Text'>" + data.manner[i].channelName + "</dd>";
                             str += "</dl>";
@@ -617,7 +617,7 @@
                 <li><a href="javascript:findFavorite();"><s class="S_xxjs_3"></s>我的收藏</a></li>
                 <li><a href="javascript:findPlan();"><s class="S_xxjs_4"></s>播放计划</a></li>
                 <li><a href="javascript:findSpot();"><s class="S_xxjs_5"></s>插播计划</a></li>
-                <li class="details">
+                <li class="details" onclick="findChannel();" style="cursor: pointer;">
                     <h4>场景业态</h4>
                 </li>
                 <li th:each="scene:${sceneList}">
