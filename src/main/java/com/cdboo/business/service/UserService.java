@@ -32,6 +32,15 @@ public class UserService {
     private PlanService planService;
 
     @Autowired
+    private ChannelService channelService;
+
+    @Autowired
+    private MusicService musicService;
+
+    @Autowired
+    private PeriodService periodService;
+
+    @Autowired
     private PropsConfig propsConfig;
 
     private static int BUFFER_SIZE = 10240;
@@ -80,7 +89,8 @@ public class UserService {
         if(!new File(propsConfig.getImages()).exists()){
             new File(propsConfig.getImages()).mkdirs();
         }
-        planService.deleteAll();
+
+        deleteAll();
 
         for (PlanModel planModel : model.getPlanModelList()) {
             planModel.setSceneImg(getImagePath(planModel.getSceneImg()));
@@ -91,6 +101,13 @@ public class UserService {
             }
             planService.save(planModel);
         }
+    }
+
+    private void deleteAll(){
+        musicService.deleteAll();
+        periodService.deleteAll();
+        channelService.deleteAll();
+        planService.deleteAll();
     }
 
     private void saveChannel(RestChannel channel){

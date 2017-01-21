@@ -41,12 +41,20 @@
                 keyEnabled: true,
                 play: function(e) {
                     $(".songTitle").html(e.jPlayer.status.media.title);
+                    if(!spotflag){
+                        playIndex = musicList.indexOf(e.jPlayer.status.media);
+                        if(playIndex == musicList - 1){
+                            playIndex = 0;
+                        }
+                    }
                 },
                 ended: function (e) {
                     spotflag = false;
                     if(playIndex != 0){
                         myPlaylist.setPlaylist(musicList);
                         myPlaylist.play(playIndex);
+                        $(".liedui_top .lie_h4").html("播放队列（共" + musicList.length + "首歌）");
+                        $("#nav .num_1").html(musicList.length);
                     }else{
                         loadPlanMusic();
                     }
@@ -75,6 +83,7 @@
                     }
                     myPlaylist.play(0);
                     $(".liedui_top .lie_h4").html("播放队列（共" + data.length + "首歌）");
+                    $("#nav .num_1").html(data.length);
                 }
             });
         }
