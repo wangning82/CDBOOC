@@ -2,6 +2,7 @@ package com.cdboo.business.service;
 
 import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
+import com.cdboo.business.common.DownloadWithThreadPool;
 import com.cdboo.business.common.YamlUtils;
 import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.RestChannel;
@@ -21,6 +22,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Created by houyi on 2016/12/26.
@@ -44,6 +49,8 @@ public class UserService {
     private PropsConfig propsConfig;
 
     private static int BUFFER_SIZE = 10240;
+
+    private List<String> musicList; // 服务器音乐地址
 
     private static final String SERVER_IP = YamlUtils.getValue("url.cdboo.server.ip");
 
@@ -91,16 +98,34 @@ public class UserService {
         }
 
         deleteAll();
+        musicList = new ArrayList<>(); // 音乐单独下载
 
         for (PlanModel planModel : model.getPlanModelList()) {
             planModel.setSceneImg(getImagePath(planModel.getSceneImg()));
 
             saveChannel(planModel.getChannel());
-            for(RestChannel channel : planModel.getChannel().getChildChannelList()){
-                saveChannel(channel);
+            if(Constants.CHANNEL_TYPE_GROUP.equals(planModel.getChannel().getChannelType())){
+                for(RestChannel channel : planModel.getChannel().getChildChannelList()){
+                    saveChannel(channel);
+                }
             }
             planService.save(planModel);
         }
+
+        // 多线程下载歌曲
+        new Thread(){
+            @Override
+            public void run() {
+                for(String source : musicList){
+                    String filename = source.substring(source.lastIndexOf("/") + 1);
+                    try {
+                        DownloadWithThreadPool.download(SERVER_IP + source, propsConfig.getMusic() + filename, 5);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     private void deleteAll(){
@@ -113,6 +138,7 @@ public class UserService {
     private void saveChannel(RestChannel channel){
         channel.setPhotoPath(getImagePath(channel.getPhotoPath()));
         for (RestMusic restMusic : channel.getMusicList()) {
+            musicList.add(restMusic.getPath());
             restMusic.setPath(getMusicPath(restMusic.getPath()));
         }
     }
@@ -130,7 +156,7 @@ public class UserService {
     private String getMusicPath(String source) {
         if(!StringUtils.isEmpty(source)){
             String filename = source.substring(source.lastIndexOf("/") + 1);
-            saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
+            //saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
             return Constants.URL_MUSIC + filename;
         }else {
             return null;

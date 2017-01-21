@@ -80,49 +80,14 @@ function parseWeek(number) {
     }
 }
 
-Array.prototype.indexof = function (value, fromindex) {
-    var arr = this.valueOf(), len = this.length;
-    //如果arr不是数组或者第一个参数为空或者undefined，则返回false
-    if (toString.call(arr) !== '[object Array]' || value === '' || value === undefined || toString.call(value) === '[object Function]') {
-        return false;
-    }
-    //默认第一个参数为0
-    if (fromindex === undefined) {
-        fromindex = 0;
-    }
-    //第二个参数不是数字返回false
-    if (toString.call(fromindex) !== '[object Number]') {
-        return false;
-    }
-    //判断第二个参数是否为负数
-    if (fromindex < 0) {
-        fromindex = Math.abs(fromindex);
-        //超过搜索范围
-        if (len < fromindex) {
-            return -1;
-        } else {
-            //负数则从后面开始向后搜索
-            fromindex = len - fromindex;
-        }
-    }
-    //开始查找
-    for (var i = 0 + fromindex; i < len; i++) {
-        if (value === arr[i]) {
-            return i;
-        } else {
-            //判断数据类型相等
-            if (toString.call(arr[i]) === toString.call(value)) {
-                //判断数据值相等
-                if (JSON.stringify(arr[i]) === JSON.stringify(value)) {
-                    return i;
-                } else {
-                    return -1;
-                }
-            }
+function indexOf(array, title) {
+    for(var index = 0; index < array.length; index ++){
+        if(title == array[index].title){
+            return index;
         }
     }
     return -1;
-};
+}
 
 
 

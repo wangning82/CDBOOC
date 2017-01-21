@@ -27,6 +27,7 @@
         }
 
         $(document).ready(function () {
+            findChannel();
             myPlaylist = new jPlayerPlaylist({
                 jPlayer: "#jquery_jplayer_1",
                 cssSelectorAncestor: "#jp_container_1"
@@ -40,28 +41,29 @@
                 smoothPlayBar: true,
                 keyEnabled: true,
                 play: function(e) {
-                    $(".songTitle").html(e.jPlayer.status.media.title);
                     if(!spotflag){
-                        playIndex = musicList.indexOf(e.jPlayer.status.media);
-                        if(playIndex == musicList - 1){
-                            playIndex = 0;
-                        }
+                        playIndex = indexOf(musicList, e.jPlayer.status.media.title);
                     }
                 },
                 ended: function (e) {
-                    spotflag = false;
-                    if(playIndex != 0){
-                        myPlaylist.setPlaylist(musicList);
-                        myPlaylist.play(playIndex);
-                        $(".liedui_top .lie_h4").html("播放队列（共" + musicList.length + "首歌）");
-                        $("#nav .num_1").html(musicList.length);
+                    if(spotflag){
+                        spotflag = false;
+                        if(playIndex != musicList.length - 1){
+                            myPlaylist.setPlaylist(musicList);
+                            myPlaylist.play(playIndex + 1);
+                            $(".liedui_top .lie_h4").html("播放队列（共" + musicList.length + "首歌）");
+                            $("#nav .num_1").html(musicList.length);
+                        }else{
+                            loadPlanMusic();
+                        }
+
                     }else{
-                        loadPlanMusic();
+                        if(playIndex == musicList.length - 1){
+                            loadPlanMusic();
+                        }
                     }
                 }
             });
-
-            findChannel();
             loadPlanMusic();
             window.setInterval(findSpotMusic, 30000);
 
@@ -69,13 +71,14 @@
 
         // 加载播放计划音乐
         function loadPlanMusic() {
-            musicList.slice(0, musicList.length); // 清除数组
             $.ajax({
                 type: "POST",
                 url: "/planMusic",
                 data: {},
                 dataType: "json",
                 success: function (data) {
+                    myPlaylist.setPlaylist({});
+                    musicList.slice(0, musicList.length); // 清除数组
                     for(var i = 0 ; i < data.length; i ++){
                         var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0);
                         musicList.push(music);
@@ -655,7 +658,7 @@
                         </div>
                     </div>
                     <div class="jp-time-holder" style="font-size: 14px; color: #979797">
-                        <div style="float: left;" class="songTitle"></div>
+                        <div style="float: left;" class="jp-title"></div>
                         <div style="float: right; width: 100px;">
                             <div class="jp-current-time" role="timer" aria-label="time"></div>
                             <div style="float: left; top: 20px;">/</div>
