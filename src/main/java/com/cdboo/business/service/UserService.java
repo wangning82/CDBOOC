@@ -113,19 +113,16 @@ public class UserService {
         }
 
         // 多线程下载歌曲
-        new Thread(){
-            @Override
-            public void run() {
-                for(String source : musicList){
-                    String filename = source.substring(source.lastIndexOf("/") + 1);
-                    try {
-                        DownloadWithThreadPool.download(SERVER_IP + source, propsConfig.getMusic() + filename, 5);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        new Thread(() -> {
+            for(String source : musicList){
+                String filename = source.substring(source.lastIndexOf("/") + 1);
+                try {
+                    DownloadWithThreadPool.download(SERVER_IP + source, propsConfig.getMusic() + filename, 5);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        }.start();
+        }).start();
     }
 
     private void deleteAll(){

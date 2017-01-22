@@ -1,16 +1,18 @@
 package com.cdboo.business.common;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by houyi on 2017/1/19.
  */
 public class DownloadWithRange implements Runnable {
 
-    private HttpURLConnection connection;
+    private String urlLocation;
 
     private String filePath;
 
@@ -18,8 +20,8 @@ public class DownloadWithRange implements Runnable {
 
     private long end;
 
-    public DownloadWithRange(HttpURLConnection connection, String filePath, long start, long end) {
-        this.connection = connection;
+    public DownloadWithRange(String urlLocation, String filePath, long start, long end) {
+        this.urlLocation = urlLocation;
         this.filePath = filePath;
         this.start = start;
         this.end = end;
@@ -28,6 +30,7 @@ public class DownloadWithRange implements Runnable {
     @Override
     public void run() {
         try {
+            HttpURLConnection connection = getConnection(urlLocation);
             connection.setRequestProperty("Range", "bytes=" + start + "-" + end);
 
             File file = new File(filePath);
@@ -44,9 +47,22 @@ public class DownloadWithRange implements Runnable {
             }
             in.close();
             out.close();
+            connection.disconnect();
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
         }
+    }
+
+    private HttpURLConnection getConnection(String urlLocation) throws IOException {
+        URL url = null;
+        if (urlLocation != null) {
+            url = new URL(urlLocation.replaceAll(" ", "%20"));
+        }
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setReadTimeout(1000);
+        conn.setRequestMethod("GET");
+
+        return conn;
     }
 
 }

@@ -49,12 +49,12 @@ public class PlanModel extends BaseEntity {
     @Column(name = "sceneImage")
     private String sceneImg;//业态图片
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id", unique = true, nullable = false)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "period_id")
     private RestTimeStep timestep; // 用户时段信息
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "channel_id", unique = true, nullable = false)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_id")
     private RestChannel channel; // 频道
 
     public String getPlanNo() {
