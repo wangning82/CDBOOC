@@ -432,6 +432,7 @@
 .jp-playlist {
     width: 388px;
     height: 266px;
+    overflow: auto;
     /*background-color: #ccc;
     border-top: 1px solid #009be3;*/
 }
@@ -476,7 +477,7 @@ div.jp-type-playlist div.jp-playlist li.jp-playlist-current {
     /*list-style-type: square;*/
     list-style-position: inside;
     background: #221f1f;
-    padding: 5px 10px 4px 10px;
+    /*padding: 5px 10px 4px 10px;*/
 }
 
 div.jp-type-playlist div.jp-playlist a {
