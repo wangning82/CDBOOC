@@ -59,7 +59,8 @@ public class DownloadWithRange implements Runnable {
             url = new URL(urlLocation.replaceAll(" ", "%20"));
         }
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setReadTimeout(1000);
+        conn.setReadTimeout(30000);
+        conn.setConnectTimeout(30000);
         conn.setRequestMethod("GET");
 
         return conn;

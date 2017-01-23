@@ -135,7 +135,9 @@ public class UserService {
     private void saveChannel(RestChannel channel){
         channel.setPhotoPath(getImagePath(channel.getPhotoPath()));
         for (RestMusic restMusic : channel.getMusicList()) {
-            musicList.add(restMusic.getPath());
+            if(!musicList.contains(restMusic.getPath())){
+                musicList.add(restMusic.getPath());
+            }
             restMusic.setPath(getMusicPath(restMusic.getPath()));
         }
     }
