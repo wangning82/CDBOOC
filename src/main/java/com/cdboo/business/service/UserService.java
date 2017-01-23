@@ -2,8 +2,10 @@ package com.cdboo.business.service;
 
 import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
-import com.cdboo.business.common.DownloadWithThreadPool;
 import com.cdboo.business.common.YamlUtils;
+import com.cdboo.business.common.download.GeneralDownloadInfo;
+import com.cdboo.business.common.download.HttpDownloader;
+import com.cdboo.business.common.download.RemoteLocalPair;
 import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
@@ -24,8 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 /**
  * Created by houyi on 2016/12/26.
@@ -116,11 +116,10 @@ public class UserService {
         new Thread(() -> {
             for(String source : musicList){
                 String filename = source.substring(source.lastIndexOf("/") + 1);
-                try {
-                    DownloadWithThreadPool.download(SERVER_IP + source, propsConfig.getMusic() + filename, 5);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.replaceAll(" ", "%20"), propsConfig.getMusic(), filename);
+                GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
+                HttpDownloader downloader = new HttpDownloader(info, 3);
+                downloader.run();
             }
         }).start();
     }
