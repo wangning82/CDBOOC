@@ -50,7 +50,7 @@ public class UserService {
 
     private static int BUFFER_SIZE = 10240;
 
-    private List<String> musicList; // 服务器音乐地址
+    private List<RestMusic> musicList; // 服务器音乐地址
 
     private static final String SERVER_IP = YamlUtils.getValue("url.cdboo.server.ip");
 
@@ -114,16 +114,19 @@ public class UserService {
 
         // 多线程下载歌曲
         new Thread(() -> {
-            for(String source : musicList){
-                String filename = source.substring(source.lastIndexOf("/") + 1);
-                RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.replaceAll(" ", "%20"), propsConfig.getMusic(), filename);
+            for(RestMusic source : musicList){
+                String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
+                RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getPath().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength());
                 GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
-                HttpDownloader downloader = new HttpDownloader(info, 3);
+                HttpDownloader downloader = new HttpDownloader(info, 5);
                 downloader.run();
             }
         }).start();
     }
 
+    /**
+     * 清除所有数据
+     */
     private void deleteAll(){
         musicService.deleteAll();
         periodService.deleteAll();
@@ -131,16 +134,32 @@ public class UserService {
         planService.deleteAll();
     }
 
-    private void saveChannel(RestChannel channel){
+    /**
+     * 保存频道
+     * @param channel
+     */
+    private void saveChannel(RestChannel channel) {
         channel.setPhotoPath(getImagePath(channel.getPhotoPath()));
         for (RestMusic restMusic : channel.getMusicList()) {
-            if(!musicList.contains(restMusic.getPath())){
-                musicList.add(restMusic.getPath());
+            boolean exist = false;
+            for (RestMusic music : musicList) {
+                if (music.getPath().equals(restMusic.getPath())) {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                musicList.add(restMusic);
             }
             restMusic.setPath(getMusicPath(restMusic.getPath()));
         }
     }
 
+    /**
+     * 获取保存的图片文件路径
+     * @param source
+     * @return
+     */
     private String getImagePath(String source) {
         if(!StringUtils.isEmpty(source)){
             String filename = source.substring(source.lastIndexOf("/") + 1);
@@ -151,16 +170,25 @@ public class UserService {
         }
     }
 
+    /**
+     * 获取保存的音乐文件路径
+     * @param source
+     * @return
+     */
     private String getMusicPath(String source) {
         if(!StringUtils.isEmpty(source)){
             String filename = source.substring(source.lastIndexOf("/") + 1);
-            //saveToFile(SERVER_IP + source, propsConfig.getMusic() + filename);
             return Constants.URL_MUSIC + filename;
         }else {
             return null;
         }
     }
 
+    /**
+     * 保存文件
+     * @param destUrl
+     * @param fileName
+     */
     private void saveToFile(String destUrl, String fileName) {
         if(!new File(fileName).exists()){
             BufferedInputStream bis = null;
@@ -200,4 +228,5 @@ public class UserService {
 
         }
     }
+
 }

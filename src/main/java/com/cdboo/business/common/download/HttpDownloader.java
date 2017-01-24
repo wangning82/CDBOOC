@@ -51,6 +51,7 @@ public class HttpDownloader extends Thread {
                     }
                 }
                 logger.info(info.getPair().localName + " Download is done!");
+                info.deleteFlagFile();
             } catch (InterruptedException e) {
                 logger.debug(info.getPair().localName, e);
             }
@@ -92,9 +93,7 @@ public class HttpDownloader extends Thread {
             conn = (HttpURLConnection) url.openConnection();
             HttpDownloader.RetriveSingleStream.setHeader(conn);
             int stateCode = conn.getResponseCode();
-            // 判断http status是否为HTTP/1.1 206 Partial Content或者200 OK
-            if (stateCode != HttpURLConnection.HTTP_OK
-                    && stateCode != HttpURLConnection.HTTP_PARTIAL) {
+            if (stateCode != HttpURLConnection.HTTP_OK && stateCode != HttpURLConnection.HTTP_PARTIAL) {
                 logger.warn(info.getPair().localName + " #Error Code:# " + stateCode);
                 fileLength = -2;
             } else if (stateCode >= 400) {
@@ -103,8 +102,8 @@ public class HttpDownloader extends Thread {
             } else {
                 // 获取长度
                 fileLength = conn.getContentLengthLong();
-                if(fileLength == -1){
-                    fileLength = conn.getInputStream().available();
+                if (fileLength == -1) {
+                    fileLength = info.getPair().fileLength;
                 }
                 timeStamp = conn.getLastModified();
                 logger.info(info.getPair().localName + " #FileLength:# " + fileLength);
@@ -130,7 +129,6 @@ public class HttpDownloader extends Thread {
 
     /**
      * bug fixed change the RandomAccessFile size
-     *
      */
     protected static class RetriveSingleStream implements Runnable {
         private boolean isDone = false;
@@ -148,8 +146,7 @@ public class HttpDownloader extends Thread {
             return isDone;
         }
 
-        public RetriveSingleStream(IDownloadInfo info, FileCheckPoints chp,
-                                   int curIndex, int maxRetry) {
+        public RetriveSingleStream(IDownloadInfo info, FileCheckPoints chp, int curIndex, int maxRetry) {
             this.__info = info;
             this.chp = chp;
             this.curIndex = curIndex;
@@ -187,8 +184,7 @@ public class HttpDownloader extends Thread {
                         chp.getStartPos()[curIndex] = Math.min(startPos, endPos);
                         if (counter % 20 == 0) {
                             __info.writeInfo(chp);
-                            logger.info(__info.getPair().localName + " #Block" + (curIndex + 1) + "# download "
-                                    + getPercentage() + "%...");
+                            logger.info(__info.getPair().localName + " #Block" + (curIndex + 1) + "# download " + getPercentage() + "%...");
                             Thread.yield();
                         }
                     }
@@ -230,12 +226,9 @@ public class HttpDownloader extends Thread {
             conn.setRequestProperty(
                     "User-Agent",
                     "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 BIDUBrowser/7.0 Safari/537.36");
-            conn.setRequestProperty("Accept-Language",
-                    "en-us,en;q=0.7,zh-cn;q=0.3");
-            //conn.setRequestProperty("Accept-Encoding", "utf-8");
+            conn.setRequestProperty("Accept-Language", "en-us,en;q=0.7,zh-cn;q=0.3");
             conn.setRequestProperty("Accept-Encoding", "identity");
-            conn.setRequestProperty("Accept-Charset",
-                    "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
+            conn.setRequestProperty("Accept-Charset", "ISO-8859-1,utf-8;q=0.7,*;q=0.7");
             conn.setRequestProperty("Keep-Alive", "300");
             conn.setRequestProperty("connnection", "keep-alive");
             conn.setRequestProperty("Cache-conntrol", "max-age=0");

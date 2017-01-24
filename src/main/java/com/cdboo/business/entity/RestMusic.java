@@ -27,8 +27,11 @@ public class RestMusic extends BaseEntity {
     @Column(name = "music_name")
     private String musicName; // 音乐名称
 
-    @Column(name = "duration")
+    @Column(name = "music_duration")
     private String duration; // 音乐时长
+
+    @Column(name = "music_length")
+    private Long length; // 音乐文件大小
 
     @Column(name = "actor")
     private String actor; // 艺人
@@ -127,4 +130,13 @@ public class RestMusic extends BaseEntity {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
 }

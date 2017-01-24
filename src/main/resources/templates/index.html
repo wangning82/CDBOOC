@@ -288,9 +288,7 @@
             $.ajax({
                 type: "POST",
                 url: "/plan",
-                data: {
-                    festival : [[${festivalList[0]}]]
-                },
+                data: {},
                 dataType: "json",
                 success: function (data) {
                     // 节日
@@ -512,7 +510,7 @@
                         <li>节日</li>
                         <li>
                             <div class="select_box box_fes" onclick="findOptions(this);">
-                                <span class="select_txt" style="float:left;" th:text="${festivalList[0]}"></span><i class="dao_sj dao_new"></i>
+                                <span class="select_txt" style="float:left;" th:if="${not #lists.isEmpty(festivalList)}" th:text="${festivalList[0]}"></span><i class="dao_sj dao_new"></i>
                                 <div class="option" id="option_fes">
                                     <a th:each="festival:${festivalList}" href="#" class="sel_jr" onclick="showOptions(this);" th:text="${festival}">
                                     </a>

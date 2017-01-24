@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -143,9 +144,12 @@ public class WebViewController {
      */
     @RequestMapping(value = "plan")
     @ResponseBody
-    public Map<String, Iterable<PlanModel>> plan(String festival, Model model){
+    public Map<String, Iterable<PlanModel>> plan(Model model){
         Map<String, Iterable<PlanModel>> result = new HashMap<>();
-        result.put("festival", planService.findFestivalPlan(festival));
+        List<String> list = planService.findFestivalList();
+        if(!CollectionUtils.isEmpty(list)){
+            result.put("festival", planService.findFestivalPlan(list.get(0)));
+        }
         result.put("theme", planService.findPlanByStyle(Constants.MUSIC_THEME));
         result.put("manner", planService.findPlanByStyle(Constants.MUSIC_MANNER));
         return result;

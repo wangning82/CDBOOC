@@ -1,6 +1,8 @@
 package com.cdboo.business.common.download;
 
 
+import java.io.File;
+
 public interface IDownloadInfo {
     /**
      * 初始化download这个阶段可以做连接数据库的操作
@@ -57,4 +59,10 @@ public interface IDownloadInfo {
      * @return
      */
     int getSplitNum();
+
+    /**
+     * 删除断点文件
+     */
+    void deleteFlagFile();
+
 }

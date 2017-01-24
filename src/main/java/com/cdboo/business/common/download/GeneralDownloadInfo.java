@@ -8,25 +8,16 @@ import java.util.UUID;
 
 public class GeneralDownloadInfo implements IDownloadInfo {
 
-    public static String[] getHostNameAndFilePath(String fullUrl) {
-        fullUrl = fullUrl.trim();
-        String[] res = new String[2];
-        int beginIndex = "ftp://".length();
-        int endIndex = fullUrl.indexOf('/', beginIndex);
-        if (endIndex != -1) {
-            res[0] = fullUrl.substring(beginIndex, endIndex);
-            res[1] = fullUrl.substring(endIndex + 1);
-        } else {
-            res[0] = fullUrl.substring(beginIndex);
-            res[1] = UUID.randomUUID().toString() + ".none";
-        }
-        return res;
-    }
+    private RemoteLocalPair pair;
+    private String curName;
+    private File curFlagFile;
+    private FileCheckPoints chp = null;
+    private Logger logger = LoggerFactory.getLogger(GeneralDownloadInfo.class);
 
     public GeneralDownloadInfo(RemoteLocalPair pair) {
         this.pair = pair;
         curName = pair.localName;
-        curFlagFile = new File(pair.getLocalFullPath() + ".flags");
+        curFlagFile = new File(pair.getLocalFullPath() + ".cdboo");
     }
 
     @Override
@@ -146,13 +137,11 @@ public class GeneralDownloadInfo implements IDownloadInfo {
         writeInfo(chkp);
     }
 
-
-    private Logger logger = LoggerFactory.getLogger(GeneralDownloadInfo.class);
-
-
-    private RemoteLocalPair pair;
-    private String curName;
-    private File curFlagFile;
-    private FileCheckPoints chp = null;
+    @Override
+    public void deleteFlagFile() {
+        if(curFlagFile.exists()){
+            curFlagFile.delete();
+        }
+    }
 
 }
