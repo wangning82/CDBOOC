@@ -1074,7 +1074,7 @@ footer {
     width: 23px;
     height: 23px;
     display: block;
-    float: right;
+    float: left;
     cursor:pointer
 }
 
@@ -1648,6 +1648,15 @@ footer {
 
 .down_2 {
     background: url(../images/bg.png) no-repeat -508px 0px;
+}
+
+.down_3 {
+    width: 22px;
+    height: 22px;
+    display: block;
+    float: left;
+    background: url(../images/bg.png) no-repeat 0px -130px;
+    margin: 14px 5px 0 5px;
 }
 
 .grzlk_ul li.w577 {

@@ -273,7 +273,11 @@
 
 			// The title is given next in the HTML otherwise the float:right on the free media corrupts in IE6/7
 			listItem += "<a href='javascript:;' class='" + this.options.playlistOptions.itemClass + "' tabindex='0'>" + media.title + (media.artist ? " <span class='jp-artist'>by " + media.artist + "</span>" : "") + "</a>";
-			listItem += "<div style='float: right'><div style='float: left'>" + media.duration + "</div><div class='bf_2'></div></div>";
+			if(media.favorite == 0){
+				listItem += "<div style='float: right'><div style='float: left'>" + media.duration + "</div><div class='bf_2'></div></div>";
+			}else if(media.favorite == 1){
+				listItem += "<div style='float: right'><div style='float: left'>" + media.duration + "</div><div class='bf_3'></div></div>";
+			}
 			listItem += "</div></li>";
 
 			return listItem;
