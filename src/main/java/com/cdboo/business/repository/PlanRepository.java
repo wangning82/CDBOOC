@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PlanRepository extends JpaRepository<PlanModel, Long>, QueryDslPredicateExecutor<PlanModel> {
+
+
 }

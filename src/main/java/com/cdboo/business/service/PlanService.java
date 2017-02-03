@@ -3,6 +3,7 @@ package com.cdboo.business.service;
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.QPlanModel;
+import com.cdboo.business.model.SceneModel;
 import com.cdboo.business.repository.PlanRepository;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -38,12 +39,15 @@ public class PlanService {
      *
      * @return
      */
-    public List<String> findSceneList() {
-        List<String> result = new ArrayList<String>();
+    public List<SceneModel> findSceneList() {
+        List<SceneModel> result = new ArrayList<SceneModel>();
         List<PlanModel> list = planRepository.findAll();
         for (PlanModel planModel : list) {
-            if (!StringUtils.isEmpty(planModel.getScene()) && !result.contains(planModel.getScene())) {
-                result.add(planModel.getScene());
+            SceneModel scene = new SceneModel();
+            scene.setIcon(planModel.getSceneImg());
+            scene.setName(planModel.getScene());
+            if (!StringUtils.isEmpty(planModel.getScene()) && !result.contains(scene)) {
+                result.add(scene);
             }
         }
         return result;

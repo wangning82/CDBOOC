@@ -709,8 +709,8 @@
                     <h4>场景业态</h4>
                 </li>
                 <li th:each="scene:${sceneList}">
-                    <s class="S_xxjs_6" style="float: left"></s>
-                    <a href="#" th:onclick="'javascript:findChannel(\'' + ${scene} + '\');'" th:text="${scene}"></a>
+                    <s class="S_xxjs_6" th:style="'float: left; background-image: url(' + ${scene.icon} + ');'"></s>
+                    <a href="#" th:onclick="'javascript:findChannel(\'' + ${scene.name} + '\');'" th:text="${scene.name}"></a>
                 </li>
             </ul>
         </aside>
