@@ -6,6 +6,12 @@ $(function () {
     $("#nav ul:eq(0) li").mouseout(function () {
         $(this).find("div:eq(0)").css("display", "none");
     });
+
+    $(".left ul:eq(0) li").click(function () {
+        $(".left ul:eq(0) li").removeClass("S_xxjs");
+        $(this).addClass("S_xxjs");
+    });
+
 });
 
 function findOptions(obj) {

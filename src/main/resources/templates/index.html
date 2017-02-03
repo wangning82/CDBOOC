@@ -138,6 +138,7 @@
                 data: {},
                 dataType: "json",
                 success: function (data) {
+                    // 歌曲收藏
                     $("#myFavorite .block").children().remove();
                     if (data.musicList.length == 0) {
                         $("#myFavorite .block").append("<div class='Wu'></div>");
@@ -145,7 +146,7 @@
                         $("#myFavorite .block").append($("#favoriteMusicButton"));
                         $("#favoriteMusicButton").css("display", "block");
                         var musicDiv = $("<div></div>");
-                        musicDiv.addclass("grzlk_tr");
+                        musicDiv.addClass("grzlk_tr");
                         musicDiv.append("<ul class='grzlk_ul grzlk_pd'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li>");
                         for (var i = 0; i < data.musicList.length; i++) {
                             var str = "<ul class='grzlk_ul grzlk_pd'><li>";
@@ -162,6 +163,7 @@
                         musicDiv.appendTo($("#myFavorite .block"));
                     }
 
+                    // 频道收藏
                     $("#myFavorite .none").children().remove();
                     if (data.channelList.length == 0) {
                         $("#myFavorite .none").append("<div class='Wu'></div>");
@@ -169,7 +171,7 @@
                         $("#myFavorite .none").append($("#favoriteChannelButton"));
                         $("#favoriteChannelButton").css("display", "block");
                         for (var i = 0; i < data.channelList.length; i++) {
-                            var str = "<dl class='Style Style_xin'>";
+                            var str = "<dl class='Style Style_xin' style='cursor: pointer;' onclick='findMusic(" + data.channelList[i].id + ")'>";
                             str += "<dt class='ash_mo'><a href=''><img src='" + data.channelList[i].photoPath + "'/></a></dt>";
                             str += "<dd class='ashow'></dd>";
                             str += "<dd class='Text'>" + data.channelList[i].channelName + "</dd>";
