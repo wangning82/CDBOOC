@@ -70,6 +70,12 @@
 
         });
 
+        // 清除播放列表
+        function cleanPlaylist() {
+            myPlaylist.setPlaylist({});
+            musicList.slice(0, musicList.length); // 清除数组
+        }
+
         // 加载播放计划音乐
         function loadPlanMusic() {
             $.ajax({
@@ -78,8 +84,7 @@
                 data: {},
                 dataType: "json",
                 success: function (data) {
-                    myPlaylist.setPlaylist({});
-                    musicList.slice(0, musicList.length); // 清除数组
+                    cleanPlaylist();
                     for(var i = 0 ; i < data.length; i ++){
                         var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0, data[i].favorite);
                         musicList.push(music);
@@ -765,7 +770,7 @@
                                     <div class="sub option_3">
                                         <div class="liedui_top">
                                             <h4 class="lie_h4">播放列队（共0首歌）</h4>
-                                            <i class="delete"></i>
+                                            <i class="delete" onclick="cleanPlaylist();"></i>
                                         </div>
                                         <div class="jp-playlist">
                                             <ul>

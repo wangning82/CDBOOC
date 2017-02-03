@@ -52,7 +52,7 @@ public class SettingsDialog extends JDialog {
         };
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
         alwaysTop = JComponentUtils.createCheckBox("窗口总在最前", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
-        autoPlay = JComponentUtils.createCheckBox("开机启动播放", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
+        //autoPlay = JComponentUtils.createCheckBox("开机启动播放", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
 
         restore = JComponentUtils.createLabel(" 恢复频道", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
         checkUpdate = JComponentUtils.createLabel(" 检查更新", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
@@ -61,7 +61,7 @@ public class SettingsDialog extends JDialog {
 
         settingsPanel.setOpaque(false);
         settingsPanel.add(alwaysTop);
-        settingsPanel.add(autoPlay);
+        //settingsPanel.add(autoPlay);
         settingsPanel.add(Box.createVerticalStrut(6));
         settingsPanel.add(restore);
         settingsPanel.add(Box.createVerticalStrut(10));
