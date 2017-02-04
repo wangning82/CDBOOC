@@ -9,6 +9,7 @@ import com.cdboo.business.common.download.RemoteLocalPair;
 import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
+import com.cdboo.business.model.MusicModel;
 import com.cdboo.business.model.RestModel;
 import com.cdboo.system.spring.PropsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class UserService {
 
     private static int BUFFER_SIZE = 10240;
 
-    private List<RestMusic> musicList; // 服务器音乐地址
+    private List<MusicModel> musicList; // 服务器音乐地址
 
     private static final String SERVER_IP = YamlUtils.getValue("url.cdboo.server.ip");
 
@@ -114,7 +115,7 @@ public class UserService {
 
         // 多线程下载歌曲
         new Thread(() -> {
-            for(RestMusic source : musicList){
+            for(MusicModel source : musicList){
                 String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
                 RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getPath().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength());
                 GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
@@ -141,15 +142,11 @@ public class UserService {
     private void saveChannel(RestChannel channel) {
         channel.setPhotoPath(getImagePath(channel.getPhotoPath()));
         for (RestMusic restMusic : channel.getMusicList()) {
-            boolean exist = false;
-            for (RestMusic music : musicList) {
-                if (music.getPath().equals(restMusic.getPath())) {
-                    exist = true;
-                    break;
-                }
-            }
-            if (!exist) {
-                musicList.add(restMusic);
+            MusicModel music = new MusicModel();
+            music.setPath(restMusic.getPath());
+            music.setLength(restMusic.getLength());
+            if (!musicList.contains(music)) {
+                musicList.add(music);
             }
             restMusic.setPath(getMusicPath(restMusic.getPath()));
         }

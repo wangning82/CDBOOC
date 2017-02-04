@@ -10,7 +10,7 @@ import java.util.Date;
  */
 public class Config implements Serializable {
     public static final String USER_DATA_FILE = "CDBOOPlayer.dat";
-    public static final File USER_DATA_PATH = new File(System.getProperty("user.home") + File.separator + ".CDBOOPlayer");
+    public static final File USER_DATA_PATH = new File(System.getProperty("user.home") + File.separator + ".cdbooplayer");
 
     private String userName;//用户姓名
     private String shopOwnerName;//店长姓名
