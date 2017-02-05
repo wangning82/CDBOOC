@@ -117,10 +117,12 @@ public class UserService {
         new Thread(() -> {
             for(MusicModel source : musicList){
                 String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
-                RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getPath().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength());
-                GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
-                HttpDownloader downloader = new HttpDownloader(info, 5);
-                downloader.run();
+                if(!new File(propsConfig.getMusic(), filename).exists()){
+                    RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getPath().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength());
+                    GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
+                    HttpDownloader downloader = new HttpDownloader(info, 5);
+                    downloader.run();
+                }
             }
         }).start();
     }

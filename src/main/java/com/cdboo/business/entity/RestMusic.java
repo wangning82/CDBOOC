@@ -146,4 +146,19 @@ public class RestMusic extends BaseEntity {
     public void setId(long id) {
         this.id = id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RestMusic)) return false;
+
+        RestMusic restMusic = (RestMusic) o;
+
+        return path.equals(restMusic.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return path.hashCode();
+    }
 }

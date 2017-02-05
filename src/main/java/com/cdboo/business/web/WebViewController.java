@@ -47,6 +47,11 @@ public class WebViewController {
         return "index";
     }
 
+    @RequestMapping(value = "blank")
+    public String blank(){
+        return "blank";
+    }
+
     /**
      * 我的收藏
      * @param model

@@ -72,6 +72,7 @@
 
         // 清除播放列表
         function cleanPlaylist() {
+            $("#jquery_jplayer_1").jPlayer("stop");
             myPlaylist.setPlaylist({});
             musicList.slice(0, musicList.length); // 清除数组
         }
@@ -286,7 +287,7 @@
                         $("#myChannel .grzlk_tr").append(str);
                     }
                     $("#myChannel .mu_2").click(function () {
-                        myPlaylist.setPlaylist({}); // 清空播放列表
+                        cleanPlaylist();
                         $(".liedui_top .lie_h4").html("播放队列（共" + data.musicList.length + "首歌）");
                         $("#nav .num_1").html(data.musicList.length);
                         for (var i = 0; i < data.musicList.length; i++) {
