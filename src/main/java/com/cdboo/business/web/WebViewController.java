@@ -167,6 +167,21 @@ public class WebViewController {
     }
 
     /**
+     * 保存节日
+     * @param id
+     * @param startDate
+     * @param endDate
+     */
+    @RequestMapping(value = "saveFestival")
+    @ResponseBody
+    public void saveFestival(String id, String startDate, String endDate){
+        PlanModel planModel = planService.findById(Long.parseLong(id));
+        planModel.setStartDate(startDate);
+        planModel.setEndDate(endDate);
+        planService.save(planModel);
+    }
+
+    /**
      * 获取插播计划
      * @param model
      * @return

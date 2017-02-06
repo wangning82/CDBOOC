@@ -26,6 +26,10 @@ public class PlanService {
     @Autowired
     private PlanRepository planRepository;
 
+    public PlanModel findById(Long id){
+        return planRepository.findOne(id);
+    }
+
     public void deleteAll() {
         planRepository.deleteAll();
     }

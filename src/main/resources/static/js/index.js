@@ -20,9 +20,46 @@ function findOptions(obj) {
 }
 
 function showOptions(obj) {
-    var value = $(obj).text();
-    $(obj).parent().siblings(".select_txt").text(value);
-    $(obj).parent().siblings(".select_txt").parent().siblings(".select_value").val(value);
+    var festival = $(obj).text();
+    $(obj).parent().siblings(".select_txt").text(festival);
+    // 查询节日计划
+    $.ajax({
+        type: "POST",
+        url: "/festivalPlan",
+        data: {
+            festival:festival
+        },
+        dataType: "json",
+        success: function (data) {
+            $(obj).parents(".festival_ul").find("li:eq(3) .txtBeginDate").val(data[0].startDate);
+            $(obj).parents(".festival_ul").find("li:eq(5) .txtEndDate").val(data[0].endDate);
+            $(obj).parents(".festival_ul").find("li:eq(6) .Save").attr("id", data[0].id);
+            $(obj).parents(".fesdiv").find(".fplan").children().remove();
+            $(obj).parents(".fesdiv").find(".fplan").append("<ul class='grzlk_ul grzlk_a'><li>时段</li><li>时间</li><li class='xingq'>日期</li></ul>");
+            for(var i = 0 ; i < data.length; i ++){
+                var str = "<ul class='grzlk_ul grzlk_a'>";
+                str += "<li>" + data[i].timestep.timestepName + "</li>";
+                str += "<li>" + data[i].timestep.starttime + " - " + data[i].timestep.endtime + "</li>";
+                str += "<li class='xingq'>" + parseWeek(data[i].week) + "</li>";
+                $(obj).parents(".fesdiv").find(".fplan").append(str);
+            }
+        }
+    });
+}
+
+// 保存节日
+function saveFestival(obj) {
+    $.ajax({
+        type: "POST",
+        url: "/saveFestival",
+        data: {
+            id: $(obj).attr("id"),
+            startDate: $(obj).parents(".festival_ul").find("li:eq(3) .txtBeginDate").val(),
+            endDate: $(obj).parents(".festival_ul").find("li:eq(5) .txtEndDate").val()
+        },
+        dataType: "json",
+        success: function () {}
+    });
 }
 
 // 鼠标滑过效果

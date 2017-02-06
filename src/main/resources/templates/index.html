@@ -316,6 +316,7 @@
                     $("#myPlan .select_txt").html(data.festival[0].channel.themeConcreteType);
                     $("#myPlan .txtBeginDate").val(data.festival[0].startDate);
                     $("#myPlan .txtEndDate").val(data.festival[0].endDate);
+                    $("#myPlan .Save").attr("id", data.festival[0].id);
                     $("#myPlan .fplan").children().remove();
                     $("#myPlan .fplan").append("<ul class='grzlk_ul grzlk_a'><li>时段</li><li>时间</li><li class='xingq'>日期</li></ul>");
                     for(var i = 0 ; i < data.festival.length; i ++){
@@ -587,7 +588,7 @@
         </div>
         <div class="tbody tbody_02">
             <!--节日-->
-            <div class="block">
+            <div class="block fesdiv">
                 <div class="festival">
                     <ul class="festival_ul">
                         <li>节日</li>
@@ -609,7 +610,7 @@
                             <input class="txtEndDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;"/>
                         </li>
                         <li>
-                            <input name="" type="button" value="保存" class="Save"/>
+                            <input id="" type="button" value="保存" class="Save" onclick="saveFestival(this)"/>
                         </li>
                     </ul>
                 </div>
