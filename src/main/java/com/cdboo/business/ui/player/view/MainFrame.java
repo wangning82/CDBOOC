@@ -58,6 +58,7 @@ public class MainFrame extends JFrame {
 
         JPanel mainPane = new JPanel(new BorderLayout());
         mainPane.add(titleBarPanel, BorderLayout.NORTH);
+        webBrowser.setPreferredSize(new Dimension(JComponentStyle.MAIN_WIDTH, JComponentStyle.MAIN_HEIGHT));
         mainPane.add(webBrowser, BorderLayout.CENTER);
 
         mainPane.setBackground(JComponentStyle.COLOR_DEFAULT);

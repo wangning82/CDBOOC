@@ -15,6 +15,7 @@
         var spotflag = false; // 当前是否插播
         var spotmusic; // 插播音乐
         var musicList = new Array(); // 歌曲列表
+        var favoriteMusicList = new Array(); // 收藏音乐
         var playIndex = 0;
 
         function Music(id, title, mp3, duration, volume, position, favorite){
@@ -35,7 +36,7 @@
             }, [
             ], {
                 swfPath: "js",
-                supplied: "oga, mp3",
+                supplied: "mp3",
                 wmode: "window",
                 useStateClassSkin: true,
                 autoBlur: false,
@@ -47,6 +48,7 @@
                     }
                 },
                 ended: function (e) {
+                    console.log("music stop.");
                     if(spotflag){
                         spotflag = false;
                         if(playIndex != musicList.length - 1){
@@ -72,8 +74,7 @@
 
         // 清除播放列表
         function cleanPlaylist() {
-            $("#jquery_jplayer_1").jPlayer("stop");
-            myPlaylist.setPlaylist({});
+            myPlaylist.remove(); // 删除所有音乐
             musicList.slice(0, musicList.length); // 清除数组
         }
 
@@ -149,8 +150,10 @@
                     if (data.musicList.length == 0) {
                         $("#myFavorite .block").append("<div class='Wu'></div>");
                     } else {
-                        $("#myFavorite .block").append($("#favoriteMusicButton"));
-                        $("#favoriteMusicButton").css("display", "block");
+                        var musicButtons = "<div class='sc_Btn'>";
+                        musicButtons += "<input class='Btn_A playall' type='button' value='播放全部' onclick='playAll()'/>";
+                        musicButtons += "</div>";
+                        $("#myFavorite .block").append(musicButtons);
                         var musicDiv = $("<div></div>");
                         musicDiv.addClass("grzlk_tr");
                         musicDiv.append("<ul class='grzlk_ul grzlk_pd'><li>歌名</li><li>歌手</li><li>专辑</li><li class='w566'>时长</li>");
@@ -165,6 +168,9 @@
                             str += data.musicList[i].duration;
                             str += "</li>";
                             musicDiv.append(str);
+
+                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite);
+                            favoriteMusicList.push(music);
                         }
                         musicDiv.appendTo($("#myFavorite .block"));
                     }
@@ -174,8 +180,10 @@
                     if (data.channelList.length == 0) {
                         $("#myFavorite .none").append("<div class='Wu'></div>");
                     } else {
-                        $("#myFavorite .none").append($("#favoriteChannelButton"));
-                        $("#favoriteChannelButton").css("display", "block");
+                        var channelButtons = "<div class='sc_Btn'>";
+                        // TODO 收藏频道操作按钮
+                        channelButtons += "</div>";
+                        $("#myFavorite .none").append(channelButtons);
                         for (var i = 0; i < data.channelList.length; i++) {
                             var str = "<dl class='Style Style_xin' style='cursor: pointer;' onclick='findMusic(" + data.channelList[i].id + ")'>";
                             str += "<dt class='ash_mo'><a href=''><img src='" + data.channelList[i].photoPath + "'/></a></dt>";
@@ -190,6 +198,16 @@
                     favorite.css("display", "block");
                 }
             });
+        }
+
+        // 播放收藏音乐
+        function playAll() {
+            cleanPlaylist();
+            favoriteMusicList.slice(0, favoriteMusicList.length);
+            $(".liedui_top .lie_h4").html("播放队列（共" + favoriteMusicList.length + "首歌）");
+            $("#nav .num_1").html(favoriteMusicList.length);
+            myPlaylist.setPlaylist(favoriteMusicList);
+            myPlaylist.play(0);
         }
 
         // 查找频道
@@ -458,13 +476,6 @@
 </div>
 
 <!-- 我的收藏 -->
-<div id="favoriteMusicButton" class="sc_Btn" style="display: none;">
-    <input class="Btn_A Btn_B" type="button" value="播放全部"/>
-    <input class="Btn_A" type="button" value="批量删除" onclick="ShowDiv('TK2','fade')"/>
-</div>
-<div id="favoriteChannelButton" class="sc_Btn" style="display: none;">
-    <input class="Btn_A" type="button" value="批量删除" onclick="ShowDiv('TK3','fade')"/>
-</div>
 <div id="myFavorite" style="display: none;">
     <div class="wdcbjh">
         <h3>收藏<br/>我喜欢的歌</h3>
@@ -478,9 +489,13 @@
         </div>
         <div class="tbody">
             <!--歌曲列表-->
-            <div class="block"></div>
+            <div class="block">
+
+            </div>
             <!--频道列表-->
-            <div class="none"></div>
+            <div class="none">
+
+            </div>
         </div>
     </div>
 </div>
