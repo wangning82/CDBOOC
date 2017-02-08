@@ -1,11 +1,12 @@
 server:
   port: 9000
   contextPath:
+  connection-timeout: 30000
 spring:
   datasource:
     platform: h2
-    #url: jdbc:h2:file:~/cdboo
-    url:  jdbc:h2:tcp://localhost/~/cdboo
+    url: jdbc:h2:file:~/cdboo
+    #url:  jdbc:h2:tcp://localhost/~/cdboo
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -37,10 +38,11 @@ logging:
 url:
   cdboo:
     server:
-      ip: http://139.129.240.92:8080
-      #ip: http://114.115.209.238:8080
+      #ip: http://139.129.240.92:8080
+      ip: http://114.115.209.238:8080
       checkUser: /CDBOO/cdboo-service/check-user
       getUserData: /CDBOO/cdboo-service/get-data
     client:
       ip: http://127.0.0.1:9000
+      blank: /blank
       index:

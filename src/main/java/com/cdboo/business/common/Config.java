@@ -28,7 +28,8 @@ public class Config implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date serviceTimeEnd; //用户服务时间结束时间
 
-    private boolean autoLogin; // 是否自动登录
+    private boolean autoLogin = false; // 是否自动登录
+    private boolean alwaysOnTop = false; // 总在最前
 
     private static Config config = null;
 
@@ -159,5 +160,11 @@ public class Config implements Serializable {
         this.autoLogin = autoLogin;
     }
 
+    public boolean isAlwaysOnTop() {
+        return alwaysOnTop;
+    }
 
+    public void setAlwaysOnTop(boolean alwaysOnTop) {
+        this.alwaysOnTop = alwaysOnTop;
+    }
 }

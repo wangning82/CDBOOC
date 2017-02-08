@@ -1,7 +1,6 @@
 package com.cdboo.business.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * 用户时段信息
@@ -67,5 +66,21 @@ public class RestTimeStep extends BaseEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RestTimeStep)) return false;
+
+        RestTimeStep that = (RestTimeStep) o;
+
+        return timestepName.equals(that.timestepName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return timestepName.hashCode();
     }
 }

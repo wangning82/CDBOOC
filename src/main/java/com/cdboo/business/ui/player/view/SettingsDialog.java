@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.view;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.common.NPIconFactory;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
@@ -52,12 +53,15 @@ public class SettingsDialog extends JDialog {
         };
         settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
         alwaysTop = JComponentUtils.createCheckBox("窗口总在最前", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
+        if(Config.getConfigInstance().isAlwaysOnTop()){
+            alwaysTop.setSelected(true);
+        }
         //autoPlay = JComponentUtils.createCheckBox("开机启动播放", JComponentStyle.COLOR_FONT_GRAY, JCheckBox.LEADING);
 
         restore = JComponentUtils.createLabel(" 恢复频道", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
         checkUpdate = JComponentUtils.createLabel(" 检查更新", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
         logout = JComponentUtils.createLabel(" 退出登录", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
-        exit = JComponentUtils.createLabel(" 退出软件", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
+        //exit = JComponentUtils.createLabel(" 退出软件", JComponentStyle.FONT_DEFAULT, JComponentStyle.COLOR_FONT_GRAY, null);
 
         settingsPanel.setOpaque(false);
         settingsPanel.add(alwaysTop);
@@ -68,8 +72,8 @@ public class SettingsDialog extends JDialog {
         settingsPanel.add(checkUpdate);
         settingsPanel.add(Box.createVerticalStrut(10));
         settingsPanel.add(logout);
-        settingsPanel.add(Box.createVerticalStrut(10));
-        settingsPanel.add(exit);
+        //settingsPanel.add(Box.createVerticalStrut(10));
+        //settingsPanel.add(exit);
         settingsPanel.setBorder(BorderFactory.createEmptyBorder(15, 16, 24, 16));
         return settingsPanel;
     }

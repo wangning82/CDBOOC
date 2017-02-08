@@ -104,6 +104,14 @@ public class TitleBarPanel extends AbstractJPanel {
         nickNameLabel.setText(Config.getConfigInstance().getUserName());
     }
 
+    /**
+     * 重置用户信息
+     */
+    public void resetUserInfo(){
+        headButton.setIcon(new ImageIcon(getClass().getResource("/images/head.jpg")));
+        nickNameLabel.setText("匿名用户");
+    }
+
     public JButton getHeadButton() {
         return headButton;
     }

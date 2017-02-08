@@ -5,6 +5,7 @@ import com.cdboo.business.repository.PeriodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,13 @@ public class PeriodService {
     }
 
     public List<RestTimeStep> findAll(){
-        return periodRepository.findAll();
+        List<RestTimeStep> result = new ArrayList<>();
+        for(RestTimeStep obj : periodRepository.findAll()){
+            if(!result.contains(obj)){
+                result.add(obj);
+            }
+        }
+        return result;
     }
 
     public void deleteAll() {
