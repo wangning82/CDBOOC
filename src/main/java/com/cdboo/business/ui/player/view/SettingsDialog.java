@@ -14,7 +14,6 @@ import java.awt.*;
  * Created by houyi on 2016/12/12 0012.
  */
 public class SettingsDialog extends JDialog {
-    private NinePatch npBackground = null;
     private Point showPossition = null;
     private JPanel settingsPanel = null;
 
@@ -44,10 +43,8 @@ public class SettingsDialog extends JDialog {
         settingsPanel = new JPanel(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS)) {
             @Override
             protected void paintChildren(Graphics g) {
-                if (npBackground == null)
-                    npBackground = NPIconFactory.getInstance().getTipBackground("shadow_bg_popup.9.png");
-                if (npBackground != null)
-                    npBackground.draw((Graphics2D) g, 0, 0, this.getWidth(), this.getHeight());
+                NinePatch npBackground = NPIconFactory.getInstance().getTipBackground("shadow_bg_popup.9.png");
+                npBackground.draw((Graphics2D) g, 0, 0, this.getWidth(), this.getHeight());
                 super.paintChildren(g);
             }
         };

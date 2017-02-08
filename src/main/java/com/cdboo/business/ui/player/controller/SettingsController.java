@@ -1,14 +1,18 @@
 package com.cdboo.business.ui.player.controller;
 
 import com.cdboo.business.common.Config;
+import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.YamlUtils;
+import com.cdboo.business.service.UserService;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
 import javafx.application.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -18,6 +22,12 @@ import java.awt.event.*;
 public class SettingsController extends AbstractFrameController {
     @Autowired
     private MainFrame mainFrame;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private TitleBarController titleBarController;
 
     @Override
     public void prepareAndOpenFrame() {
@@ -33,6 +43,44 @@ public class SettingsController extends AbstractFrameController {
                 Platform.runLater(() -> {
                     mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blank"));
                 });
+            }
+        });
+
+        // 恢复频道
+        mainFrame.getSettingsDialog().getRestore().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(!StringUtils.isEmpty(Config.getConfigInstance().getUserName())){
+                    userService.saveUserData(userService.getUserData(Config.getConfigInstance().getUserName()));
+                    mainFrame.getTitleBarPanel().loadUserInfo();
+                    Platform.runLater(() -> {
+                        mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
+                    });
+                }else{
+                    titleBarController.showLoginWindow();
+                }
+            }
+        });
+
+        mainFrame.getSettingsDialog().getCheckUpdate().addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.shutdownAll();
+                JDialog dialog = new JDialog(new JFrame(), "提示框", false);
+                JLabel label = new JLabel("功能开发中，敬请期待……");
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setPreferredSize(new Dimension(200,140));
+                dialog.add(label);
+                Point p = mainFrame.getLocationOnScreen();
+                double x = p.getX() + mainFrame.getWidth() / 2 - JComponentStyle.LOGIN_WIDTH / 2;
+                double y = p.getY() + mainFrame.getHeight() / 2 - JComponentStyle.LOGIN_HEIGHT / 2;
+                Point showPossition = new Point(new Double(x).intValue(), new Double(y).intValue());
+                if (showPossition == null || (showPossition.x < 0 && showPossition.y < 0))
+                    dialog.setLocationRelativeTo(null);
+                else
+                    dialog.setLocation(new Point(showPossition.x < 0 ? 0 : showPossition.x, showPossition.y < 0 ? 0 : showPossition.y));
+                dialog.pack();
+                dialog.setVisible(true);
             }
         });
 
