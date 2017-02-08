@@ -50,30 +50,33 @@ public class SettingsController extends AbstractFrameController {
         mainFrame.getSettingsDialog().getRestore().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(!StringUtils.isEmpty(Config.getConfigInstance().getUserName())){
+                if (!StringUtils.isEmpty(Config.getConfigInstance().getUserName())) {
                     userService.saveUserData(userService.getUserData(Config.getConfigInstance().getUserName()));
                     mainFrame.getTitleBarPanel().loadUserInfo();
                     Platform.runLater(() -> {
                         mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
                     });
-                }else{
+                } else {
                     titleBarController.showLoginWindow();
                 }
             }
         });
 
-        mainFrame.getSettingsDialog().getCheckUpdate().addMouseListener(new MouseAdapter(){
+        mainFrame.getSettingsDialog().getCheckUpdate().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 mainFrame.shutdownAll();
-                JDialog dialog = new JDialog(new JFrame(), "提示框", false);
+                int width = 200, height = 140;
+                JDialog dialog = new JDialog(new JFrame(), "提示信息", true);
+                JPanel panel = new JPanel();
                 JLabel label = new JLabel("功能开发中，敬请期待……");
                 label.setHorizontalAlignment(JLabel.CENTER);
-                label.setPreferredSize(new Dimension(200,140));
-                dialog.add(label);
+                label.setPreferredSize(new Dimension(width, height));
+                panel.add(label);
+                dialog.add(panel);
                 Point p = mainFrame.getLocationOnScreen();
-                double x = p.getX() + mainFrame.getWidth() / 2 - JComponentStyle.LOGIN_WIDTH / 2;
-                double y = p.getY() + mainFrame.getHeight() / 2 - JComponentStyle.LOGIN_HEIGHT / 2;
+                double x = p.getX() + mainFrame.getWidth() / 2 - width / 2;
+                double y = p.getY() + mainFrame.getHeight() / 2 - height / 2;
                 Point showPossition = new Point(new Double(x).intValue(), new Double(y).intValue());
                 if (showPossition == null || (showPossition.x < 0 && showPossition.y < 0))
                     dialog.setLocationRelativeTo(null);
@@ -96,7 +99,7 @@ public class SettingsController extends AbstractFrameController {
                 @Override
                 public void windowLostFocus(WindowEvent e) {
                     mainFrame.requestFocus();
-                    mainFrame.setLocation(0,0);
+                    mainFrame.setLocation(0, 0);
                 }
 
                 @Override
@@ -105,7 +108,7 @@ public class SettingsController extends AbstractFrameController {
                 }
             });
             Config.getConfigInstance().setAlwaysOnTop(true);
-        }else{
+        } else {
             mainFrame.setAlwaysOnTop(false);
             Config.getConfigInstance().setAlwaysOnTop(false);
         }

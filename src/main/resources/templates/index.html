@@ -75,6 +75,7 @@
         // 清除播放列表
         function cleanPlaylist() {
             myPlaylist.remove(); // 删除所有音乐
+            myPlaylist.setPlaylist({});
             musicList.slice(0, musicList.length); // 清除数组
         }
 
