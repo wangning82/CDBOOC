@@ -14,9 +14,12 @@
         var myPlaylist; // 播放列表
         var spotflag = false; // 当前是否插播
         var spotmusic; // 插播音乐
-        var musicList = new Array(); // 歌曲列表
-        var favoriteMusicList = new Array(); // 收藏音乐
-        var playIndex = 0;
+        var planMusicList = new Array(); // 计划歌曲列表
+        var planPlayIndex = 0; // 计划的播放标志
+
+        var personalMusicList = new Array(); // 播放音乐列表（收藏或者频道音乐）
+        var personalPlayFlag = false; // 播放标志
+        var personalPlayIndex = 0; // 播放标志，用来检查是否播放完毕
 
         function Music(id, title, mp3, duration, volume, position, favorite){
             this.id = id;
@@ -44,25 +47,33 @@
                 keyEnabled: true,
                 play: function(e) {
                     if(!spotflag){
-                        playIndex = indexOf(musicList, e.jPlayer.status.media.title);
+                        if(personalPlayFlag){
+                            personalPlayIndex = indexOf(personalMusicList, e.jPlayer.status.media.title);
+                        }else{
+                            planPlayIndex = indexOf(planMusicList, e.jPlayer.status.media.title);
+                        }
                     }
                 },
                 ended: function (e) {
                     console.log("music stop.");
                     if(spotflag){
                         spotflag = false;
-                        if(playIndex != musicList.length - 1){
-                            myPlaylist.setPlaylist(musicList);
-                            myPlaylist.play(playIndex + 1);
-                            $(".liedui_top .lie_h4").html("播放队列（共" + musicList.length + "首歌）");
-                            $("#nav .num_1").html(musicList.length);
+                        if(planPlayIndex != planMusicList.length - 1){
+                            myPlaylist.setPlaylist(planMusicList);
+                            myPlaylist.play(planPlayIndex + 1);
+                            $(".liedui_top .lie_h4").html("播放队列（共" + planMusicList.length + "首歌）");
+                            $("#nav .num_1").html(planMusicList.length);
                         }else{
                             loadPlanMusic();
                         }
-
-                    }else{
-                        if(playIndex == musicList.length - 1){
+                    }else if(personalPlayFlag){
+                        if(personalPlayIndex == personalMusicList.length - 1){
+                            personalPlayFlag = false;
                             loadPlanMusic();
+                        }
+                    }else {
+                        if(planPlayIndex == planMusicList.length - 1) {
+                            myPlaylist.play(0); // 循环播放计划
                         }
                     }
                 }
@@ -76,7 +87,6 @@
         function cleanPlaylist() {
             myPlaylist.remove(); // 删除所有音乐
             myPlaylist.setPlaylist({});
-            musicList = []; // 清除数组
             $(".liedui_top .lie_h4").html("播放队列（共 0 首歌）");
             $("#nav .num_1").html("0");
         }
@@ -90,9 +100,10 @@
                 dataType: "json",
                 success: function (data) {
                     cleanPlaylist();
+                    planMusicList = [];
                     for(var i = 0 ; i < data.length; i ++){
                         var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0, data[i].favorite);
-                        musicList.push(music);
+                        planMusicList.push(music);
                         myPlaylist.add(music);
                     }
                     myPlaylist.play(0);
@@ -120,14 +131,14 @@
             if(!spotflag){
                 loadSpotMusic();
                 if (typeof(spotmusic) != "undefined" && spotmusic != null) {
-                    musicList[playIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置
+                    planMusicList[planPlayIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置，暂时没用
                     myPlaylist.setPlaylist({}); // 清空播放列表
                     myPlaylist.add({
                         title: spotmusic.title,
                         mp3: spotmusic.mp3
                     });
-                    myPlaylist.play(0);
                     spotflag = true;
+                    myPlaylist.play(0);
                 }
             }
         }
@@ -153,7 +164,7 @@
                     if (data.musicList.length == 0) {
                         $("#myFavorite .block").append("<div class='Wu'></div>");
                     } else {
-                        favoriteMusicList = [];
+                        personalMusicList = [];
                         var musicButtons = "<div class='sc_Btn'>";
                         musicButtons += "<input class='Btn_A playall' type='button' value='播放全部' onclick='playAll()'/>";
                         musicButtons += "</div>";
@@ -174,7 +185,7 @@
                             musicDiv.append(str);
 
                             var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite);
-                            favoriteMusicList.push(music);
+                            personalMusicList.push(music);
                         }
                         musicDiv.appendTo($("#myFavorite .block"));
                     }
@@ -207,9 +218,10 @@
         // 播放收藏音乐
         function playAll() {
             cleanPlaylist();
-            $(".liedui_top .lie_h4").html("播放队列（共" + favoriteMusicList.length + "首歌）");
-            $("#nav .num_1").html(favoriteMusicList.length);
-            myPlaylist.setPlaylist(favoriteMusicList);
+            $(".liedui_top .lie_h4").html("播放队列（共" + personalMusicList.length + "首歌）");
+            $("#nav .num_1").html(personalMusicList.length);
+            myPlaylist.setPlaylist(personalMusicList);
+            personalPlayFlag = true;
             myPlaylist.play(0);
         }
 
@@ -309,12 +321,15 @@
                     }
                     $("#myChannel .mu_2").click(function () {
                         cleanPlaylist();
+                        personalMusicList = [];
                         $(".liedui_top .lie_h4").html("播放队列（共" + data.musicList.length + "首歌）");
                         $("#nav .num_1").html(data.musicList.length);
                         for (var i = 0; i < data.musicList.length; i++) {
                             var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite);
                             myPlaylist.add(music);
+                            personalMusicList.push(music);
                         }
+                        personalPlayFlag = true;
                         myPlaylist.play(0);
                     });
                 }
@@ -389,7 +404,7 @@
                     for(var i = 0 ; i < data.length; i ++){
                         var str = "<ul class='grzlk_ul chabo_list'>";
                         str += "<li>" + data[i].playName+ "</li>";
-                        str += "<li>" + data[i].channel.musicList[0].duration + "</li>";
+                        str += "<li>" + data[i].channel.planMusicList[0].duration + "</li>";
                         str += "<li style='width: 200px;'>" + data[i].startDate + " - " + data[i].endDate + "</li>";
                         str += "<li><input type='text' value='" + data[i].timestep.starttime + "' class='inp_1'/></li>";
                         str += "<li><input type='text' value='" + data[i].intervalTime + "' class='inp_1 inp_2'/></li>";

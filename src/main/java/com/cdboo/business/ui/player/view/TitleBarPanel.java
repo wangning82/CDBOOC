@@ -89,7 +89,7 @@ public class TitleBarPanel extends AbstractJPanel {
 
         btnPane.add(separator2);
         btnPane.add(minButton);
-        btnPane.add(maxButton);
+        //btnPane.add(maxButton);
         btnPane.add(closeButton);
         this.add(btnPane, BorderLayout.EAST);
         this.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 8));
