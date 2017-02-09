@@ -76,7 +76,7 @@ public class UserService {
     @Transactional(readOnly = false)
     public void saveUserData(RestModel model) {
         Config config = Config.getConfigInstance();
-        config.setUserName(model.getUserName());
+        config.setNickName(model.getUserName());
         config.setShopOwnerName(model.getShopOwnerName());
         config.setPhoneNumber(model.getPhoneNumber());
         config.setAddress(model.getAddress());

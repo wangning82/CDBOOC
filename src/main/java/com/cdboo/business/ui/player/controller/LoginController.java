@@ -49,6 +49,7 @@ public class LoginController extends AbstractFrameController {
                 dialog.getMessage().setText("正在读取用户信息，请稍候……");
                 SwingUtilities.invokeLater(() -> {
                     userService.saveUserData(userService.getUserData(userName));
+                    Config.getConfigInstance().setUserName(userName);
                     dialog.reset();
                     dialog.dispose();
                     // TODO 更新标题栏:时段

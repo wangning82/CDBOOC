@@ -12,7 +12,8 @@ public class Config implements Serializable {
     public static final String USER_DATA_FILE = "CDBOOPlayer.dat";
     public static final File USER_DATA_PATH = new File(System.getProperty("user.home") + File.separator + ".cdbooplayer");
 
-    private String userName;//用户姓名
+    private String userName; // 登录用户名
+    private String nickName; // 用户姓名
     private String shopOwnerName;//店长姓名
     private String phoneNumber; //联系电话
 
@@ -166,5 +167,13 @@ public class Config implements Serializable {
 
     public void setAlwaysOnTop(boolean alwaysOnTop) {
         this.alwaysOnTop = alwaysOnTop;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

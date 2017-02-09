@@ -76,7 +76,9 @@
         function cleanPlaylist() {
             myPlaylist.remove(); // 删除所有音乐
             myPlaylist.setPlaylist({});
-            musicList.slice(0, musicList.length); // 清除数组
+            musicList = []; // 清除数组
+            $(".liedui_top .lie_h4").html("播放队列（共 0 首歌）");
+            $("#nav .num_1").html("0");
         }
 
         // 加载播放计划音乐
@@ -151,6 +153,7 @@
                     if (data.musicList.length == 0) {
                         $("#myFavorite .block").append("<div class='Wu'></div>");
                     } else {
+                        favoriteMusicList = [];
                         var musicButtons = "<div class='sc_Btn'>";
                         musicButtons += "<input class='Btn_A playall' type='button' value='播放全部' onclick='playAll()'/>";
                         musicButtons += "</div>";
@@ -204,7 +207,6 @@
         // 播放收藏音乐
         function playAll() {
             cleanPlaylist();
-            favoriteMusicList.slice(0, favoriteMusicList.length);
             $(".liedui_top .lie_h4").html("播放队列（共" + favoriteMusicList.length + "首歌）");
             $("#nav .num_1").html(favoriteMusicList.length);
             myPlaylist.setPlaylist(favoriteMusicList);

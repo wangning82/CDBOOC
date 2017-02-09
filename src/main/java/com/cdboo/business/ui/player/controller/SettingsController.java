@@ -38,6 +38,7 @@ public class SettingsController extends AbstractFrameController {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Config.getConfigInstance().setUserName(null);
+                Config.getConfigInstance().setNickName(null);
                 mainFrame.getTitleBarPanel().resetUserInfo();
                 // TODO 时段信息
                 Platform.runLater(() -> {
