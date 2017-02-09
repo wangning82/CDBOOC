@@ -26,6 +26,7 @@ public class MainFrame extends JFrame {
     private JFXPanel webBrowser = new JFXPanel();
     private WebView view;
     private SettingsDialog settingsDialog = new SettingsDialog();
+    private PeriodDialog periodDialog = new PeriodDialog();
     private LoginDialog loginDialog = new LoginDialog(this, true);
 
     public MainFrame() {
@@ -79,6 +80,7 @@ public class MainFrame extends JFrame {
      */
     public void shutdownAll(){
         settingsDialog.dispose();
+        periodDialog.dispose();
         loginDialog.dispose();
     }
 
@@ -120,5 +122,13 @@ public class MainFrame extends JFrame {
 
     public void setLoginDialog(LoginDialog loginDialog) {
         this.loginDialog = loginDialog;
+    }
+
+    public PeriodDialog getPeriodDialog() {
+        return periodDialog;
+    }
+
+    public void setPeriodDialog(PeriodDialog periodDialog) {
+        this.periodDialog = periodDialog;
     }
 }

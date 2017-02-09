@@ -3,10 +3,12 @@ package com.cdboo.business.ui.player.controller;
 import com.cdboo.business.common.Config;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
+import com.cdboo.business.common.YamlUtils;
 import com.cdboo.business.entity.RestTimeStep;
 import com.cdboo.business.service.PeriodService;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
+import javafx.application.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -37,15 +39,17 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getSettingsButton(), (e) -> showSettings());
         registerAction(mainFrame.getTitleBarPanel().getLoginButton(), (e) -> showLoginWindow());
 
-        List<RestTimeStep> periodList = periodService.findAll();
-        String[] defaultTime = new String[periodList.size()];
-        for(int i = 0; i < periodList.size(); i ++){
-            defaultTime[i] = periodList.get(i).getTimestepName();
-        }
-        mainFrame.getTitleBarPanel().getTimeCB().setModel(new DefaultComboBoxModel<String>(defaultTime));
-        if(defaultTime.length != 0){
-            mainFrame.getTitleBarPanel().getTimeCB().setSelectedItem(defaultTime[0]);
-        }
+        mainFrame.getTitleBarPanel().getPeriodLabel().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.shutdownAll();
+                Point p = mainFrame.getTitleBarPanel().getPeriodLabel().getLocationOnScreen();
+                mainFrame.getPeriodDialog().setShowPossition(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
+                mainFrame.getPeriodDialog().setPeriodList(periodService.findAll());
+                mainFrame.getPeriodDialog().showItNow();
+            }
+        });
+
     }
 
     /**

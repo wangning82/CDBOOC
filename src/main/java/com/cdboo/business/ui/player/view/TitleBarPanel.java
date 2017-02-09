@@ -20,7 +20,8 @@ public class TitleBarPanel extends AbstractJPanel {
     private JLabel nickNameLabel;
     private JButton loginButton;
 
-    private JComboBox timeCB;
+    //private JComboBox timeCB;
+    private JLabel periodLabel;
     private JLabel timeLabel;
     private JButton settingsButton;
 
@@ -44,7 +45,8 @@ public class TitleBarPanel extends AbstractJPanel {
         nickNameLabel = JComponentUtils.createLabel("匿名用户");
         loginButton = JComponentUtils.createButton("登录", new Dimension(50, 30));
 
-        timeCB = JComponentUtils.createComboBox();
+        //timeCB = JComponentUtils.createComboBox();
+        periodLabel = JComponentUtils.createLabel("选择时段");
         SimpleDateFormat sdf = new SimpleDateFormat("E yyyy/MM/dd");
         timeLabel = JComponentUtils.createLabel(sdf.format(new Date()));
 
@@ -80,7 +82,8 @@ public class TitleBarPanel extends AbstractJPanel {
         headPane.add(loginButton);
         this.add(headPane, BorderLayout.WEST);
 
-        btnPane.add(timeCB);
+        //btnPane.add(timeCB);
+        btnPane.add(periodLabel);
         btnPane.add(timeLabel);
         btnPane.add(settingsButton);
 
@@ -101,7 +104,7 @@ public class TitleBarPanel extends AbstractJPanel {
             Image smallImage = imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_FAST);
             headButton.setIcon(new ImageIcon(smallImage));
         }
-        nickNameLabel.setText(Config.getConfigInstance().getUserName());
+        nickNameLabel.setText(Config.getConfigInstance().getNickName());
     }
 
     /**
@@ -184,20 +187,20 @@ public class TitleBarPanel extends AbstractJPanel {
         this.btnPane = btnPane;
     }
 
-    public JComboBox getTimeCB() {
-        return timeCB;
-    }
-
-    public void setTimeCB(JComboBox timeCB) {
-        this.timeCB = timeCB;
-    }
-
     public JButton getLoginButton() {
         return loginButton;
     }
 
     public void setLoginButton(JButton loginButton) {
         this.loginButton = loginButton;
+    }
+
+    public JLabel getPeriodLabel() {
+        return periodLabel;
+    }
+
+    public void setPeriodLabel(JLabel periodLabel) {
+        this.periodLabel = periodLabel;
     }
 
     /*

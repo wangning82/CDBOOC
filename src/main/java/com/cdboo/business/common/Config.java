@@ -3,7 +3,9 @@ package com.cdboo.business.common;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by houyi on 2016/12/7.
@@ -31,6 +33,7 @@ public class Config implements Serializable {
 
     private boolean autoLogin = false; // 是否自动登录
     private boolean alwaysOnTop = false; // 总在最前
+    private List<String> periodList = new ArrayList<String>(); // 选择时段
 
     private static Config config = null;
 
@@ -175,5 +178,13 @@ public class Config implements Serializable {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public List<String> getPeriodList() {
+        return periodList;
+    }
+
+    public void setPeriodList(List<String> periodList) {
+        this.periodList = periodList;
     }
 }

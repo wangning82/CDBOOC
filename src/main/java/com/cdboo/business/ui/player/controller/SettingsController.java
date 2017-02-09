@@ -40,7 +40,7 @@ public class SettingsController extends AbstractFrameController {
                 Config.getConfigInstance().setUserName(null);
                 Config.getConfigInstance().setNickName(null);
                 mainFrame.getTitleBarPanel().resetUserInfo();
-                // TODO 时段信息
+                mainFrame.getPeriodDialog().setPeriodList(null);
                 Platform.runLater(() -> {
                     mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blank"));
                 });
@@ -63,6 +63,7 @@ public class SettingsController extends AbstractFrameController {
             }
         });
 
+        // 检查更新
         mainFrame.getSettingsDialog().getCheckUpdate().addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
