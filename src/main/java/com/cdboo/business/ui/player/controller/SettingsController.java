@@ -40,6 +40,7 @@ public class SettingsController extends AbstractFrameController {
                 Config.getConfigInstance().setUserName(null);
                 Config.getConfigInstance().setNickName(null);
                 mainFrame.getTitleBarPanel().resetUserInfo();
+                mainFrame.getTitleBarPanel().getLoginButton().setVisible(true);
                 mainFrame.getPeriodDialog().setPeriodList(null);
                 Platform.runLater(() -> {
                     mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blank"));

@@ -3,6 +3,7 @@ package com.cdboo.business.ui.player.controller;
 import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.common.YamlUtils;
+import com.cdboo.business.service.PeriodService;
 import com.cdboo.business.service.UserService;
 import com.cdboo.business.ui.player.view.LoginDialog;
 import com.cdboo.business.ui.player.view.MainFrame;
@@ -24,6 +25,9 @@ public class LoginController extends AbstractFrameController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PeriodService periodService;
 
     @Override
     public void prepareAndOpenFrame() {
@@ -52,8 +56,9 @@ public class LoginController extends AbstractFrameController {
                     Config.getConfigInstance().setUserName(userName);
                     dialog.reset();
                     dialog.dispose();
-                    // TODO 更新标题栏:时段
-                    mainFrame.getTitleBarPanel().loadUserInfo();
+                    mainFrame.getPeriodDialog().setPeriodList(periodService.findAll()); // 更新时段
+                    mainFrame.getTitleBarPanel().loadUserInfo(); // 更新用户
+                    mainFrame.getTitleBarPanel().getLoginButton().setVisible(false);
                     if(dialog.getAutoLoginCheckbox().isSelected()){
                         Config.getConfigInstance().setAutoLogin(true);
                     }

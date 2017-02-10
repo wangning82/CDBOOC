@@ -60,6 +60,7 @@ public class TitleBarPanel extends AbstractJPanel {
 
         if (Config.getConfigInstance().isAutoLogin() && !StringUtils.isEmpty(Config.getConfigInstance().getUserName())) {
             loadUserInfo();
+            loginButton.setVisible(false);
         }
     }
 
