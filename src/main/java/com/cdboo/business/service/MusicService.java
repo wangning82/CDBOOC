@@ -2,16 +2,13 @@ package com.cdboo.business.service;
 
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.PlanModel;
-import com.cdboo.business.entity.QPlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
-import com.cdboo.business.repository.ChannelRepository;
 import com.cdboo.business.repository.MusicRepository;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,7 +25,7 @@ public class MusicService {
     private MusicRepository musicRepository;
 
     @Autowired
-    private ChannelRepository channelRepository;
+    private ChannelService channelService;
 
     @Autowired
     private PlanService planService;
@@ -37,7 +34,7 @@ public class MusicService {
         return musicRepository.findOne(musicId);
     }
 
-    public RestMusic save(RestMusic music){
+    public RestMusic save(RestMusic music) {
         return musicRepository.save(music);
     }
 
@@ -63,7 +60,14 @@ public class MusicService {
      * @return
      */
     public List<RestMusic> findFavoriteList() {
-        return musicRepository.findByFavorite(Constants.FAVORITE_YES);
+        List<RestMusic> result = musicRepository.findByFavorite(Constants.FAVORITE_YES);
+        for (RestMusic music : result) {
+            Iterable<RestChannel> channels = channelService.findChannelByMusic(music);
+            if (channels.iterator().hasNext()) {
+                music.setVoice(channels.iterator().next().getVoice());
+            }
+        }
+        return result;
     }
 
     /**
@@ -74,10 +78,11 @@ public class MusicService {
      */
     public List<RestMusic> findMusicByChannel(Long channelId) {
         List<RestMusic> result = new ArrayList();
-        RestChannel restChannel = channelRepository.findOne(channelId);
+        RestChannel restChannel = channelService.findChannelById(channelId);
         if (Constants.CHANNEL_TYPE_GROUP.equals(restChannel.getChannelType())) {
             for (RestChannel channel : restChannel.getChildChannelList()) {
                 for (RestMusic music : channel.getMusicList()) {
+                    music.setVoice(channel.getVoice());
                     if (!result.contains(music)) {
                         result.add(music);
                     }
@@ -113,6 +118,7 @@ public class MusicService {
         Iterable<PlanModel> festivalList = planService.findPlanByStyle(style);
         for (PlanModel planModel : festivalList) {
             for (RestMusic restMusic : planModel.getChannel().getMusicList()) {
+                restMusic.setVoice(planModel.getChannel().getVoice());
                 if (!result.contains(restMusic)) {
                     result.add(restMusic);
                 }
@@ -138,18 +144,18 @@ public class MusicService {
             int cycle = 0;
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(sdf.parse(planModel.getTimestep().getStarttime()));
-            while (cycle <= Integer.parseInt(planModel.getCycleTimes()) - 1){
+            while (cycle <= Integer.parseInt(planModel.getCycleTimes()) - 1) {
                 calendar.add(Calendar.MINUTE, cycle * Integer.parseInt(planModel.getIntervalTime()));
-                if(currentTime.equals(sdf.format(calendar.getTime()))){
+                if (currentTime.equals(sdf.format(calendar.getTime()))) {
                     result = planModel.getChannel().getMusicList();
                     break;
                 }
-                cycle ++;
+                cycle++;
             }
         }
-        if(result.size() != 0){
+        if (result.size() != 0) {
             return result.get(0);
-        }else{
+        } else {
             return null;
         }
     }

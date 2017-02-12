@@ -19,16 +19,59 @@
 
         var personalMusicList = new Array(); // 播放音乐列表（收藏或者频道音乐）
         var personalPlayFlag = false; // 播放标志
-        var personalPlayIndex = 0; // 播放标志，用来检查是否播放完毕
+        var chooseVoiceFlag = false; // 选择人声标志
 
-        function Music(id, title, mp3, duration, volume, position, favorite){
+        function Music(id, title, mp3, duration, volume, position, favorite, voice){
             this.id = id;
             this.title = title;
             this.mp3 = mp3;
-            this.duration = duration;
-            this.volume = volume;
-            this.position = position;
-            this.favorite = favorite;
+            this.duration = duration; // 音乐时长
+            this.volume = volume; // 音量
+            this.position = position; // 播放位置
+            this.favorite = favorite; // 收藏标志
+            this.voice = voice; // 人声
+        }
+
+        // 选择人声(0男声，1女声，3合唱，4乐器)
+        function chooseMusic(array, voice){
+            var result = new Array();
+            for(var index = 0; index < array.length; index ++){
+                if(voice == array[index].voice){
+                    result.push(array[index]);
+                }
+            }
+            return result;
+        }
+
+        function playByPeople(voice){
+            chooseVoiceFlag = true;
+            cleanPlaylist();
+            var musicArray;
+            if(personalPlayFlag){
+                musicArray = chooseMusic(personalMusicList, voice);
+            }else{
+                musicArray = chooseMusic(planMusicList, voice);
+            }
+            myPlaylist.setPlaylist(musicArray);
+            myPlaylist.play(0);
+            $(".liedui_top .lie_h4").html("播放队列（共" + musicArray.length + "首歌）");
+            $("#nav .num_1").html(musicArray.length);
+        }
+
+        function playAllPeople(){
+            chooseVoiceFlag = false;
+            cleanPlaylist();
+            var musicArray;
+            if(personalPlayFlag){
+                musicArray = personalMusicList;
+            }else{
+                musicArray = planMusicList;
+            }
+            myPlaylist.setPlaylist(musicArray);
+            myPlaylist.play(0);
+            $(".liedui_top .lie_h4").html("播放队列（共" + musicArray.length + "首歌）");
+            $("#nav .num_1").html(musicArray.length);
+
         }
 
         $(document).ready(function () {
@@ -46,30 +89,24 @@
                 smoothPlayBar: true,
                 keyEnabled: true,
                 play: function(e) {
+                    console.log(myPlaylist.playlist.length);
+                    console.log(e.jPlayer.status.media.title);
                     if(!spotflag){
-                        if(personalPlayFlag){
-                            personalPlayIndex = indexOf(personalMusicList, e.jPlayer.status.media.title);
-                        }else{
-                            planPlayIndex = indexOf(planMusicList, e.jPlayer.status.media.title);
-                        }
+                        planPlayIndex = myPlaylist.current;
                     }
                 },
                 ended: function (e) {
                     console.log("music stop.");
                     if(spotflag){
                         spotflag = false;
+                        // 插播完恢复计划
+                        myPlaylist.setPlaylist(planMusicList);
+                        $(".liedui_top .lie_h4").html("播放队列（共" + planMusicList.length + "首歌）");
+                        $("#nav .num_1").html(planMusicList.length);
                         if(planPlayIndex != planMusicList.length - 1){
-                            myPlaylist.setPlaylist(planMusicList);
                             myPlaylist.play(planPlayIndex + 1);
-                            $(".liedui_top .lie_h4").html("播放队列（共" + planMusicList.length + "首歌）");
-                            $("#nav .num_1").html(planMusicList.length);
                         }else{
-                            loadPlanMusic();
-                        }
-                    }else if(personalPlayFlag){
-                        if(personalPlayIndex == personalMusicList.length - 1){
-                            personalPlayFlag = false;
-                            loadPlanMusic();
+                            myPlaylist.play(0);
                         }
                     }else {
                         if(planPlayIndex == planMusicList.length - 1) {
@@ -102,7 +139,7 @@
                     cleanPlaylist();
                     planMusicList = [];
                     for(var i = 0 ; i < data.length; i ++){
-                        var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0, data[i].favorite);
+                        var music = new Music(data[i].id, data[i].musicName, data[i].path, data[i].duration, data[i].volume, 0, data[i].favorite, data[i].voice);
                         planMusicList.push(music);
                         myPlaylist.add(music);
                     }
@@ -184,7 +221,7 @@
                             str += "</li>";
                             musicDiv.append(str);
 
-                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite);
+                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite, data.musicList[i].voice);
                             personalMusicList.push(music);
                         }
                         musicDiv.appendTo($("#myFavorite .block"));
@@ -325,7 +362,7 @@
                         $(".liedui_top .lie_h4").html("播放队列（共" + data.musicList.length + "首歌）");
                         $("#nav .num_1").html(data.musicList.length);
                         for (var i = 0; i < data.musicList.length; i++) {
-                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite);
+                            var music = new Music(data.musicList[i].id, data.musicList[i].musicName, data.musicList[i].path, data.musicList[i].duration, data.musicList[i].volume, 0, data.musicList[i].favorite, data.musicList[i].voice);
                             myPlaylist.add(music);
                             personalMusicList.push(music);
                         }
@@ -793,9 +830,9 @@
                                 <li><a href="#" class="btn_5"></a>
                                     <div class="sub" style="left:5px;">
                                         <ul class="hechang">
-                                            <li><a href="#" class="btn_7"></a></li>
-                                            <li><a href="#" class="btn_8"></a></li>
-                                            <li><a href="#" class="btn_9"></a></li>
+                                            <li><a href="#" class="btn_7" onclick="playByPeople(0)"></a></li>
+                                            <li><a href="#" class="btn_8" onclick="playByPeople(1)"></a></li>
+                                            <li><a href="#" class="btn_9" onclick="playAllPeople()"></a></li>
                                         </ul>
                                         <div class="yinliang"><a href="#" class="btn_5 btn_04"></a></div>
                                         <div class="di"><img src="images/di.png"/></div>

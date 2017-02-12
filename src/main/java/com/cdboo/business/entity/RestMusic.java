@@ -51,6 +51,9 @@ public class RestMusic extends BaseEntity {
     @Column(name = "favorite")
     private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
 
+    @Transient
+    private String voice; // 人声
+
     public String getMusicNo() {
         return musicNo;
     }
@@ -145,6 +148,14 @@ public class RestMusic extends BaseEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getVoice() {
+        return voice;
+    }
+
+    public void setVoice(String voice) {
+        this.voice = voice;
     }
 
     @Override

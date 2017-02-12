@@ -123,14 +123,6 @@ function parseWeek(number) {
     }
 }
 
-function indexOf(array, title) {
-    for(var index = 0; index < array.length; index ++){
-        if(title == array[index].title){
-            return index;
-        }
-    }
-    return -1;
-}
 
 
 

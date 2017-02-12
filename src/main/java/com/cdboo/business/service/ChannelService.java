@@ -1,10 +1,9 @@
 package com.cdboo.business.service;
 
 import com.cdboo.business.common.Constants;
-import com.cdboo.business.entity.PlanModel;
-import com.cdboo.business.entity.QPlanModel;
-import com.cdboo.business.entity.RestChannel;
+import com.cdboo.business.entity.*;
 import com.cdboo.business.repository.ChannelRepository;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,11 +41,23 @@ public class ChannelService {
 
     /**
      * 查询频道
+     *
      * @param channelId
      * @return
      */
     public RestChannel findChannelById(Long channelId) {
         return channelRepository.findOne(channelId);
+    }
+
+    /**
+     * 查找音乐所属频道
+     *
+     * @param music
+     * @return
+     */
+    public Iterable<RestChannel> findChannelByMusic(RestMusic music) {
+        Predicate predicate = QRestChannel.restChannel.musicList.contains(music);
+        return channelRepository.findAll(predicate);
     }
 
     /**
@@ -85,8 +96,9 @@ public class ChannelService {
                     .and(planService.getPredicateByScene(scene));
             if (Constants.MUSIC_THEME.equals(style) || Constants.MUSIC_MANNER.equals(style)) {
                 predicate = predicate.and(planService.getPredicateByWeek());
-            }else if(Constants.MUSIC_SPOT.equals(style) || Constants.MUSIC_FESTIVAL.equals(style)){
-                predicate = predicate.and(planService.getPredicateByDate()).and(planService.getPredicateByTime());;
+            } else if (Constants.MUSIC_SPOT.equals(style) || Constants.MUSIC_FESTIVAL.equals(style)) {
+                predicate = predicate.and(planService.getPredicateByDate()).and(planService.getPredicateByTime());
+                ;
             }
         } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);
