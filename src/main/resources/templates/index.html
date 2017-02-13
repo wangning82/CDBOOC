@@ -19,6 +19,7 @@
 
         var personalMusicList = new Array(); // 播放音乐列表（收藏或者频道音乐）
         var personalPlayFlag = false; // 播放标志
+        var personalPlayIndex = 0; // 播放歌曲下标
         var chooseVoiceFlag = false; // 选择人声标志
 
         function Music(id, title, mp3, duration, volume, position, favorite, voice){
@@ -34,6 +35,7 @@
 
         // 选择人声(0男声，1女声，3合唱，4乐器)
         function chooseMusic(array, voice){
+            chooseVoiceFlag = true;
             var result = new Array();
             for(var index = 0; index < array.length; index ++){
                 if(voice == array[index].voice){
@@ -44,7 +46,7 @@
         }
 
         function playByPeople(voice){
-            chooseVoiceFlag = true;
+            chooseVoiceFlag = false;
             cleanPlaylist();
             var musicArray;
             if(personalPlayFlag){
@@ -59,7 +61,6 @@
         }
 
         function playAllPeople(){
-            chooseVoiceFlag = false;
             cleanPlaylist();
             var musicArray;
             if(personalPlayFlag){
@@ -92,25 +93,40 @@
                     console.log(myPlaylist.playlist.length);
                     console.log(e.jPlayer.status.media.title);
                     if(!spotflag){
-                        planPlayIndex = myPlaylist.current;
+                        if(personalPlayFlag){
+                            personalPlayIndex = myPlaylist.current; // 个人播放
+                        }else{
+                            planPlayIndex = myPlaylist.current; // 计划播放
+                        }
                     }
                 },
                 ended: function (e) {
                     console.log("music stop.");
                     if(spotflag){
                         spotflag = false;
-                        // 插播完恢复计划
-                        myPlaylist.setPlaylist(planMusicList);
-                        $(".liedui_top .lie_h4").html("播放队列（共" + planMusicList.length + "首歌）");
-                        $("#nav .num_1").html(planMusicList.length);
+                        restorePlayPlan(); // 插播完恢复计划
                         if(planPlayIndex != planMusicList.length - 1){
                             myPlaylist.play(planPlayIndex + 1);
                         }else{
                             myPlaylist.play(0);
                         }
                     }else {
-                        if(planPlayIndex == planMusicList.length - 1) {
-                            myPlaylist.play(0); // 循环播放计划
+                        if(personalPlayFlag){
+                            // 个人播放完毕
+                            if(personalPlayIndex == myPlaylist.playlist.length - 1){
+                                personalPlayFlag = false;
+                                restorePlayPlan();
+                                myPlaylist.play(0);
+                            }
+                        }else {
+                            // 计划播放
+                            if(planPlayIndex == myPlaylist.playlist.length - 1) {
+                                if(chooseVoiceFlag){
+                                    chooseVoiceFlag = false;
+                                    restorePlayPlan();
+                                }
+                                myPlaylist.play(0); // 循环播放计划
+                            }
                         }
                     }
                 }
@@ -119,6 +135,13 @@
             window.setInterval(findSpotMusic, 30000);
 
         });
+
+        // 恢复播放计划
+        function restorePlayPlan() {
+            myPlaylist.setPlaylist(planMusicList);
+            $(".liedui_top .lie_h4").html("播放队列（共" + planMusicList.length + "首歌）");
+            $("#nav .num_1").html(planMusicList.length);
+        }
 
         // 清除播放列表
         function cleanPlaylist() {
