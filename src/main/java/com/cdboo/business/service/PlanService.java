@@ -138,9 +138,9 @@ public class PlanService {
      * @return
      */
     public Iterable<PlanModel> findPlanByStyle(String musicStyle) {
-        BooleanExpression predicate = getPredicateByStyle(musicStyle).and(getPredicateByTime()).and(getPredicateByWeek());
-        if(Constants.MUSIC_FESTIVAL.equals(musicStyle)){
-            predicate = predicate.and(getPredicateByDate());
+        BooleanExpression predicate = getPredicateByStyle(musicStyle).and(getPredicateByTime()).and(getPredicateByDate());
+        if(!Constants.MUSIC_FESTIVAL.equals(musicStyle)){
+            predicate = predicate.and(getPredicateByWeek());
         }
         return findAll(predicate);
     }
