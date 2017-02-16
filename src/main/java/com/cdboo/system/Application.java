@@ -21,6 +21,7 @@ public class Application {
 
     private static void initUserInterface() {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
+        System.setProperty("sun.java2d.noddraw", "true"); // 解决切换中文输入法导致白屏
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Draw 9-patch");
 
         try {
