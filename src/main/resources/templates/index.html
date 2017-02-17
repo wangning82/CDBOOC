@@ -464,7 +464,11 @@
                     for(var i = 0 ; i < data.length; i ++){
                         var str = "<ul class='grzlk_ul chabo_list'>";
                         str += "<li>" + data[i].playName+ "</li>";
-                        str += "<li>" + data[i].channel.planMusicList[0].duration + "</li>";
+                        if(data[i].channel.musicList.length != 0){
+                            str += "<li>" + data[i].channel.musicList[0].duration + "</li>";
+                        }else{
+                            str += "<li>00:00:00</li>";
+                        }
                         str += "<li style='width: 200px;'>" + data[i].startDate + " - " + data[i].endDate + "</li>";
                         str += "<li><input type='text' value='" + data[i].timestep.starttime + "' class='inp_1'/></li>";
                         str += "<li><input type='text' value='" + data[i].intervalTime + "' class='inp_1 inp_2'/></li>";

@@ -176,7 +176,7 @@ public class PlanService {
      * @return
      */
     public Iterable<PlanModel> findSpotPlan() {
-        BooleanExpression predicate = getPredicateByStyle(Constants.MUSIC_SPOT).and(getPredicateByDate());
+        BooleanExpression predicate = getPredicateByStyle(Constants.MUSIC_SPOT);
         return findAll(predicate);
     }
 
