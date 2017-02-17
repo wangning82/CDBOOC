@@ -49,11 +49,11 @@ public class PlanModel extends BaseEntity {
     @Column(name = "sceneImage")
     private String sceneImg;//业态图片
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "period_id")
     private RestTimeStep timestep; // 用户时段信息
 
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "channel_id")
     private RestChannel channel; // 频道
 
