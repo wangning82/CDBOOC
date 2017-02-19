@@ -31,6 +31,9 @@ public class TitleBarController extends AbstractFrameController {
     @Autowired
     private PeriodService periodService;
 
+    @Autowired
+    private PeriodController periodController;
+
     @Override
     public void prepareAndOpenFrame() {
         registerAction(mainFrame.getTitleBarPanel().getCloseButton(), (e) -> closeClientsWindow());
@@ -47,6 +50,7 @@ public class TitleBarController extends AbstractFrameController {
                 mainFrame.getPeriodDialog().setShowPossition(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
                 mainFrame.getPeriodDialog().setPeriodList(periodService.findAll());
                 mainFrame.getPeriodDialog().showItNow();
+                periodController.prepareAndOpenFrame();
             }
         });
 

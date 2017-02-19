@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -100,10 +101,12 @@ public class TitleBarPanel extends AbstractJPanel {
      * 获取用户信息
      */
     public void loadUserInfo() {
-        if (!StringUtils.isEmpty(Config.getConfigInstance().getPhoto())) {
+        if (!StringUtils.isEmpty(Config.getConfigInstance().getPhoto()) && new File(Config.getConfigInstance().getPhoto()).exists()) {
             ImageIcon imageIcon = new ImageIcon(Config.getConfigInstance().getPhoto());
             Image smallImage = imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_FAST);
             headButton.setIcon(new ImageIcon(smallImage));
+        }else{
+            headButton.setIcon(new ImageIcon(getClass().getResource("/images/head.jpg")));
         }
         nickNameLabel.setText(Config.getConfigInstance().getNickName());
     }

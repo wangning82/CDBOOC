@@ -1,5 +1,6 @@
 package com.cdboo.business.service;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.*;
 import com.cdboo.business.repository.ChannelRepository;
@@ -98,10 +99,12 @@ public class ChannelService {
                 predicate = predicate.and(planService.getPredicateByWeek());
             } else if (Constants.MUSIC_SPOT.equals(style) || Constants.MUSIC_FESTIVAL.equals(style)) {
                 predicate = predicate.and(planService.getPredicateByDate()).and(planService.getPredicateByTime());
-                ;
             }
         } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);
+        }
+        for(String periodName : Config.getConfigInstance().getPeriodList()){
+            predicate = predicate.and(planService.getPredictateByPeriodName(periodName));
         }
         Iterable<PlanModel> list = planService.findAll(predicate);
         for (PlanModel planModel : list) {

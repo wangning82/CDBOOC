@@ -122,6 +122,16 @@ public class PlanService {
     }
 
     /**
+     * 时段名字查询
+     *
+     * @param periodName
+     * @return
+     */
+    public BooleanExpression getPredictateByPeriodName(String periodName){
+        return QPlanModel.planModel.timestep.timestepName.eq(periodName);
+    }
+
+    /**
      * 查询播放计划
      *
      * @param predicate

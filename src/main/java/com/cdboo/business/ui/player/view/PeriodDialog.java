@@ -1,5 +1,6 @@
 package com.cdboo.business.ui.player.view;
 
+import com.cdboo.business.common.Config;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
 import com.cdboo.business.common.NPIconFactory;
@@ -52,6 +53,9 @@ public class PeriodDialog extends JDialog {
         periodBoxes = new JCheckBox[periodList.size()];
         for (int i = 0; i < periodList.size(); i++) {
             periodBoxes[i] = JComponentUtils.createCheckBox(periodList.get(i).getTimestepName(), JComponentStyle.COLOR_FONT_GRAY, JCheckBox.TRAILING);
+            if(Config.getConfigInstance().getPeriodList().contains(periodList.get(i).getTimestepName())){
+                periodBoxes[i].setSelected(true);
+            }
             periodPanel.add(periodBoxes[i]);
             periodPanel.add(Box.createVerticalStrut(6));
         }

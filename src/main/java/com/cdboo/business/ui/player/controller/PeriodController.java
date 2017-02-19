@@ -21,9 +21,10 @@ public class PeriodController extends AbstractFrameController {
 
     @Override
     public void prepareAndOpenFrame() {
-
-        for(JCheckBox periodBox : mainFrame.getPeriodDialog().getPeriodBoxes()){
-            registerItem(periodBox, (ItemEvent e) -> loadData(e));
+        if(mainFrame.getPeriodDialog().getPeriodBoxes() != null){
+            for(JCheckBox periodBox : mainFrame.getPeriodDialog().getPeriodBoxes()){
+                registerItem(periodBox, (ItemEvent e) -> loadData(e));
+            }
         }
     }
 
