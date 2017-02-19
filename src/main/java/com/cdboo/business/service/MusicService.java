@@ -2,6 +2,7 @@ package com.cdboo.business.service;
 
 import com.cdboo.business.common.Constants;
 import com.cdboo.business.entity.PlanModel;
+import com.cdboo.business.entity.QRestMusic;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
 import com.cdboo.business.repository.MusicRepository;
@@ -158,6 +159,16 @@ public class MusicService {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 查询音乐
+     * @param keyword
+     * @return
+     */
+    public Iterable<RestMusic> findAll(String keyword) {
+        Predicate predicate = QRestMusic.restMusic.musicName.contains(keyword);
+        return musicRepository.findAll(predicate);
     }
 
 }

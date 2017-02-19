@@ -103,8 +103,17 @@ public class ChannelService {
         } else {
             predicate = QPlanModel.planModel.musicStyle.eq(style);
         }
-        for(String periodName : Config.getConfigInstance().getPeriodList()){
-            predicate = predicate.and(planService.getPredictateByPeriodName(periodName));
+        BooleanExpression periodExpression = null;
+        for (int i = 0; i < Config.getConfigInstance().getPeriodList().size(); i++) {
+            String periodName = Config.getConfigInstance().getPeriodList().get(i);
+            if (i == 0) {
+                periodExpression = planService.getPredictateByPeriodName(periodName);
+            } else {
+                periodExpression = periodExpression.or(planService.getPredictateByPeriodName(periodName));
+            }
+        }
+        if (periodExpression != null) {
+            predicate = predicate.and(periodExpression);
         }
         Iterable<PlanModel> list = planService.findAll(predicate);
         for (PlanModel planModel : list) {

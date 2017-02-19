@@ -1,15 +1,15 @@
 package com.cdboo.business.ui.player.view;
 
 import com.cdboo.business.common.Config;
-import com.cdboo.business.ui.shared.view.AbstractJPanel;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
+import com.cdboo.business.common.JHistoryTextField;
+import com.cdboo.business.ui.shared.view.AbstractJPanel;
 import org.springframework.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -20,6 +20,9 @@ public class TitleBarPanel extends AbstractJPanel {
     private JButton headButton;
     private JLabel nickNameLabel;
     private JButton loginButton;
+
+    private JHistoryTextField queryText;
+    private JButton queryButton;
 
     //private JComboBox timeCB;
     private JLabel periodLabel;
@@ -35,6 +38,7 @@ public class TitleBarPanel extends AbstractJPanel {
 
     private JPanel headPane;
     private JPanel btnPane;
+    private JPanel queryPane;
 
     public TitleBarPanel() {
         super(new BorderLayout());
@@ -45,6 +49,11 @@ public class TitleBarPanel extends AbstractJPanel {
         headButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/head.jpg")), JComponentStyle.SIZE_30_30);
         nickNameLabel = JComponentUtils.createLabel("匿名用户");
         loginButton = JComponentUtils.createButton("登录", new Dimension(50, 30));
+
+        queryText = new JHistoryTextField();
+        queryText.setPreferredSize(new Dimension(160, 24));
+        queryText.setHistory(Config.getConfigInstance().getHistory());
+        queryButton = JComponentUtils.createButton(new ImageIcon(getClass().getResource("/images/query.png")), JComponentStyle.SIZE_30_30);
 
         //timeCB = JComponentUtils.createComboBox();
         periodLabel = JComponentUtils.createLabel("选择时段");
@@ -75,7 +84,9 @@ public class TitleBarPanel extends AbstractJPanel {
         btnPane.setLayout(new FlowLayout(FlowLayout.CENTER, 8, 5));
         btnPane.setBackground(JComponentStyle.COLOR_DEFAULT);
 
-        this.setBackground(JComponentStyle.COLOR_DEFAULT);
+        queryPane = new JPanel();
+        queryPane.setLayout(new FlowLayout(FlowLayout.CENTER, -3, 5));
+        queryPane.setBackground(JComponentStyle.COLOR_DEFAULT);
 
         headPane.add(headButton);
         headPane.add(nickNameLabel);
@@ -83,6 +94,10 @@ public class TitleBarPanel extends AbstractJPanel {
         headPane.add(separator1);
         headPane.add(loginButton);
         this.add(headPane, BorderLayout.WEST);
+
+        queryPane.add(queryText);
+        queryPane.add(queryButton);
+        this.add(queryPane, BorderLayout.CENTER);
 
         //btnPane.add(timeCB);
         btnPane.add(periodLabel);
@@ -94,6 +109,8 @@ public class TitleBarPanel extends AbstractJPanel {
         //btnPane.add(maxButton);
         btnPane.add(closeButton);
         this.add(btnPane, BorderLayout.EAST);
+
+        this.setBackground(JComponentStyle.COLOR_DEFAULT);
         this.setBorder(BorderFactory.createEmptyBorder(4, 10, 4, 8));
     }
 
@@ -105,7 +122,7 @@ public class TitleBarPanel extends AbstractJPanel {
             ImageIcon imageIcon = new ImageIcon(Config.getConfigInstance().getPhoto());
             Image smallImage = imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_FAST);
             headButton.setIcon(new ImageIcon(smallImage));
-        }else{
+        } else {
             headButton.setIcon(new ImageIcon(getClass().getResource("/images/head.jpg")));
         }
         nickNameLabel.setText(Config.getConfigInstance().getNickName());
@@ -114,7 +131,7 @@ public class TitleBarPanel extends AbstractJPanel {
     /**
      * 重置用户信息
      */
-    public void resetUserInfo(){
+    public void resetUserInfo() {
         headButton.setIcon(new ImageIcon(getClass().getResource("/images/head.jpg")));
         nickNameLabel.setText("匿名用户");
     }
@@ -205,6 +222,22 @@ public class TitleBarPanel extends AbstractJPanel {
 
     public void setPeriodLabel(JLabel periodLabel) {
         this.periodLabel = periodLabel;
+    }
+
+    public JHistoryTextField getQueryText() {
+        return queryText;
+    }
+
+    public void setQueryText(JHistoryTextField queryText) {
+        this.queryText = queryText;
+    }
+
+    public JButton getQueryButton() {
+        return queryButton;
+    }
+
+    public void setQueryButton(JButton queryButton) {
+        this.queryButton = queryButton;
     }
 
     /*

@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class Config implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date serviceTimeEnd; //用户服务时间结束时间
 
+    private LinkedList<String> history = new LinkedList<String>(); // 查询历史
     private boolean autoLogin = false; // 是否自动登录
     private boolean alwaysOnTop = false; // 总在最前
     private List<String> periodList = new ArrayList<String>(); // 选择时段
@@ -187,4 +189,13 @@ public class Config implements Serializable {
     public void setPeriodList(List<String> periodList) {
         this.periodList = periodList;
     }
+
+    public LinkedList<String> getHistory() {
+        return history;
+    }
+
+    public void setHistory(LinkedList<String> history) {
+        this.history = history;
+    }
+
 }

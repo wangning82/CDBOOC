@@ -42,10 +42,11 @@ public class WebViewController {
     private MusicService musicService;
 
     @RequestMapping(value = "")
-    public String index(Model model){
+    public String index(String keyword, Model model){
         model.addAttribute("config", Config.getConfigInstance());
         model.addAttribute("sceneList", planService.findSceneList()); // 场景业态
         model.addAttribute("festivalList", planService.findFestivalList()); // 查询节日
+        model.addAttribute("keyword", keyword);
         return "index";
     }
 
@@ -240,6 +241,12 @@ public class WebViewController {
             e.printStackTrace();
         }
         return result;
+    }
+
+    @RequestMapping(value = "queryMusic")
+    @ResponseBody
+    public Iterable<RestMusic> queryMusic(String keyword){
+        return musicService.findAll(keyword);
     }
 
 }

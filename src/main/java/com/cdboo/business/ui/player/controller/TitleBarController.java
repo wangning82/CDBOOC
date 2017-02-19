@@ -41,6 +41,7 @@ public class TitleBarController extends AbstractFrameController {
         registerAction(mainFrame.getTitleBarPanel().getMaxButton(), (e) -> maxClientsWindow());
         registerAction(mainFrame.getTitleBarPanel().getSettingsButton(), (e) -> showSettings());
         registerAction(mainFrame.getTitleBarPanel().getLoginButton(), (e) -> showLoginWindow());
+        registerAction(mainFrame.getTitleBarPanel().getQueryButton(), (e) -> queryMusic());
 
         mainFrame.getTitleBarPanel().getPeriodLabel().addMouseListener(new MouseAdapter() {
             @Override
@@ -147,6 +148,9 @@ public class TitleBarController extends AbstractFrameController {
         }
     }
 
+    /**
+     * 最大化窗口
+     */
     private void maxClientsWindow(){
         mainFrame.shutdownAll();
         Toolkit kit = Toolkit.getDefaultToolkit();
@@ -160,6 +164,20 @@ public class TitleBarController extends AbstractFrameController {
             mainFrame.setLocation(0, 0);
             mainFrame.getTitleBarPanel().getMaxButton().setToolTipText("恢复");
         }
+    }
+
+    /**
+     * 查询音乐
+     */
+    private void queryMusic(){
+        if(Config.getConfigInstance().getHistory().size() > 20){
+            Config.getConfigInstance().getHistory().removeLast();
+        }
+        Config.getConfigInstance().getHistory().addFirst(mainFrame.getTitleBarPanel().getQueryText().getText());
+        mainFrame.getTitleBarPanel().getQueryText().setHistory(Config.getConfigInstance().getHistory());
+        Platform.runLater(() -> {
+            mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index") + "?keyword=" + mainFrame.getTitleBarPanel().getQueryText().getText());
+        });
     }
 
 }
