@@ -62,6 +62,36 @@ function saveFestival(obj) {
     });
 }
 
+function SpotMusic(id, startTime, intervalTime, cycleTimes) {
+    this.id = id;
+    this.startTime = startTime;
+    this.intervalTime = intervalTime;
+    this.cycleTimes = cycleTimes;
+}
+
+// 保存插播
+function saveSpot(obj) {
+    var spotList = new Array();
+    $(obj).parents(".row790").find(".grzlk_tr ul").each(function (index, e) {
+        if(index > 0){
+            var id = $(e).find("li:eq(0) input").val();
+            var startTime = $(e).find("li:eq(3) input").val();
+            var intervalTime = $(e).find("li:eq(4) input").val();
+            var cycleTimes = $(e).find("li:eq(5) input").val();
+            var spot = new SpotMusic(id, startTime, intervalTime, cycleTimes);
+            spotList.push(spot);
+        }
+    });
+    $.ajax({
+        type: "POST",
+        url: "/saveSpot",
+        data: JSON.stringify(spotList),
+        dataType: "json",
+        contentType:"application/json",
+        success: function () {}
+    });
+}
+
 // 鼠标滑过效果
 function hoverIn(obj) {
     $(obj).find("dt").animate({

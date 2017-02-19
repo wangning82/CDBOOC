@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by houyi on 2017/2/3 0003.
+ * 客户端首页查询业态列表时使用
  */
 public class SceneModel implements Serializable {
     private String icon;

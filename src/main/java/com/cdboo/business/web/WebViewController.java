@@ -6,6 +6,7 @@ import com.cdboo.business.entity.BaseEntity;
 import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
+import com.cdboo.business.model.SpotModel;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
 import com.cdboo.business.service.PlanService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -155,8 +157,8 @@ public class WebViewController {
         if(!CollectionUtils.isEmpty(list)){
             result.put("festival", planService.findFestivalPlan(list.get(0)));
         }
-        result.put("theme", planService.findPlanByStyle(Constants.MUSIC_THEME));
-        result.put("manner", planService.findPlanByStyle(Constants.MUSIC_MANNER));
+        result.put("theme", planService.findAllPlanByStyle(Constants.MUSIC_THEME));
+        result.put("manner", planService.findAllPlanByStyle(Constants.MUSIC_MANNER));
         return result;
     }
 
@@ -195,6 +197,23 @@ public class WebViewController {
     @ResponseBody
     public Iterable<PlanModel> spotPlan(Model model){
         return planService.findSpotPlan();
+    }
+
+    /**
+     * 保存插播
+     * @param spotList
+     */
+    @RequestMapping(value = "saveSpot")
+    @ResponseBody
+    public void saveSpot(@RequestBody SpotModel[] spotList, Model model){
+        for(SpotModel spotModel : spotList){
+            PlanModel planModel = planService.findById(Long.parseLong(spotModel.getId()));
+            planModel.getTimestep().setStarttime(spotModel.getStartTime());
+            planModel.setIntervalTime(spotModel.getIntervalTime());
+            planModel.setCycleTimes(spotModel.getCycleTimes());
+            planService.save(planModel);
+        }
+
     }
 
     /**

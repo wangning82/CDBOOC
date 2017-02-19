@@ -116,7 +116,7 @@
                             if(personalPlayIndex == myPlaylist.playlist.length - 1){
                                 personalPlayFlag = false;
                                 restorePlayPlan();
-                                myPlaylist.play(0);
+                                myPlaylist.play(planPlayIndex);
                             }
                         }else {
                             // 计划播放
@@ -125,7 +125,7 @@
                                     chooseVoiceFlag = false;
                                     restorePlayPlan();
                                 }
-                                myPlaylist.play(0); // 循环播放计划
+                                loadPlanMusic(); // 重新加载计划
                             }
                         }
                     }
@@ -133,8 +133,16 @@
             });
             loadPlanMusic();
             window.setInterval(findSpotMusic, 30000);
-
+            window.setInterval(monitorTime, 1000);
         });
+
+        // 整点重新加载新计划
+        function monitorTime() {
+            var mydate = new Date();
+            if(mydate.getMinutes() == 0){
+                loadPlanMusic();
+            }
+        }
 
         // 恢复播放计划
         function restorePlayPlan() {
@@ -460,10 +468,10 @@
                 dataType: "json",
                 success: function (data) {
                     $("#mySpot .grzlk_tr").children().remove();
-                    $("#mySpot .grzlk_tr").append("<ul class='grzlk_ul chabo_list'><li>名称</li><li>时长</li><li style='width: 200px;'>播放日期</li><li>播放时间</li><li>重复时间</li><li>循环次数</li></ul>");
+                    $("#mySpot .grzlk_tr").append("<ul class='grzlk_ul'><li>名称</li><li>时长</li><li style='width: 200px;'>播放日期</li><li>播放时间</li><li>重复时间</li><li>循环次数</li></ul>");
                     for(var i = 0 ; i < data.length; i ++){
                         var str = "<ul class='grzlk_ul chabo_list'>";
-                        str += "<li>" + data[i].playName+ "</li>";
+                        str += "<li><input type='hidden' value='" + data[i].id + "'/>" + data[i].playName+ "</li>";
                         if(data[i].channel.musicList.length != 0){
                             str += "<li>" + data[i].channel.musicList[0].duration + "</li>";
                         }else{
@@ -708,7 +716,7 @@
                             <input class="txtEndDate" style="width:100px;padding:5px 10px 4px 10px;border:1px solid #ccc;"/>
                         </li>
                         <li>
-                            <input id="" type="button" value="保存" class="Save" onclick="saveFestival(this)"/>
+                            <input id="" type="button" value="保 存" class="Save" onclick="saveFestival(this)"/>
                         </li>
                     </ul>
                 </div>
@@ -762,7 +770,12 @@
     <div class="row790">
         <div class="thead">
             <ul class="tab0">
-                <li class="index"><span>插播列表</span></li>
+                <li class="index" style="float: left;">
+                    <span>插播列表</span>
+                </li>
+                <li style="float: right;">
+                    <input type="button" value="保 存" class="Save" onclick="saveSpot(this);"/>
+                </li>
             </ul>
         </div>
         <div class="tbody">

@@ -132,7 +132,7 @@ public class PlanService {
     }
 
     /**
-     * 查询播放计划
+     * 查询当前时段播放计划
      *
      * @param musicStyle
      * @return
@@ -143,6 +143,15 @@ public class PlanService {
             predicate = predicate.and(getPredicateByWeek());
         }
         return findAll(predicate);
+    }
+
+    /**
+     * 查询所有播放计划
+     * @param musicStyle
+     * @return
+     */
+    public Iterable<PlanModel> findAllPlanByStyle(String musicStyle) {
+        return findAll(getPredicateByStyle(musicStyle));
     }
 
     /**
