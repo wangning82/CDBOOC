@@ -36,6 +36,7 @@ public class Config implements Serializable {
     private boolean autoLogin = false; // 是否自动登录
     private boolean alwaysOnTop = false; // 总在最前
     private List<String> periodList = new ArrayList<String>(); // 选择时段
+    private String message; // 下载消息
 
     private static Config config = null;
 
@@ -198,4 +199,11 @@ public class Config implements Serializable {
         this.history = history;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

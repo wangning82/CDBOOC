@@ -1,5 +1,6 @@
 package com.cdboo.business.common.download;
 
+import com.cdboo.business.common.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +52,7 @@ public class HttpDownloader extends Thread {
                     }
                 }
                 logger.info(info.getPair().localName + " Download is done!");
+                Config.getConfigInstance().setMessage(null);
                 info.deleteFlagFile();
             } catch (InterruptedException e) {
                 logger.debug(info.getPair().localName, e);
@@ -185,6 +187,7 @@ public class HttpDownloader extends Thread {
                         if (counter % 20 == 0) {
                             __info.writeInfo(chp);
                             logger.info(__info.getPair().localName + " #Block" + (curIndex + 1) + "# download " + getPercentage() + "%...");
+                            Config.getConfigInstance().setMessage(__info.getPair().localName + "下载进度" + getPercentage());
                             Thread.yield();
                         }
                     }

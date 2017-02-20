@@ -243,10 +243,17 @@ public class WebViewController {
         return result;
     }
 
+    /**
+     * 查询音乐
+     * @param keyword
+     * @return
+     */
     @RequestMapping(value = "queryMusic")
     @ResponseBody
     public Iterable<RestMusic> queryMusic(String keyword){
         return musicService.findAll(keyword);
     }
+
+
 
 }
