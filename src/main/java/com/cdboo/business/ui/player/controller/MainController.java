@@ -1,10 +1,14 @@
 package com.cdboo.business.ui.player.controller;
 
+import com.cdboo.business.common.Config;
+import com.cdboo.business.common.YamlUtils;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.player.view.TitleBarPanel;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
+import javafx.application.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -59,6 +63,15 @@ public class MainController extends AbstractFrameController {
             @Override
             public void mousePressed(MouseEvent e) {
                 mainFrame.shutdownAll();
+            }
+        });
+
+        // 最后加载页面
+        Platform.runLater(() -> {
+            if(Config.getConfigInstance().isAutoLogin() && !StringUtils.isEmpty(Config.getConfigInstance().getUserName())){
+                mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
+            }else{
+                mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blank"));
             }
         });
 

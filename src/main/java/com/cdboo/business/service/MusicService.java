@@ -167,7 +167,7 @@ public class MusicService {
      * @return
      */
     public Iterable<RestMusic> findAll(String keyword) {
-        Predicate predicate = QRestMusic.restMusic.musicName.contains(keyword);
+        Predicate predicate = QRestMusic.restMusic.musicName.likeIgnoreCase("%" + keyword.toLowerCase() + "%");
         return musicRepository.findAll(predicate);
     }
 

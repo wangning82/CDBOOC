@@ -38,11 +38,6 @@ public class MainFrame extends JFrame {
             webBrowser.setScene(scene);
             view = new WebView();
             view.setPrefSize(new Integer(JComponentStyle.MAIN_WIDTH).doubleValue(), new Integer(JComponentStyle.MAIN_HEIGHT).doubleValue());
-            if(Config.getConfigInstance().isAutoLogin() && !StringUtils.isEmpty(Config.getConfigInstance().getUserName())){
-                view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.index"));
-            }else{
-                view.getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blank"));
-            }
             root.getChildren().add(view);
         });
 
