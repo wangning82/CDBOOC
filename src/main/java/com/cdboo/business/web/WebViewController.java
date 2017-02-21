@@ -10,6 +10,7 @@ import com.cdboo.business.model.SpotModel;
 import com.cdboo.business.service.ChannelService;
 import com.cdboo.business.service.MusicService;
 import com.cdboo.business.service.PlanService;
+import com.cdboo.system.spring.PropsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,9 @@ public class WebViewController {
 
     @Autowired
     private MusicService musicService;
+
+    @Autowired
+    private PropsConfig propsConfig;
 
     @RequestMapping(value = "")
     public String index(String keyword, Model model){
@@ -262,7 +267,17 @@ public class WebViewController {
     @ResponseBody
     public Map<String, Object> findMessage(){
         Map<String, Object> result = new HashMap<>();
-        result.put("message", Config.getConfigInstance().getMessage());
+
+        Iterable<RestMusic> musicList = musicService.findAll();
+        int length = 0;
+        while(musicList.iterator().hasNext()){
+            length ++;
+        }
+        File folder = new File(propsConfig.getImages());
+        File[] allmusic = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".mp3"));
+        File[] download = folder.listFiles((File dir, String name) -> name.endsWith(".cdboo"));
+
+        result.put("message", allmusic.length - download.length + "/" + length);
         return result;
     }
 

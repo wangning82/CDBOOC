@@ -1,9 +1,7 @@
 package com.cdboo.business.ui.player.view;
 
-import com.cdboo.business.common.Config;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
-import com.cdboo.business.common.YamlUtils;
 import com.sun.awt.AWTUtilities;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -11,7 +9,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,7 +74,6 @@ public class MainFrame extends JFrame {
         settingsDialog.dispose();
         periodDialog.dispose();
         loginDialog.dispose();
-        Config.getConfigInstance().setMessage("");
     }
 
     public TitleBarPanel getTitleBarPanel() {

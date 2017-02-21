@@ -171,4 +171,11 @@ public class MusicService {
         return musicRepository.findAll(predicate);
     }
 
+    /**
+     * 查询音乐
+     * @return
+     */
+    public Iterable<RestMusic> findAll() {
+        return musicRepository.findAll();
+    }
 }

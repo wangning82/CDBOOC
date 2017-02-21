@@ -113,11 +113,11 @@
                         spotflag = false;
                         restorePlayPlan(); // 插播完恢复计划
                         if(planPlayIndex != planMusicList.length - 1){
-                            myPlaylist.play(planPlayIndex + 1);
+                            myPlaylist.select(planPlayIndex + 1);
                         }else{
                             myPlaylist.select(0);
-                            $("#jquery_jplayer_1").jPlayer("play");
                         }
+                        $("#jquery_jplayer_1").jPlayer("play");
                     }else {
                         if(personalPlayFlag){
                             // 个人播放完毕
