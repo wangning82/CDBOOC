@@ -55,7 +55,8 @@
                 musicArray = chooseMusic(planMusicList, voice);
             }
             myPlaylist.setPlaylist(musicArray);
-            myPlaylist.play(0);
+            myPlaylist.select(0);
+            $("#jquery_jplayer_1").jPlayer("play");
             $(".liedui_top .lie_h4").html("播放队列（共" + musicArray.length + "首歌）");
             $("#nav .num_1").html(musicArray.length);
         }
@@ -69,7 +70,8 @@
                 musicArray = planMusicList;
             }
             myPlaylist.setPlaylist(musicArray);
-            myPlaylist.play(0);
+            myPlaylist.select(0);
+            $("#jquery_jplayer_1").jPlayer("play");
             $(".liedui_top .lie_h4").html("播放队列（共" + musicArray.length + "首歌）");
             $("#nav .num_1").html(musicArray.length);
 
@@ -113,7 +115,8 @@
                         if(planPlayIndex != planMusicList.length - 1){
                             myPlaylist.play(planPlayIndex + 1);
                         }else{
-                            myPlaylist.play(0);
+                            myPlaylist.select(0);
+                            $("#jquery_jplayer_1").jPlayer("play");
                         }
                     }else {
                         if(personalPlayFlag){
@@ -139,6 +142,7 @@
             loadPlanMusic();
             window.setInterval(findSpotMusic, 30000);
             window.setInterval(monitorTime, 1000);
+            window.setInterval(findMessage, 1000);
         });
 
         // 整点重新加载新计划
@@ -179,7 +183,8 @@
                         planMusicList.push(music);
                         myPlaylist.add(music);
                     }
-                    myPlaylist.play(0);
+                    myPlaylist.select(0);
+                    $("#jquery_jplayer_1").jPlayer("play");
                     $(".liedui_top .lie_h4").html("播放队列（共" + data.length + "首歌）");
                     $("#nav .num_1").html(data.length);
                 }
@@ -211,7 +216,8 @@
                         mp3: spotmusic.mp3
                     });
                     spotflag = true;
-                    myPlaylist.play(0);
+                    myPlaylist.select(0);
+                    $("#jquery_jplayer_1").jPlayer("play");
                 }
             }
         }
@@ -295,7 +301,8 @@
             $("#nav .num_1").html(personalMusicList.length);
             myPlaylist.setPlaylist(personalMusicList);
             personalPlayFlag = true;
-            myPlaylist.play(0);
+            myPlaylist.select(0);
+            $("#jquery_jplayer_1").jPlayer("play");
         }
 
         // 查找音乐
@@ -451,7 +458,8 @@
                             personalMusicList.push(music);
                         }
                         personalPlayFlag = true;
-                        myPlaylist.play(0);
+                        myPlaylist.select(0);
+                        $("#jquery_jplayer_1").jPlayer("play");
                     });
                 }
             });
@@ -602,6 +610,19 @@
                 $(obj).attr("favorite", "0");
                 $(obj).attr("class", "down_1");
             }
+        }
+
+        // 查询下载消息
+        function findMessage() {
+            $.ajax({
+                type: "POST",
+                url: "/findMessage",
+                data: {},
+                dataType: "json",
+                success: function (data) {
+                    $("#downloadMessage").html(data.message);
+                }
+            });
         }
 
         /*]]>*/
@@ -893,7 +914,7 @@
                 <li><a href="javascript:findPlan();"><s class="S_xxjs_4"></s>播放计划</a></li>
                 <li><a href="javascript:findSpot();"><s class="S_xxjs_5"></s>插播计划</a></li>
                 <li class="details S_xxjs" onclick="findChannel();" style="cursor: pointer;">
-                    <h4>场景业态</h4>
+                    <h4>场景业态</h4><span style="font-size: 10px;" id="downloadMessage"></span>
                 </li>
                 <li th:each="scene:${sceneList}">
                     <s class="S_xxjs_6" th:style="'float: left; background-image: url(' + ${scene.icon} + ');'"></s>

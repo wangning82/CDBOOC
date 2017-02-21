@@ -254,6 +254,16 @@ public class WebViewController {
         return musicService.findAll(keyword);
     }
 
-
+    /**
+     * 查询下载消息
+     * @return
+     */
+    @RequestMapping(value = "findMessage")
+    @ResponseBody
+    public Map<String, Object> findMessage(){
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", Config.getConfigInstance().getMessage());
+        return result;
+    }
 
 }

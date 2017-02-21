@@ -77,6 +77,7 @@ public class MainFrame extends JFrame {
         settingsDialog.dispose();
         periodDialog.dispose();
         loginDialog.dispose();
+        Config.getConfigInstance().setMessage("");
     }
 
     public TitleBarPanel getTitleBarPanel() {

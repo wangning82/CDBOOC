@@ -52,7 +52,7 @@ public class HttpDownloader extends Thread {
                     }
                 }
                 logger.info(info.getPair().localName + " Download is done!");
-                Config.getConfigInstance().setMessage(null);
+                Config.getConfigInstance().setMessage("");
                 info.deleteFlagFile();
             } catch (InterruptedException e) {
                 logger.debug(info.getPair().localName, e);
@@ -187,7 +187,7 @@ public class HttpDownloader extends Thread {
                         if (counter % 20 == 0) {
                             __info.writeInfo(chp);
                             logger.info(__info.getPair().localName + " #Block" + (curIndex + 1) + "# download " + getPercentage() + "%...");
-                            Config.getConfigInstance().setMessage(__info.getPair().localName + "下载进度" + getPercentage());
+                            Config.getConfigInstance().setMessage("下载 " + __info.getPair().localName + " 进度 " + getPercentage() + "%...");
                             Thread.yield();
                         }
                     }
