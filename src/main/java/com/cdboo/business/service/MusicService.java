@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by houyi on 2016/12/30 0030.
@@ -37,6 +34,21 @@ public class MusicService {
 
     public RestMusic save(RestMusic music) {
         return musicRepository.save(music);
+    }
+
+    /**
+     * 删除音乐
+     * @param musicId
+     */
+    public void delete(Long musicId){
+        RestMusic music = musicRepository.findOne(musicId);
+        Iterator<RestChannel> list = channelService.findChannelByMusic(music).iterator();
+        while(list.hasNext()){
+            RestChannel channel = list.next();
+            channel.getMusicList().remove(music);
+            channelService.save(channel);
+        }
+        musicRepository.delete(musicId);
     }
 
     public void deleteAll() {

@@ -115,6 +115,16 @@ public class WebViewController {
     }
 
     /**
+     * 删除音乐
+     * @param musicId
+     */
+    @RequestMapping(value = "deleteMusic")
+    @ResponseBody
+    public void deleteMusic(String musicId){
+        musicService.delete(Long.parseLong(musicId));
+    }
+
+    /**
      * 查询频道列表
      * @param scene
      * @param model

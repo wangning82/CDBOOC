@@ -444,7 +444,7 @@
                         }else if(data.musicList[i].favorite == "1"){
                             str += "<a href='#' musicId='" + data.musicList[i].id + "' favorite='" + data.musicList[i].favorite + "' onclick='doFavoriteMusic(this)' class='down_3'></a>";
                         }
-                        str += "<a href='#' class='down_1 down_2'></a></li>";
+                        str += "<a href='#' musicId='" + data.musicList[i].id + "' channelId='" + channelId + "' onclick='deleteMusic(this)' class='down_1 down_2'></a></li>";
                         $("#myChannel .grzlk_tr").append(str);
                     }
                     $("#myChannel .mu_2").click(function () {
@@ -583,6 +583,7 @@
             }
         }
 
+        // 收藏或者取消收藏音乐
         function doFavoriteMusic(obj) {
             var favorite = $(obj).attr("favorite");
             if(favorite == "0"){
@@ -612,6 +613,21 @@
             }
         }
 
+        // 删除音乐
+        function deleteMusic(obj) {
+            $.ajax({
+                type: "POST",
+                url: "/deleteMusic",
+                data: {
+                    musicId : $(obj).attr("musicId")
+                },
+                dataType: "json",
+                success: function () {
+                    findMusic($(obj).attr("channelId"));
+                }
+            });
+        }
+
         // 查询下载消息
         function findMessage() {
             $.ajax({
@@ -620,7 +636,7 @@
                 data: {},
                 dataType: "json",
                 success: function (data) {
-                    $("#downloadMessage").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下载音乐：" + data.message);
+                    $("#downloadMessage").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下载音乐：" + data.message);
                 }
             });
         }
