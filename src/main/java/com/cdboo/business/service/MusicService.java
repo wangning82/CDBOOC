@@ -172,10 +172,16 @@ public class MusicService {
     }
 
     /**
-     * 查询音乐
+     * 查询音乐，去除。保存时就存在冗余，因为数据接口结构导致。
      * @return
      */
-    public Iterable<RestMusic> findAll() {
-        return musicRepository.findAll();
+    public List<RestMusic> findAll() {
+        List<RestMusic> result = new ArrayList<RestMusic>();
+        for(RestMusic music : musicRepository.findAll()){
+            if(!result.contains(music)){
+                result.add(music);
+            }
+        }
+        return result;
     }
 }

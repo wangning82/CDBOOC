@@ -268,16 +268,12 @@ public class WebViewController {
     public Map<String, Object> findMessage(){
         Map<String, Object> result = new HashMap<>();
 
-        Iterable<RestMusic> musicList = musicService.findAll();
-        int length = 0;
-        while(musicList.iterator().hasNext()){
-            length ++;
-        }
-        File folder = new File(propsConfig.getImages());
+        List<RestMusic> musicList = musicService.findAll();
+        File folder = new File(propsConfig.getMusic());
         File[] allmusic = folder.listFiles((File dir, String name) -> name.toLowerCase().endsWith(".mp3"));
         File[] download = folder.listFiles((File dir, String name) -> name.endsWith(".cdboo"));
 
-        result.put("message", allmusic.length - download.length + "/" + length);
+        result.put("message", allmusic.length - download.length + "/" + musicList.size());
         return result;
     }
 

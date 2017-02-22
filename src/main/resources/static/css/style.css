@@ -417,6 +417,7 @@ section {
     font-size: 18px;
     color: #999;
     font-weight: normal;
+    float: left;
 }
 
 .left_ul li.details:hover {

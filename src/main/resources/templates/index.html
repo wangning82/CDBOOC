@@ -620,7 +620,7 @@
                 data: {},
                 dataType: "json",
                 success: function (data) {
-                    $("#downloadMessage").html(data.message);
+                    $("#downloadMessage").html("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;下载音乐：" + data.message);
                 }
             });
         }
@@ -914,7 +914,7 @@
                 <li><a href="javascript:findPlan();"><s class="S_xxjs_4"></s>播放计划</a></li>
                 <li><a href="javascript:findSpot();"><s class="S_xxjs_5"></s>插播计划</a></li>
                 <li class="details S_xxjs" onclick="findChannel();" style="cursor: pointer;">
-                    <h4>场景业态</h4><span style="font-size: 10px;" id="downloadMessage"></span>
+                    <h4>场景业态</h4><span style="font-size: 12px;" id="downloadMessage"></span>
                 </li>
                 <li th:each="scene:${sceneList}">
                     <s class="S_xxjs_6" th:style="'float: left; background-image: url(' + ${scene.icon} + ');'"></s>

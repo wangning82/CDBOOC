@@ -46,7 +46,10 @@ public class RestMusic extends BaseEntity {
     private String status; // 状态（暂时没用）
 
     @Column(name = "path")
-    private String path; // 音乐路径
+    private String path; // 本地路径
+
+    @Column(name = "source")
+    private String source; // 服务器路径
 
     @Column(name = "favorite")
     private String favorite = Constants.FAVORITE_DEFAULT; // 收藏标志
@@ -158,14 +161,23 @@ public class RestMusic extends BaseEntity {
         this.voice = voice;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RestMusic)) return false;
 
-        RestMusic restMusic = (RestMusic) o;
+        RestMusic music = (RestMusic) o;
 
-        return path.equals(restMusic.path);
+        return path.equals(music.path);
+
     }
 
     @Override

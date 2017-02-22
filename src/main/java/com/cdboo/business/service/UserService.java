@@ -9,7 +9,6 @@ import com.cdboo.business.common.download.RemoteLocalPair;
 import com.cdboo.business.entity.PlanModel;
 import com.cdboo.business.entity.RestChannel;
 import com.cdboo.business.entity.RestMusic;
-import com.cdboo.business.model.MusicModel;
 import com.cdboo.business.model.RestModel;
 import com.cdboo.system.spring.PropsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class UserService {
 
     private static int BUFFER_SIZE = 10240;
 
-    private List<MusicModel> musicList; // 服务器音乐地址
+    private List<RestMusic> musicList; // 服务器音乐地址
 
     private static final String SERVER_IP = YamlUtils.getValue("url.cdboo.server.ip");
 
@@ -113,16 +112,7 @@ public class UserService {
             planService.save(planModel);
         }
 
-        // 多线程下载歌曲
-        new Thread(() -> {
-            for(MusicModel source : musicList){
-                String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
-                RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getPath().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength() == null ? new Long(0) : source.getLength());
-                GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
-                HttpDownloader downloader = new HttpDownloader(info, 5);
-                downloader.run();
-            }
-        }).start();
+        downloadMusic(musicList);
     }
 
     /**
@@ -135,6 +125,21 @@ public class UserService {
         planService.deleteAll();
     }
 
+    // 多线程下载歌曲
+    public void downloadMusic(List<RestMusic> musicList){
+        new Thread(() -> {
+            for(RestMusic source : musicList){
+                String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
+                if(!new File(propsConfig.getMusic(), filename).exists() || (new File(propsConfig.getMusic(), filename).exists() && new File(propsConfig.getMusic(), filename + ".cdboo").exists())){
+                    RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getSource().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength() == null ? new Long(0) : source.getLength());
+                    GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
+                    HttpDownloader downloader = new HttpDownloader(info, 5);
+                    downloader.run();
+                }
+            }
+        }).start();
+    }
+
     /**
      * 保存频道
      * @param channel
@@ -142,13 +147,11 @@ public class UserService {
     private void saveChannel(RestChannel channel) {
         channel.setPhotoPath(getImagePath(channel.getPhotoPath()));
         for (RestMusic restMusic : channel.getMusicList()) {
-            MusicModel music = new MusicModel();
-            music.setPath(restMusic.getPath());
-            music.setLength(restMusic.getLength());
-            if (!musicList.contains(music)) {
-                musicList.add(music);
-            }
+            restMusic.setSource(restMusic.getPath());
             restMusic.setPath(getMusicPath(restMusic.getPath()));
+            if (!musicList.contains(restMusic)) {
+                musicList.add(restMusic);
+            }
         }
     }
 

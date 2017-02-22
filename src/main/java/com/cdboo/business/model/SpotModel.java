@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by houyi on 2017/2/17 0017.
- * 客户端保存插播计划时使用
+ * 客户端保存插播计划时使用，用于绑定页面元素
  */
 public class SpotModel implements Serializable {
     private String id;
