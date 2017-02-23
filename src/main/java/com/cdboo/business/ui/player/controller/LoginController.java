@@ -33,11 +33,18 @@ public class LoginController extends AbstractFrameController {
 
     @Override
     public void prepareAndOpenFrame() {
+        mainFrame.getLoginDialog().addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowOpened(WindowEvent e) {
+                mainFrame.getLoginDialog().getUsernameField().requestFocus();
+            }
+        });
+
         registerAction(mainFrame.getLoginDialog().getCloseButton(), (e) -> closeLoginWindow());
         registerAction(mainFrame.getLoginDialog().getLoginButton(), (e) -> loginAction());
 
         mainFrame.getLoginDialog().getLoginButton().registerKeyboardAction((e) -> loginAction(),
-                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
@@ -55,7 +62,7 @@ public class LoginController extends AbstractFrameController {
                 dialog.getUsernameField().grabFocus();
             } else if (StringUtils.isEmpty(password)) {
                 dialog.getMessage().setText("请输入用户密码！");
-                dialog.getMessage().grabFocus();
+                dialog.getPasswordField().grabFocus();
             } else {
                 String result = userService.checkUser(userName, password);
                 if (Constants.USER_NOT_EXIST.equals(result)) {
