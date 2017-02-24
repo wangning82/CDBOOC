@@ -38,6 +38,11 @@ public class LoginController extends AbstractFrameController {
             public void windowOpened(WindowEvent e) {
                 mainFrame.getLoginDialog().getUsernameField().requestFocus();
             }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+                mainFrame.getLoginDialog().getUsernameField().requestFocus();
+            }
         });
 
         registerAction(mainFrame.getLoginDialog().getCloseButton(), (e) -> closeLoginWindow());
@@ -49,6 +54,9 @@ public class LoginController extends AbstractFrameController {
     }
 
     private void closeLoginWindow() {
+        Platform.runLater(() -> {
+            mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blank"));
+        });
         mainFrame.getLoginDialog().dispose();
     }
 

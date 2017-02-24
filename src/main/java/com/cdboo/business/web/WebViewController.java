@@ -60,6 +60,11 @@ public class WebViewController {
         return "blank";
     }
 
+    @RequestMapping(value = "blur")
+    public String blur(){
+        return "blur";
+    }
+
     /**
      * 我的收藏
      * @param model

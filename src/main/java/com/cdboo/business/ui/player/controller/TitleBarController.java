@@ -71,6 +71,9 @@ public class TitleBarController extends AbstractFrameController {
      * 显示登录窗口
      */
     public void showLoginWindow(){
+        Platform.runLater(() -> {
+            mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blur"));
+        });
         mainFrame.shutdownAll();
         Point p = mainFrame.getLocationOnScreen();
         double x = p.getX() + mainFrame.getWidth() / 2 - JComponentStyle.LOGIN_WIDTH / 2;

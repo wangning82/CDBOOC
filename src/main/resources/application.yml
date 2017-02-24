@@ -48,4 +48,5 @@ url:
     client:
       ip: http://127.0.0.1:9000
       blank: /blank
+      blur: /blur
       index:
