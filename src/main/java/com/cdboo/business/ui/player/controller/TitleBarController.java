@@ -4,7 +4,6 @@ import com.cdboo.business.common.Config;
 import com.cdboo.business.common.JComponentStyle;
 import com.cdboo.business.common.JComponentUtils;
 import com.cdboo.business.common.YamlUtils;
-import com.cdboo.business.entity.RestTimeStep;
 import com.cdboo.business.service.PeriodService;
 import com.cdboo.business.ui.player.view.MainFrame;
 import com.cdboo.business.ui.shared.controller.AbstractFrameController;
@@ -18,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 
 /**
  * Created by houyi on 2016/12/6.
@@ -60,7 +58,7 @@ public class TitleBarController extends AbstractFrameController {
     /**
      * 显示配置窗口
      */
-    private void showSettings(){
+    private void showSettings() {
         mainFrame.shutdownAll();
         Point p = mainFrame.getTitleBarPanel().getSettingsButton().getLocationOnScreen();
         mainFrame.getSettingsDialog().setShowPossition(new Point(new Double(p.getX()).intValue(), new Double(p.getY() + 30).intValue()));
@@ -70,7 +68,7 @@ public class TitleBarController extends AbstractFrameController {
     /**
      * 显示登录窗口
      */
-    public void showLoginWindow(){
+    public void showLoginWindow() {
         Platform.runLater(() -> {
             mainFrame.getView().getEngine().load(YamlUtils.getValue("url.cdboo.client.ip") + YamlUtils.getValue("url.cdboo.client.blur"));
         });
@@ -86,7 +84,7 @@ public class TitleBarController extends AbstractFrameController {
     /**
      * 关闭窗口
      */
-    private void closeClientsWindow(){
+    private void closeClientsWindow() {
         Config.getConfigInstance().saveUserData();
         System.exit(0);
     }
@@ -94,11 +92,11 @@ public class TitleBarController extends AbstractFrameController {
     /**
      * 最小化
      */
-    private void minClientsWindow(){
+    private void minClientsWindow() {
         mainFrame.shutdownAll();
         mainFrame.setVisible(false);
 
-        if(SystemTray.isSupported()){
+        if (SystemTray.isSupported()) {
             SystemTray systemTray = SystemTray.getSystemTray();
             Image image = mainFrame.getToolkit().getImage(getClass().getResource("/images/logo.png"));
 
@@ -131,7 +129,7 @@ public class TitleBarController extends AbstractFrameController {
                 }
             });
 
-            trayIcon.addMouseListener(new MouseAdapter(){
+            trayIcon.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getClickCount() == 1) {
@@ -154,15 +152,15 @@ public class TitleBarController extends AbstractFrameController {
     /**
      * 最大化窗口
      */
-    private void maxClientsWindow(){
+    private void maxClientsWindow() {
         mainFrame.shutdownAll();
         Toolkit kit = Toolkit.getDefaultToolkit();
         Dimension screenSize = kit.getScreenSize();
-        if(mainFrame.getWidth() == screenSize.width && mainFrame.getHeight() == screenSize.height){
+        if (mainFrame.getWidth() == screenSize.width && mainFrame.getHeight() == screenSize.height) {
             mainFrame.setSize(JComponentStyle.MAIN_WIDTH, JComponentStyle.MAIN_HEIGHT);
             JComponentUtils.setCenter(mainFrame);
             mainFrame.getTitleBarPanel().getMaxButton().setToolTipText("最大化");
-        }else{
+        } else {
             mainFrame.setSize(screenSize.width, screenSize.height);
             mainFrame.setLocation(0, 0);
             mainFrame.getTitleBarPanel().getMaxButton().setToolTipText("恢复");
@@ -172,8 +170,8 @@ public class TitleBarController extends AbstractFrameController {
     /**
      * 查询音乐
      */
-    private void queryMusic(){
-        if(Config.getConfigInstance().getHistory().size() > 20){
+    private void queryMusic() {
+        if (Config.getConfigInstance().getHistory().size() > 20) {
             Config.getConfigInstance().getHistory().removeLast();
         }
         Config.getConfigInstance().getHistory().addFirst(mainFrame.getTitleBarPanel().getQueryText().getText());
