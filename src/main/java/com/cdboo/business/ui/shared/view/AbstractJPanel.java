@@ -10,6 +10,8 @@ public abstract class AbstractJPanel extends JPanel{
 
     public AbstractJPanel(){
         super();
+        setFrameUp();
+        initComponents();
     }
 
     public AbstractJPanel(LayoutManager layout) {

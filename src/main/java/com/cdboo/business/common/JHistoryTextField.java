@@ -50,21 +50,19 @@ public class JHistoryTextField extends JTextField {
 
     private final List<String> history = new ArrayList<String>();
 
-    private final JPopupMenu popup = new JPopupMenu() {
-        public Dimension getPreferredSize() {
-            Dimension dimension = super.getPreferredSize();
-
-            dimension.width = JHistoryTextField.this.getWidth();
-
-            return dimension;
-        }
-    };
-
     private final JList list = new JList(new DefaultListModel());
 
     private String userText;
 
     private boolean notificationDenied;
+
+    private final JPopupMenu popup = new JPopupMenu() {
+        public Dimension getPreferredSize() {
+            Dimension dimension = super.getPreferredSize();
+            dimension.width = JHistoryTextField.this.getWidth();
+            return dimension;
+        }
+    };
 
     public JHistoryTextField() {
         JScrollPane scrollPane = new JScrollPane(list,
@@ -125,31 +123,25 @@ public class JHistoryTextField extends JTextField {
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_UP: {
                             changeListSelectedIndex(-1);
-
                             break;
                         }
-
                         case KeyEvent.VK_PAGE_UP: {
                             changeListSelectedIndex(-list.getVisibleRowCount());
-
                             break;
                         }
 
                         case KeyEvent.VK_DOWN: {
                             changeListSelectedIndex(1);
-
                             break;
                         }
 
                         case KeyEvent.VK_PAGE_DOWN: {
                             changeListSelectedIndex(list.getVisibleRowCount());
-
                             break;
                         }
 
                         case KeyEvent.VK_ESCAPE: {
                             popup.setVisible(false);
-
                             setTextWithoutNotification(userText);
 
                             break;
@@ -159,7 +151,6 @@ public class JHistoryTextField extends JTextField {
                         case KeyEvent.VK_LEFT:
                         case KeyEvent.VK_RIGHT: {
                             popup.setVisible(false);
-
                             break;
                         }
                     }
@@ -169,7 +160,6 @@ public class JHistoryTextField extends JTextField {
                             e.getKeyCode() == KeyEvent.VK_PAGE_UP ||
                             e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
                         userText = getText();
-
                         showFilteredHistory();
                     }
                 }
@@ -212,7 +202,6 @@ public class JHistoryTextField extends JTextField {
 
     private void setTextWithoutNotification(String text) {
         notificationDenied = true;
-
         try {
             setText(text);
         } finally {
@@ -223,26 +212,20 @@ public class JHistoryTextField extends JTextField {
     private void onTextChanged() {
         if (!notificationDenied) {
             userText = getText();
-
             showFilteredHistory();
         }
     }
 
     private void showFilteredHistory() {
         list.getSelectionModel().clearSelection();
-
         DefaultListModel model = (DefaultListModel) list.getModel();
-
         model.clear();
-
         for (String s : history) {
             if (s.contains(userText)) {
                 model.addElement(s);
             }
         }
-
         int size = model.size();
-
         if (size == 0) {
             popup.setVisible(false);
         } else {

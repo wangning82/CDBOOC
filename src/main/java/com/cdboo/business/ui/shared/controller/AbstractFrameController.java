@@ -10,6 +10,7 @@ public abstract class AbstractFrameController {
 
     /**
      * 按钮事件
+     *
      * @param button
      * @param listener
      */
@@ -19,10 +20,11 @@ public abstract class AbstractFrameController {
 
     /**
      * 复选框事件
+     *
      * @param checkBox
      * @param itemListener
      */
-    protected void registerItem(JCheckBox checkBox, ItemListener itemListener){
+    protected void registerItem(JCheckBox checkBox, ItemListener itemListener) {
         checkBox.addItemListener(itemListener);
     }
 

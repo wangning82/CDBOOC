@@ -21,7 +21,7 @@ public class PeriodDialog extends JDialog {
     private JPanel periodPanel = null;
 
     private java.util.List<RestTimeStep> periodList = new ArrayList<RestTimeStep>();
-    private JCheckBox[] periodBoxes;
+    private JLabel[] periodLabels;
 
     public PeriodDialog() {
 
@@ -47,19 +47,37 @@ public class PeriodDialog extends JDialog {
                 super.paintChildren(g);
             }
         };
-        periodPanel.setLayout(new BoxLayout(periodPanel, BoxLayout.Y_AXIS));
+        periodPanel.setLayout(new GridBagLayout());
         periodPanel.setOpaque(false);
 
-        periodBoxes = new JCheckBox[periodList.size()];
-        for (int i = 0; i < periodList.size(); i++) {
-            periodBoxes[i] = JComponentUtils.createCheckBox(periodList.get(i).getTimestepName(), JComponentStyle.COLOR_FONT_GRAY, JCheckBox.TRAILING);
-            if(Config.getConfigInstance().getPeriodList().contains(periodList.get(i).getTimestepName())){
-                periodBoxes[i].setSelected(true);
+        periodLabels = new JLabel[periodList.size()];
+        if(periodList.size() <= 4){
+            for (int i = 0; i < periodList.size(); i++) {
+                GridBagConstraints c = new GridBagConstraints();
+                c.fill = GridBagConstraints.BOTH;
+                c.weightx = 100.0;
+                c.gridx = 0;
+                c.gridy = i;
+                c.gridwidth = 1;
+                periodLabels[i] = JComponentUtils.createLabel(periodList.get(i).getTimestepName(), JComponentStyle.FONT_DEFAULT, Color.BLACK, null);
+                periodPanel.add(periodLabels[i], c);
             }
-            periodPanel.add(periodBoxes[i]);
-            periodPanel.add(Box.createVerticalStrut(6));
+        }else{
+            for (int i = 0; i < periodList.size(); i++) {
+                GridBagConstraints c = new GridBagConstraints();
+                c.fill = GridBagConstraints.BOTH;
+                c.weightx = 50.0;
+                c.gridy = i;
+                c.gridwidth = 1;
+                if(i % 2 == 0){
+                    c.gridx = 0;
+                }else{
+                    c.gridx = 1;
+                }
+                periodLabels[i] = JComponentUtils.createLabel(periodList.get(i).getTimestepName(), JComponentStyle.FONT_DEFAULT, Color.BLACK, null);
+                periodPanel.add(periodLabels[i], c);
+            }
         }
-
         periodPanel.setBorder(BorderFactory.createEmptyBorder(15, 16, 24, 16));
         return periodPanel;
     }
@@ -92,11 +110,11 @@ public class PeriodDialog extends JDialog {
         this.periodList = periodList;
     }
 
-    public JCheckBox[] getPeriodBoxes() {
-        return periodBoxes;
+    public JLabel[] getPeriodLabels() {
+        return periodLabels;
     }
 
-    public void setPeriodBoxes(JCheckBox[] periodBoxes) {
-        this.periodBoxes = periodBoxes;
+    public void setPeriodLabels(JLabel[] periodLabels) {
+        this.periodLabels = periodLabels;
     }
 }
