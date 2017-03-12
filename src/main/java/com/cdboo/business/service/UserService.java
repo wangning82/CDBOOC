@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -100,19 +101,22 @@ public class UserService {
         deleteAll();
         musicList = new ArrayList<>(); // 音乐单独下载
 
-        for (PlanModel planModel : model.getPlanModelList()) {
-            planModel.setSceneImg(getImagePath(planModel.getSceneImg()));
+        if(!CollectionUtils.isEmpty(model.getPlanModelList())){
+            for (PlanModel planModel : model.getPlanModelList()) {
+                planModel.setSceneImg(getImagePath(planModel.getSceneImg()));
 
-            saveChannel(planModel.getChannel());
-            if(Constants.CHANNEL_TYPE_GROUP.equals(planModel.getChannel().getChannelType())){
-                for(RestChannel channel : planModel.getChannel().getChildChannelList()){
-                    saveChannel(channel);
+                saveChannel(planModel.getChannel());
+                if(Constants.CHANNEL_TYPE_GROUP.equals(planModel.getChannel().getChannelType())){
+                    for(RestChannel channel : planModel.getChannel().getChildChannelList()){
+                        saveChannel(channel);
+                    }
                 }
+                planService.save(planModel);
             }
-            planService.save(planModel);
+
+            downloadMusic(musicList);
         }
 
-        downloadMusic(musicList);
     }
 
     /**
