@@ -7,11 +7,10 @@
 
 body, html {
     font-size: 14px;
-    font-family: "宋体";
+    font-family: "微软雅黑";
     height: 100%;
     color: #333;
 }
-
 
 a img {
     border: 0px;
@@ -39,14 +38,14 @@ img, ul, li {
 input {
     outline: none;
     border: none;
-    font-family: "宋体";
+    font-family: "微软雅黑";
     background: none;
 }
 
 .warp {
-    width: 1011px;
+    width: 1010px;
     height: 624px;
-    margin: 0 auto; position: relative;left:-1.5px;
+    margin: 0 auto;
 }
 
 /*头部====================*/
@@ -396,7 +395,7 @@ header {
 
 /*中间内容*/
 section {
-    width: 1011px;
+    width: 1010px;
     height: 550px;
     overflow: hidden;
 }
@@ -481,9 +480,10 @@ section {
 }
 
 .left_ul li .S_xxjs_6 {
-    margin: 10px 10px 0px 0px;background: url(../images/bg.png) -41px -56px no-repeat;
+    margin: 10px 10px 0px 0px;
     width: 21px;
     height: 18px;
+    background: url(../images/bg.png) -41px -56px no-repeat;
 }
 
 .left_ul li .S_xxjs_7 {
@@ -522,7 +522,7 @@ section {
 
 /*.left_ul li:hover .S_xxjs_1,.left_ul li.S_xxjs s.S_xxjs_1{width:21px;height:22px;background:url(../images/bg.png) 0px -26px no-repeat;}*/
 .right {
-    width: 781px;
+    width: 780px;
     height: 550px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -689,9 +689,9 @@ section {
 }
 
 footer {
-    width: 1011px;
+    width: 1010px;
     height: 74px;
-    background: #2d2e30; position: relative;bottom:-1px;
+    background: #2d2e30;
 }
 
 .play_1 {
@@ -745,11 +745,9 @@ footer {
 
 .play_2, .play_3, .play_4 {
     float: left;
-    width: 74px;
+    width: auto;
     height: 74px;
 }
-.play_2{ position:relative;left:210px;top:-74px; text-align: center;color:#979797;}
-.play_2 img{width:52px;height:52px;filter:alpha(opacity=65);-moz-opacity:0.65;opacity:0.65;}
 
 .play_2_dl {
     width: 52px;
@@ -831,11 +829,10 @@ footer {
 .progress_scrile {
     width: 12px;
     height: 12px;
-    /*border-radius: 50%;*/
-    background: url(../images/jindu.png);
+    border-radius: 50%;
+    background: #fff;
     float: left;
-    position: absolute;left: 0;
-    top:38px; z-index: 1;
+    margin: -3px 0 0 -4px;
 }
 
 .play_4_ul {
@@ -1516,7 +1513,7 @@ footer {
     overflow: hidden;
     float: left;
     position: relative;
-    margin: 0 14px 5px 14px;
+    margin: 0 14px 18px 14px;
     cursor: pointer;
 }
 
@@ -1695,9 +1692,9 @@ footer {
 */
 /*我的店铺*/
 .supper {
-    width: 781px;
+    width: 778px;
     height: 550px;
-    background: url(../images/img_4.jpg) repeat;
+    background: url(../images/img_4.jpg) no-repeat;
     position: relative;
 }
 
@@ -2180,10 +2177,10 @@ a:hover {
 
 /*插播计划*/
 .wdcbjh {
-    width: 781px;
+    width: 780px;
     height: 200px;
     overflow: hidden;
-    background: url(../images/img_3.jpg);
+    background: url(../images/img_3.jpg) no-repeat;
     text-align: center;
     line-height: 40px;
 }

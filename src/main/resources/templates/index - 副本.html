@@ -384,8 +384,7 @@
                     <h4>场景业态</h4><span style="font-size: 12px;" id="downloadMessage"></span>
                 </li>
                 <li th:each="scene:${sceneList}">
-                    <!--<s class="S_xxjs_6" th:style="'float: left; background-image: url(' + ${scene.icon} + ');'"></s>-->
-                    <s class="S_xxjs_6" th:style="'float: left;'"></s>
+                    <s class="S_xxjs_6" th:style="'float: left; background-image: url(' + ${scene.icon} + ');'"></s>
                     <a href="#" th:onclick="'javascript:findChannel(\'' + ${scene.name} + '\');'" th:text="${scene.name}"></a>
                 </li>
             </ul>
@@ -403,18 +402,9 @@
                         <button class="jp-previous" role="button" tabindex="0">previous</button>
                         <button class="jp-play" role="button" tabindex="0">play</button>
                         <button class="jp-next" role="button" tabindex="0">next</button>
-                        <!---<div class="play_2">
-
-                            <p>晨醒</p>
-
-                        </div>-->
                     </div>
-                    <div class="new_a">
-                    <div style=" position: relative;width:456px;height:74px;">
-                        <a href="##" class="progress_scrile"></a>
-                        <div class="jp-progress">
+                    <div class="jp-progress">
                         <div class="jp-seek-bar">
-
                             <div class="jp-play-bar"></div>
                         </div>
                     </div>
@@ -426,11 +416,8 @@
                             <div class="jp-duration" role="timer" aria-label="duration"></div>
                         </div>
                     </div>
-                    </div>
-                    </div>
                     <div class="jp-volume-controls">
                         <button class="jp-mute" role="button" tabindex="0">mute</button>
-                        <a href="##" class="progress_scrile scrile_video"></a>
                         <div class="jp-volume-bar">
                             <div class="jp-volume-bar-value"></div>
                         </div>
@@ -468,12 +455,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="play_2">
-            <!--<img class="logo_sm" src="images/logo.png">-->
-            <img src="images/img_1.jpg"/>
-            <p>晨醒</p>
-
         </div>
     </footer>
 </div>
