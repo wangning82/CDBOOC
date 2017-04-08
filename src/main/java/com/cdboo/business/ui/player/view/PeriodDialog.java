@@ -65,15 +65,12 @@ public class PeriodDialog extends JDialog {
         }else{
             for (int i = 0; i < periodList.size(); i++) {
                 GridBagConstraints c = new GridBagConstraints();
-                c.fill = GridBagConstraints.BOTH;
-                c.weightx = 50.0;
-                c.gridy = i;
+                c.fill = GridBagConstraints.NONE;
+                c.weightx = 40.0;
                 c.gridwidth = 1;
-                if(i % 2 == 0){
-                    c.gridx = 0;
-                }else{
-                    c.gridx = 1;
-                }
+                c.gridx = i % 2;
+                c.gridy = i / 2;
+                c.insets = new Insets(4, 4, 4, 4);
                 periodLabels[i] = JComponentUtils.createLabel(periodList.get(i).getTimestepName(), JComponentStyle.FONT_DEFAULT, Color.BLACK, null);
                 periodPanel.add(periodLabels[i], c);
             }

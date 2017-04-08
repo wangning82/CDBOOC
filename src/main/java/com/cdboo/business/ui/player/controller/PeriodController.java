@@ -29,6 +29,7 @@ public class PeriodController extends AbstractFrameController {
                 periodLabel.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
+                        mainFrame.getTitleBarPanel().getPeriodLabel().setText(periodLabel.getText());
                         loadData(periodLabel, e);
                     }
                 });
