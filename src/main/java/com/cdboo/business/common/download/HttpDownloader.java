@@ -1,14 +1,15 @@
 package com.cdboo.business.common.download;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 
 public class HttpDownloader extends Thread {
 
@@ -92,7 +93,12 @@ public class HttpDownloader extends Thread {
             URL url = new URL(this.info.getPair().remoteUrl);
             conn = (HttpURLConnection) url.openConnection();
             HttpDownloader.RetriveSingleStream.setHeader(conn);
-            int stateCode = conn.getResponseCode();
+
+            HttpGet method= new HttpGet(new URI(this.info.getPair().remoteUrl));
+            CloseableHttpClient client = HttpClients.createDefault();
+            HttpResponse response = client.execute(method);
+
+            int stateCode = response.getStatusLine().getStatusCode();
             if (stateCode != HttpURLConnection.HTTP_OK && stateCode != HttpURLConnection.HTTP_PARTIAL) {
                 logger.warn(info.getPair().localName + " #Error Code:# " + stateCode);
                 fileLength = -2;
@@ -111,6 +117,8 @@ public class HttpDownloader extends Thread {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         } finally {
             if (conn != null) {

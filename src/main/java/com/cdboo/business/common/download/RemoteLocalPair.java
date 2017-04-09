@@ -27,7 +27,6 @@ public class RemoteLocalPair {
         this.remoteUrl = remoteUrl;
         if (localName.length() == 0) {
             this.localName = getFileName(remoteUrl);
-            ;
         } else {
             this.localName = localName;
         }

@@ -19,12 +19,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,15 +129,20 @@ public class UserService {
     }
 
     // 多线程下载歌曲
-    public void downloadMusic(List<RestMusic> musicList){
+    public void downloadMusic(List<RestMusic> musicList) {
         new Thread(() -> {
             for(RestMusic source : musicList){
                 String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
                 if(!new File(propsConfig.getMusic(), filename).exists() || (new File(propsConfig.getMusic(), filename).exists() && new File(propsConfig.getMusic(), filename + ".cdboo").exists())){
-                    RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + source.getSource().replaceAll(" ", "%20"), propsConfig.getMusic(), filename, source.getLength() == null ? new Long(0) : source.getLength());
-                    GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
-                    HttpDownloader downloader = new HttpDownloader(info, 5);
-                    downloader.run();
+                    try {
+                        String newname = URLEncoder.encode(source.getSource(), "utf-8").replaceAll("\\+", "%20");
+                        RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + newname, propsConfig.getMusic(), filename, source.getLength() == null ? new Long(0) : source.getLength());
+                        GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
+                        HttpDownloader downloader = new HttpDownloader(info, 5);
+                        downloader.run();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).start();
@@ -166,9 +170,14 @@ public class UserService {
      */
     private String getImagePath(String source) {
         if(!StringUtils.isEmpty(source)){
-            String filename = source.substring(source.lastIndexOf("/") + 1);
-            saveToFile(SERVER_IP + source, propsConfig.getImages() + filename);
-            return Constants.URL_IMAGES + filename;
+            try {
+                String filename = URLDecoder.decode(source.substring(source.lastIndexOf("/") + 1), "utf-8");
+                saveToFile(SERVER_IP + source, propsConfig.getImages() + filename);
+                return Constants.URL_IMAGES + filename;
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+                return null;
+            }
         }else{
             return null;
         }
