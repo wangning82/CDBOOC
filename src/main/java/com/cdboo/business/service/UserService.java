@@ -132,11 +132,13 @@ public class UserService {
     public void downloadMusic(List<RestMusic> musicList) {
         new Thread(() -> {
             for(RestMusic source : musicList){
-                String filename = source.getPath().substring(source.getPath().lastIndexOf("/") + 1);
+                int index = source.getSource().lastIndexOf("/");
+                String filepath = source.getSource().substring(0, index + 1);
+                String filename = source.getSource().substring(index + 1);
                 if(!new File(propsConfig.getMusic(), filename).exists() || (new File(propsConfig.getMusic(), filename).exists() && new File(propsConfig.getMusic(), filename + ".cdboo").exists())){
                     try {
-                        String newname = URLEncoder.encode(source.getSource(), "utf-8").replaceAll("\\+", "%20");
-                        RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + newname, propsConfig.getMusic(), filename, source.getLength() == null ? new Long(0) : source.getLength());
+                        String newname = URLEncoder.encode(filename, "utf-8").replaceAll("\\+", "%20");
+                        RemoteLocalPair pair = new RemoteLocalPair(SERVER_IP + filepath + newname, propsConfig.getMusic(), filename, source.getLength() == null ? new Long(0) : source.getLength());
                         GeneralDownloadInfo info = new GeneralDownloadInfo(pair);
                         HttpDownloader downloader = new HttpDownloader(info, 5);
                         downloader.run();

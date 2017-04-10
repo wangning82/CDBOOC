@@ -145,7 +145,7 @@ public class MusicService {
      * @return
      */
     public RestMusic findSpotMusic() throws Exception {
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String currentTime = sdf.format(new Date());
 
         List<RestMusic> result = new ArrayList<>();
@@ -157,10 +157,14 @@ public class MusicService {
             int cycle = 0;
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(sdf.parse(planModel.getTimestep().getStarttime()));
+            System.out.println("初始时间：" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
             while (cycle <= Integer.parseInt(planModel.getCycleTimes()) - 1) {
                 calendar.add(Calendar.MINUTE, cycle * Integer.parseInt(planModel.getIntervalTime()));
+                System.out.println("循环后时间：" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
                 if (currentTime.equals(sdf.format(calendar.getTime()))) {
                     result = planModel.getChannel().getMusicList();
+                    break;
+                } else if(calendar.after(Calendar.getInstance())){
                     break;
                 }
                 cycle++;
