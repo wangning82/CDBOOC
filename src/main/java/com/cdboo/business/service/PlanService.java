@@ -115,7 +115,7 @@ public class PlanService {
      * @return
      */
     public BooleanExpression getPredicateByTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         String currentTime = sdf.format(new Date());
         return QPlanModel.planModel.timestep.starttime.lt(currentTime)
                 .and(QPlanModel.planModel.timestep.endtime.gt(currentTime));

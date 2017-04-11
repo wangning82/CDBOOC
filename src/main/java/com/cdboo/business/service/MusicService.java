@@ -159,12 +159,12 @@ public class MusicService {
             calendar.setTime(sdf.parse(planModel.getTimestep().getStarttime()));
             System.out.println("初始时间：" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
             while (cycle <= Integer.parseInt(planModel.getCycleTimes()) - 1) {
-                calendar.add(Calendar.MINUTE, cycle * Integer.parseInt(planModel.getIntervalTime()));
+                calendar.add(Calendar.MINUTE, Integer.parseInt(planModel.getIntervalTime()));
                 System.out.println("循环后时间：" + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE));
-                if (currentTime.equals(sdf.format(calendar.getTime()))) {
+                if (currentTime.compareTo(sdf.format(calendar.getTime())) == 0) {
                     result = planModel.getChannel().getMusicList();
                     break;
-                } else if(calendar.after(Calendar.getInstance())){
+                } else if(currentTime.compareTo(sdf.format(calendar.getTime())) < 0){
                     break;
                 }
                 cycle++;
