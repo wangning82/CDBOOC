@@ -224,7 +224,6 @@ function restorePlayPlan() {
 // 清除播放列表
 function cleanPlaylist() {
     myPlaylist.remove(); // 删除所有音乐
-    myPlaylist.setPlaylist({});
     $(".liedui_top .lie_h4").html("播放队列（共 0 首歌）");
     $("#nav .num_1").html("0");
 }
@@ -270,11 +269,13 @@ function findSpotMusic() {
         loadSpotMusic();
         if (typeof(spotmusic) != "undefined" && spotmusic != null) {
             planMusicList[planPlayIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置，暂时没用
-            myPlaylist.setPlaylist({}); // 清空播放列表
+            cleanPlaylist();
             myPlaylist.add({
                 title: spotmusic.title,
                 mp3: spotmusic.mp3
             });
+            $(".liedui_top .lie_h4").html("播放队列（共 1 首歌）");
+            $("#nav .num_1").html("1");
             spotflag = true;
             myPlaylist.play(0);
         }
