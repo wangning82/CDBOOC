@@ -208,10 +208,18 @@ function playAllPeople(){
 
 // 整点重新加载新计划
 function monitorTime() {
-    var mydate = new Date();
-    if(mydate.getMinutes() == 0){
-        loadPlanMusic();
+    if(!running) {
+        running = true;
+        var mydate = new Date();
+        if(mydate.getMinutes() == 0 && !success){
+            loadPlanMusic();
+            success = true;
+        }else if(mydate.getMinutes() != 0){
+            success = false;
+        }
+        running = false;
     }
+
 }
 
 // 恢复播放计划
@@ -223,7 +231,7 @@ function restorePlayPlan() {
 
 // 清除播放列表
 function cleanPlaylist() {
-    myPlaylist.remove(); // 删除所有音乐
+    //myPlaylist.remove(); // 删除所有音乐
     $(".liedui_top .lie_h4").html("播放队列（共 0 首歌）");
     $("#nav .num_1").html("0");
 }
@@ -265,21 +273,26 @@ function loadSpotMusic() {
 
 // 查找插播
 function findSpotMusic() {
-    if(!spotflag){
-        loadSpotMusic();
-        if (typeof(spotmusic) != "undefined" && spotmusic != null) {
-            planMusicList[planPlayIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置，暂时没用
-            cleanPlaylist();
-            myPlaylist.add({
-                title: spotmusic.title,
-                mp3: spotmusic.mp3
-            });
-            $(".liedui_top .lie_h4").html("播放队列（共 1 首歌）");
-            $("#nav .num_1").html("1");
-            spotflag = true;
-            myPlaylist.play(0);
+    if(!running) {
+        running = true;
+        if(!spotflag){
+            loadSpotMusic();
+            if (typeof(spotmusic) != "undefined" && spotmusic != null) {
+                planMusicList[planPlayIndex].position = $("#jquery_jplayer_1").data("jPlayer").status.currentTime; // 获取播放位置，暂时没用
+                cleanPlaylist();
+                myPlaylist.setPlaylist([{
+                    title: spotmusic.title,
+                    mp3: spotmusic.mp3
+                }]);
+                $(".liedui_top .lie_h4").html("播放队列（共 1 首歌）");
+                $("#nav .num_1").html("1");
+                spotflag = true;
+                myPlaylist.play(0);
+            }
         }
+        running = false;
     }
+
 }
 
 // 查找店铺信息

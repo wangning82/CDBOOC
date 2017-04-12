@@ -22,6 +22,9 @@
         var personalPlayIndex = 0; // 播放歌曲下标
         var chooseVoiceFlag = false; // 选择人声标志
 
+        var running = false;
+        var success = false;
+
         $(document).ready(function () {
             var keyword = /*[[${keyword}]]*/;
             if(keyword != null && keyword != ""){
@@ -45,7 +48,6 @@
                 smoothPlayBar: true,
                 keyEnabled: true,
                 play: function(e) {
-                    console.log(myPlaylist.playlist.length);
                     console.log(e.jPlayer.status.media.title);
                     if(!spotflag){
                         if(personalPlayFlag){
@@ -59,6 +61,7 @@
                     console.log("music stop.");
                     if(spotflag){
                         spotflag = false;
+                        spotmusic = null;
                         restorePlayPlan(); // 插播完恢复计划
                         if(planPlayIndex != planMusicList.length - 1){
                             myPlaylist.play(planPlayIndex + 1);
